@@ -1,0 +1,56 @@
+
+// Async Processor for a #arg_count# argument coroutine.
+template<#template_args#>
+class AsyncProcessor#arg_count#
+{
+public:
+    AsyncProcessor#arg_count#(#function_args#) :
+        context(context),
+        #init_list#
+    {
+    }
+
+    void operator()(AsioExpress::Error error = AsioExpress::Error())
+    {
+      CHECK_MSG(!context.IsComplete(), "Async. processor invoked but it has already completed.");
+      
+      if (error)
+      {
+        context.Complete(error);
+        return;
+      }
+
+      context.Start();
+
+      try
+      {
+        f(context#func_call_args#);
+        context.Exit();
+      }
+      ASIOEXPRESS_CATCH_ERROR_AND_DO( context.Complete(error) );
+    }
+
+private:
+    Context context;
+    #member_def#
+};
+
+template<#template_args#>
+void RunProc(#function_args#)
+{
+  context.Start();
+
+  try
+  {
+    f(context#func_call_args#);
+    context.Exit();
+  }
+  ASIOEXPRESS_CATCH_ERROR_AND_DO( context.Complete(error) );
+}
+
+template<#template_args#>
+AsioExpress::CompletionHandler PushProc(#function_args#)
+{
+    AsyncProcessor#arg_count#<#template_call_args#> proc(f,context#func_call_args#);
+    return proc;
+}
