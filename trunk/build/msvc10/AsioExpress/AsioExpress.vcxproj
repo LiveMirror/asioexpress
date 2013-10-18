@@ -1,0 +1,249 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectName>AsioExpress</ProjectName>
+    <ProjectGuid>{83B07572-2FAC-4353-901F-CDC7C7F6C05A}</ProjectGuid>
+    <RootNamespace>AsioExpress</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\..\lib\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Configuration)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\..\lib\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\..\..\source;..\..\..\..\Library\boost_1_54_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>AsioExpress/pch.hpp</PrecompiledHeaderFile>
+      <ProgramDataBaseFileName>$(OutDir)$(ProjectName).pdb</ProgramDataBaseFileName>
+      <BrowseInformation>true</BrowseInformation>
+      <WarningLevel>Level4</WarningLevel>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <AdditionalOptions>-Zm132 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Lib>
+      <AdditionalLibraryDirectories>..\..\..\..\ThirdParty\boost_1_44_0\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
+    <PostBuildEvent>
+      <Command>PostBuild.cmd $(ProjectName) .\$(ProjectName) ..\..\..</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>..\..\..\source;..\..\..\..\Library\boost_1_54_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>AsioExpress/pch.hpp</PrecompiledHeaderFile>
+      <ProgramDataBaseFileName>$(OutDir)$(ProjectName).pdb</ProgramDataBaseFileName>
+      <WarningLevel>Level4</WarningLevel>
+      <TreatWarningAsError>false</TreatWarningAsError>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <AdditionalOptions>-Zm132 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <PostBuildEvent>
+      <Command>PostBuild.cmd $(ProjectName) .\$(ProjectName) ..\..\..</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\source\AsioExpress\ErrorCodes.cpp" />
+    <ClCompile Include="..\..\..\source\AsioExpress\CompletionHandler.cpp" />
+    <ClCompile Include="..\..\..\source\AsioExpress\DebugTimer\DebugTimerManager.cpp" />
+    <ClCompile Include="..\..\..\source\AsioExpress\DebugTimer\DebugTimers.cpp" />
+    <ClCompile Include="..\..\..\source\AsioExpress\DurationTimer.cpp" />
+    <ClCompile Include="..\..\..\source\AsioExpress\InstanceManager.cpp" />
+    <ClCompile Include="..\..\..\source\AsioExpress\NullCompletionHandler.cpp" />
+    <ClCompile Include="..\..\..\source\AsioExpress\pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\AsioExpress\Platform\GetClockCountWin.cpp" />
+    <ClCompile Include="..\..\..\source\AsioExpress\StatisticsTimer.cpp" />
+    <ClCompile Include="..\..\..\source\AsioExpress\test.cpp" />
+    <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\Tcp\TcpErrorCodes.cpp" />
+    <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\Tcp\private\ProtocolConstants.cpp" />
+    <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\Tcp\private\SetSocketOptions.cpp" />
+    <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\Ipc\IpcErrorCodes.cpp" />
+    <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\Ipc\MessagePort.cpp" />
+    <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\Ipc\MessagePortAcceptor.cpp" />
+    <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\MessagePortCommandAccept.cpp" />
+    <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\MessagePortCommandConnect.cpp" />
+    <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\MessagePortCommandReceive.cpp" />
+    <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\MessagePortSysMessage.cpp" />
+    <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\ReceiveThread.cpp" />
+    <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\SendThread.cpp" />
+    <ClCompile Include="..\..\..\source\AsioExpress\ClientServer\MessagePortId.cpp" />
+    <ClCompile Include="..\..\..\source\AsioExpress\ClientServer\private\ClientEvents.cpp" />
+    <ClCompile Include="..\..\..\source\AsioExpress\ClientServer\private\ServerEvents.cpp" />
+    <ClCompile Include="..\..\..\source\AsioExpress\Logging\LoggingService.cpp" />
+    <ClCompile Include="..\..\..\source\AsioExpress\UniqueId.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\ClientMessageProcessor.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\ServerMessageProcessor.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\CompletionHandler.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\Coroutine.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\CoroutineMacros.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\DebugTimer\DebugTimerMacros.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\DebugTimer\DebugTimerManager.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\DebugTimer\DebugTimers.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\DebugTimer\ScopedDebugTimer.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\DurationTimer.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\Error.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\ErrorCodes.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\Handles\PointerHandle.h" />
+    <ClInclude Include="..\..\..\source\AsioExpress\Handles\SharedHandle.h" />
+    <ClInclude Include="..\..\..\source\AsioExpress\InstanceManager.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\NullCompletionHandler.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\pch.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\Platform\GetClockCount.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\PointerTypes.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\SimpleStateMachine.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\StatisticsTimer.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\Testing\hippomocks.h" />
+    <ClInclude Include="..\..\..\source\AsioExpress\UniqueId.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\Unyield.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\Yield.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\DataBuffer.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\SendQueue.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Tcp\BasicMessagePort.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Tcp\BasicMessagePortAcceptor.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Tcp\EndPoint.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Tcp\TcpErrorCodes.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Tcp\private\BasicProtocolReceiver.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Tcp\private\BasicProtocolSender.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Tcp\private\MessagePort.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Tcp\private\MessagePortAcceptor.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Tcp\private\ProtocolConstants.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Tcp\private\SetSocketOptions.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Tcp\private\SocketPointer.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\EndPoint.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\IpcErrorCodes.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\MessagePort.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\MessagePortAcceptor.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\MessagePortCommandAccept.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\MessagePortCommandConnect.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\MessagePortCommandReceive.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\MessagePortSysMessage.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\MessageQueuePointer.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\ReceiveThread.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\SendThread.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\ClientConnection.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\ClientConnectionProcessor.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\ClientEventHandler.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\ClientMessage.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\ClientInterface.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\ServerInterface.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\MessagePortClient.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\MessagePortId.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\MessagePortServer.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\ServerConnection.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\ServerConnectionProcessor.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\ServerEventHandler.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\ServerMessage.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\private\BroadcastProcessor.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\private\Client.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\private\ClientEvents.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\private\IAsyncSend.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\private\IClientEvents.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\private\InternalMessagePortClient.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\private\InternalMessagePortServer.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\private\IServerEvents.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\private\MessagePortManager.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\private\Server.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\private\ServerEvents.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\Service\CommandProcessor.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\Service\CommandProcessorService.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\Service\ServiceCommand.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\Service\private\PointerCallbackProcessor.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\Service\private\PointerProcessor.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\Service\private\ReferenceCallbackProcessor.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\Service\private\ReferenceProcessor.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\Timer\BasicRepeatingTimer.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\Timer\DateTimer.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\Timer\RepeatingTickCountTimer.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\Timer\StandardDateTimer.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\Timer\StandardRepeatingTimer.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\Timer\StandardTimer.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\Timer\TickCountTimer.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\Timer\TickCountTraits.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\Timer\Timer.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\Logging\LoggingService.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\Logging\Macros.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\Testing\AutoCompletionHandler.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\Testing\CompletionHandlerMacros.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\Testing\DoNotDelete.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\Testing\HippoMockExtensions.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\Testing\TestCompletionHandler.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\Testing\TimerMock.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\EventHandling\EventQueue.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\EventHandling\ResourceCache.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\EventHandling\UniqueEvent.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\EventHandling\ResourceCachePrivate\AddResourceItemsProcessor.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\EventHandling\ResourceCachePrivate\CacheRequest.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\EventHandling\ResourceCachePrivate\CacheUpdateProcessor.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\EventHandling\UniqueEventPrivate\UniqueEventListener.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\Proc\Context.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\Proc\Debugging.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\Proc\RunProc.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\Proc\RunProcWithErrors.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\Proc\Status.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\source\AsioExpress\Proc\CodeGen\Footer.txt" />
+    <None Include="..\..\..\source\AsioExpress\Proc\CodeGen\Header.txt" />
+    <None Include="..\..\..\source\AsioExpress\Proc\CodeGen\MakeAll.bat" />
+    <None Include="..\..\..\source\AsioExpress\Proc\CodeGen\MakeScript.py" />
+    <None Include="..\..\..\source\AsioExpress\Proc\CodeGen\RunProc.txt" />
+    <None Include="..\..\..\source\AsioExpress\Proc\CodeGen\RunProcWithErrors.txt" />
+    <None Include="PostBuild.cmd" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

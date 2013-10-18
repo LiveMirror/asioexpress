@@ -1,0 +1,509 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source Files\MessagePort">
+      <UniqueIdentifier>{f39b05b0-bcd1-4fda-8045-5a8409ec1b1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\MessagePort\Tcp">
+      <UniqueIdentifier>{37175ff2-fe86-4fe1-b00d-d69f73ed60bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\MessagePort\Tcp\private">
+      <UniqueIdentifier>{07fd8ef4-296f-42bd-a5c0-6a8bbf6e0afb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\MessagePort\Ipc">
+      <UniqueIdentifier>{569f68b3-a065-42ac-8dec-1da7c134d295}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\MessagePort\Ipc\private">
+      <UniqueIdentifier>{d6d0fc33-5899-4807-96e1-700faf11ead1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ClientServer">
+      <UniqueIdentifier>{310496f9-662b-47ad-b232-aba86f2c8029}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ClientServer\private">
+      <UniqueIdentifier>{d7eba332-2105-4ce5-a608-b882cb9f8804}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Service">
+      <UniqueIdentifier>{783ccd2e-f81d-4495-b754-b17b23ea4fbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Service\private">
+      <UniqueIdentifier>{988b30e5-6702-450b-8b1c-eb05a6faed32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Timer">
+      <UniqueIdentifier>{7550f9d5-afab-4282-8a5c-3838a370e333}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Logging">
+      <UniqueIdentifier>{018d719a-27d2-4c26-9efe-24ec258a752a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Testing">
+      <UniqueIdentifier>{db50f5ee-85ae-4b8f-a6d5-fddf9c0fb046}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\EventHandling">
+      <UniqueIdentifier>{1e58be32-8e67-4a47-9165-9e9532b43186}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\EventHandling\ResourceCachePrivate">
+      <UniqueIdentifier>{b1546758-f877-43cd-a71d-e1c1436931d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\EventHandling\UniqueEventPrivate">
+      <UniqueIdentifier>{282fd76c-ec21-4fb9-80d7-516587b54d50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Proc">
+      <UniqueIdentifier>{21ebac5d-f5bc-45d2-800b-a5c09a5490fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="Source Files\Platform">
+      <UniqueIdentifier>{76a41946-4d66-40e6-8cfb-400cdc892e17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DebugTimer">
+      <UniqueIdentifier>{eb7c73ec-fd50-44d4-b613-d32f19f33dd6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Proc\CodeGen">
+      <UniqueIdentifier>{b8f2310b-44e7-4f49-b519-9219a4c4e15f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Handles">
+      <UniqueIdentifier>{e9848293-e30d-40e7-8be0-7d4545b9572c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\source\AsioExpress\CompletionHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\AsioExpress\NullCompletionHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\AsioExpress\pch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\AsioExpress\test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\Tcp\TcpErrorCodes.cpp">
+      <Filter>Source Files\MessagePort\Tcp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\Tcp\private\ProtocolConstants.cpp">
+      <Filter>Source Files\MessagePort\Tcp\private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\Tcp\private\SetSocketOptions.cpp">
+      <Filter>Source Files\MessagePort\Tcp\private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\Ipc\MessagePort.cpp">
+      <Filter>Source Files\MessagePort\Ipc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\Ipc\MessagePortAcceptor.cpp">
+      <Filter>Source Files\MessagePort\Ipc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\MessagePortCommandAccept.cpp">
+      <Filter>Source Files\MessagePort\Ipc\private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\MessagePortCommandConnect.cpp">
+      <Filter>Source Files\MessagePort\Ipc\private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\MessagePortCommandReceive.cpp">
+      <Filter>Source Files\MessagePort\Ipc\private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\MessagePortSysMessage.cpp">
+      <Filter>Source Files\MessagePort\Ipc\private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\ReceiveThread.cpp">
+      <Filter>Source Files\MessagePort\Ipc\private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\SendThread.cpp">
+      <Filter>Source Files\MessagePort\Ipc\private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\AsioExpress\ClientServer\MessagePortId.cpp">
+      <Filter>Source Files\ClientServer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\AsioExpress\ClientServer\private\ClientEvents.cpp">
+      <Filter>Source Files\ClientServer\private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\AsioExpress\ClientServer\private\ServerEvents.cpp">
+      <Filter>Source Files\ClientServer\private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\AsioExpress\Logging\LoggingService.cpp">
+      <Filter>Source Files\Logging</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\AsioExpress\Platform\GetClockCountWin.cpp">
+      <Filter>Source Files\Platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\AsioExpress\DurationTimer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\AsioExpress\StatisticsTimer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\AsioExpress\DebugTimer\DebugTimerManager.cpp">
+      <Filter>Source Files\DebugTimer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\AsioExpress\DebugTimer\DebugTimers.cpp">
+      <Filter>Source Files\DebugTimer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\AsioExpress\ErrorCodes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\AsioExpress\UniqueId.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\AsioExpress\InstanceManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\Ipc\IpcErrorCodes.cpp">
+      <Filter>Source Files\MessagePort\Ipc</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\source\AsioExpress\CompletionHandler.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\Coroutine.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\CoroutineMacros.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\Error.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\ErrorCodes.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\NullCompletionHandler.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\pch.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\PointerTypes.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\SimpleStateMachine.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\Unyield.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\Yield.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\DataBuffer.hpp">
+      <Filter>Source Files\MessagePort</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\SendQueue.hpp">
+      <Filter>Source Files\MessagePort</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Tcp\EndPoint.hpp">
+      <Filter>Source Files\MessagePort\Tcp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Tcp\private\MessagePort.hpp">
+      <Filter>Source Files\MessagePort\Tcp\private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Tcp\private\MessagePortAcceptor.hpp">
+      <Filter>Source Files\MessagePort\Tcp\private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Tcp\private\ProtocolConstants.hpp">
+      <Filter>Source Files\MessagePort\Tcp\private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Tcp\private\SetSocketOptions.hpp">
+      <Filter>Source Files\MessagePort\Tcp\private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Tcp\private\SocketPointer.hpp">
+      <Filter>Source Files\MessagePort\Tcp\private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\EndPoint.hpp">
+      <Filter>Source Files\MessagePort\Ipc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\MessagePort.hpp">
+      <Filter>Source Files\MessagePort\Ipc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\MessagePortAcceptor.hpp">
+      <Filter>Source Files\MessagePort\Ipc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\MessagePortCommandAccept.hpp">
+      <Filter>Source Files\MessagePort\Ipc\private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\MessagePortCommandConnect.hpp">
+      <Filter>Source Files\MessagePort\Ipc\private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\MessagePortCommandReceive.hpp">
+      <Filter>Source Files\MessagePort\Ipc\private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\MessagePortSysMessage.hpp">
+      <Filter>Source Files\MessagePort\Ipc\private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\MessageQueuePointer.hpp">
+      <Filter>Source Files\MessagePort\Ipc\private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\ReceiveThread.hpp">
+      <Filter>Source Files\MessagePort\Ipc\private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\SendThread.hpp">
+      <Filter>Source Files\MessagePort\Ipc\private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\ClientConnection.hpp">
+      <Filter>Source Files\ClientServer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\ClientConnectionProcessor.hpp">
+      <Filter>Source Files\ClientServer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\ClientEventHandler.hpp">
+      <Filter>Source Files\ClientServer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\ClientMessage.hpp">
+      <Filter>Source Files\ClientServer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\MessagePortClient.hpp">
+      <Filter>Source Files\ClientServer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\MessagePortServer.hpp">
+      <Filter>Source Files\ClientServer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\ServerConnection.hpp">
+      <Filter>Source Files\ClientServer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\ServerConnectionProcessor.hpp">
+      <Filter>Source Files\ClientServer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\ServerEventHandler.hpp">
+      <Filter>Source Files\ClientServer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\ServerMessage.hpp">
+      <Filter>Source Files\ClientServer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\private\IAsyncSend.hpp">
+      <Filter>Source Files\ClientServer\private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\private\IClientEvents.hpp">
+      <Filter>Source Files\ClientServer\private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\private\InternalMessagePortClient.hpp">
+      <Filter>Source Files\ClientServer\private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\private\InternalMessagePortServer.hpp">
+      <Filter>Source Files\ClientServer\private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\private\IServerEvents.hpp">
+      <Filter>Source Files\ClientServer\private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\private\MessagePortManager.hpp">
+      <Filter>Source Files\ClientServer\private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\private\Server.hpp">
+      <Filter>Source Files\ClientServer\private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\Service\CommandProcessor.hpp">
+      <Filter>Source Files\Service</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\Service\CommandProcessorService.hpp">
+      <Filter>Source Files\Service</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\Service\ServiceCommand.hpp">
+      <Filter>Source Files\Service</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\Service\private\PointerCallbackProcessor.hpp">
+      <Filter>Source Files\Service\private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\Service\private\PointerProcessor.hpp">
+      <Filter>Source Files\Service\private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\Service\private\ReferenceCallbackProcessor.hpp">
+      <Filter>Source Files\Service\private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\Service\private\ReferenceProcessor.hpp">
+      <Filter>Source Files\Service\private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\Timer\DateTimer.hpp">
+      <Filter>Source Files\Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\Timer\RepeatingTickCountTimer.hpp">
+      <Filter>Source Files\Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\Timer\StandardDateTimer.hpp">
+      <Filter>Source Files\Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\Timer\StandardRepeatingTimer.hpp">
+      <Filter>Source Files\Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\Timer\StandardTimer.hpp">
+      <Filter>Source Files\Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\Timer\TickCountTimer.hpp">
+      <Filter>Source Files\Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\Timer\TickCountTraits.hpp">
+      <Filter>Source Files\Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\Timer\Timer.hpp">
+      <Filter>Source Files\Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\Logging\LoggingService.hpp">
+      <Filter>Source Files\Logging</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\Logging\Macros.hpp">
+      <Filter>Source Files\Logging</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\Testing\CompletionHandlerMacros.hpp">
+      <Filter>Source Files\Testing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\Testing\DoNotDelete.hpp">
+      <Filter>Source Files\Testing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\Testing\HippoMockExtensions.hpp">
+      <Filter>Source Files\Testing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\Testing\TestCompletionHandler.hpp">
+      <Filter>Source Files\Testing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\Testing\TimerMock.hpp">
+      <Filter>Source Files\Testing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\EventHandling\EventQueue.hpp">
+      <Filter>Source Files\EventHandling</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\EventHandling\ResourceCache.hpp">
+      <Filter>Source Files\EventHandling</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\EventHandling\UniqueEvent.hpp">
+      <Filter>Source Files\EventHandling</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\EventHandling\UniqueEventPrivate\UniqueEventListener.hpp">
+      <Filter>Source Files\EventHandling\UniqueEventPrivate</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\Proc\Context.hpp">
+      <Filter>Source Files\Proc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\Proc\Debugging.hpp">
+      <Filter>Source Files\Proc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\Proc\RunProc.hpp">
+      <Filter>Source Files\Proc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\Proc\RunProcWithErrors.hpp">
+      <Filter>Source Files\Proc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\Proc\Status.hpp">
+      <Filter>Source Files\Proc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\MessagePortId.hpp">
+      <Filter>Source Files\ClientServer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\private\ClientEvents.hpp">
+      <Filter>Source Files\ClientServer\private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\private\ServerEvents.hpp">
+      <Filter>Source Files\ClientServer\private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\EventHandling\ResourceCachePrivate\AddResourceItemsProcessor.hpp">
+      <Filter>Source Files\EventHandling\ResourceCachePrivate</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\Testing\AutoCompletionHandler.hpp">
+      <Filter>Source Files\Testing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Tcp\BasicMessagePort.hpp">
+      <Filter>Source Files\MessagePort\Tcp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Tcp\BasicMessagePortAcceptor.hpp">
+      <Filter>Source Files\MessagePort\Tcp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Tcp\private\BasicProtocolReceiver.hpp">
+      <Filter>Source Files\MessagePort\Tcp\private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Tcp\private\BasicProtocolSender.hpp">
+      <Filter>Source Files\MessagePort\Tcp\private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\Timer\BasicRepeatingTimer.hpp">
+      <Filter>Source Files\Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\private\BroadcastProcessor.hpp">
+      <Filter>Source Files\ClientServer\private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\EventHandling\ResourceCachePrivate\CacheRequest.hpp">
+      <Filter>Source Files\EventHandling\ResourceCachePrivate</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\EventHandling\ResourceCachePrivate\CacheUpdateProcessor.hpp">
+      <Filter>Source Files\EventHandling\ResourceCachePrivate</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\private\Client.hpp">
+      <Filter>Source Files\ClientServer\private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\UniqueId.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\Platform\GetClockCount.hpp">
+      <Filter>Source Files\Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\DurationTimer.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\StatisticsTimer.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\DebugTimer\DebugTimerMacros.hpp">
+      <Filter>Source Files\DebugTimer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\DebugTimer\DebugTimerManager.hpp">
+      <Filter>Source Files\DebugTimer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\DebugTimer\DebugTimers.hpp">
+      <Filter>Source Files\DebugTimer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\DebugTimer\ScopedDebugTimer.hpp">
+      <Filter>Source Files\DebugTimer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\InstanceManager.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Tcp\TcpErrorCodes.hpp">
+      <Filter>Source Files\MessagePort\Tcp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\IpcErrorCodes.hpp">
+      <Filter>Source Files\MessagePort\Ipc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\Testing\hippomocks.h">
+      <Filter>Source Files\Testing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\Handles\PointerHandle.h">
+      <Filter>Source Files\Handles</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\Handles\SharedHandle.h">
+      <Filter>Source Files\Handles</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\ClientMessageProcessor.hpp">
+      <Filter>Source Files\ClientServer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\ServerMessageProcessor.hpp">
+      <Filter>Source Files\ClientServer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\ClientInterface.hpp">
+      <Filter>Source Files\ClientServer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\ServerInterface.hpp">
+      <Filter>Source Files\ClientServer</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="PostBuild.cmd" />
+    <None Include="..\..\..\source\AsioExpress\Proc\CodeGen\MakeScript.py">
+      <Filter>Source Files\Proc\CodeGen</Filter>
+    </None>
+    <None Include="..\..\..\source\AsioExpress\Proc\CodeGen\Footer.txt">
+      <Filter>Source Files\Proc\CodeGen</Filter>
+    </None>
+    <None Include="..\..\..\source\AsioExpress\Proc\CodeGen\Header.txt">
+      <Filter>Source Files\Proc\CodeGen</Filter>
+    </None>
+    <None Include="..\..\..\source\AsioExpress\Proc\CodeGen\RunProc.txt">
+      <Filter>Source Files\Proc\CodeGen</Filter>
+    </None>
+    <None Include="..\..\..\source\AsioExpress\Proc\CodeGen\RunProcWithErrors.txt">
+      <Filter>Source Files\Proc\CodeGen</Filter>
+    </None>
+    <None Include="..\..\..\source\AsioExpress\Proc\CodeGen\MakeAll.bat">
+      <Filter>Source Files\Proc\CodeGen</Filter>
+    </None>
+  </ItemGroup>
+</Project>

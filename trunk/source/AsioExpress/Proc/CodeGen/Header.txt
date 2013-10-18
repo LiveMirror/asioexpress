@@ -1,0 +1,7 @@
+#pragma once
+
+#include "AsioExpressError/CatchMacros.hpp"
+#include "AsioExpress/Proc/Context.hpp"
+
+namespace AsioExpress {
+namespace Proc {
