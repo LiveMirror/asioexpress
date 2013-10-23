@@ -9,24 +9,25 @@
 #include <cassert>
 
 #include "AsioExpress/DurationTimer.hpp"
+#include "AsioExpress/Platform/GetClockCount.hpp"
 
 using namespace std;
 
 namespace AsioExpress {
 
 DurationTimer::DurationTimer() :
-  startTime(GetTickCount())
+  startTime(GetClockCount())
 {
 }
 
 unsigned long DurationTimer::duration()
 {
-  return getDuration(startTime, GetTickCount());
+  return getDuration(startTime, GetClockCount());
 }
 
 void DurationTimer::reset()
 {
-  startTime = GetTickCount();
+  startTime = GetClockCount();
 }
 
 } // namespace AsioExpress

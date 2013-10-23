@@ -17,7 +17,6 @@
 
 namespace AsioExpress {
 namespace MessagePort {
-namespace ClientServer {
 
 template<typename MessagePort>
 class Client : private AsioExpress::Coroutine
@@ -151,7 +150,5 @@ void Client<MessagePort>::Disconnect(AsioExpress::Error error)
     error);
 }
 
-
-} // namespace ClientServer
 } // namespace MessagePort
 } // namespace AsioExpress

@@ -56,14 +56,19 @@
         }                                                               \
     } while(0)
 
-#define LOG_MACRO_DISABLE_WARNINGS \
-  __pragma(warning(push))                             \
-  __pragma(warning(disable: 4127 4068))                    \
-  __pragma(CoverageScanner(cov-off))                    
+#ifdef _MSC_VER
+    #define LOG_MACRO_DISABLE_WARNINGS \
+      __pragma(warning(push))                             \
+      __pragma(warning(disable: 4127 4068))                    \
+      __pragma(CoverageScanner(cov-off))                    
 
-#define LOG_MACRO_ENABLE_WARNINGS \
-  __pragma(CoverageScanner(pop))                   \
-  __pragma(warning(pop))
+    #define LOG_MACRO_ENABLE_WARNINGS \
+      __pragma(CoverageScanner(pop))                   \
+      __pragma(warning(pop))
+#else  // _MSC_VER
+    #define LOG_MACRO_DISABLE_WARNINGS
+    #define LOG_MACRO_ENABLE_WARNINGS
+#endif // _MSC_VER
 
 #define LOG_MACRO_WRAPPER(ioService,logger,msg,type) \
     LOG_MACRO_DISABLE_WARNINGS \

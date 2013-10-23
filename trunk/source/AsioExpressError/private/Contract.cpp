@@ -5,12 +5,11 @@
 
 #include "AsioExpressError/pch.hpp"
 
-#include "windows.h"
-
 #include <cstdarg>
 #include <sstream>
 
 #include "AsioExpressError/private/Contract.hpp"
+#include "AsioExpress/Platform/DebugMessage.hpp"
 
 using namespace std;
 
@@ -23,7 +22,9 @@ CONTRACT_VIOLATION_MESSAGE_DELIMITER = " - ";
 static char const * 
 CONTRACT_VIOLATION_MESSAGE_FILE_DELIMITER = ":";
 
+#ifdef _MSC_VER
 #pragma warning(disable: 4702 )
+#endif // _MSC_VER
 
 std::string AsioExpress::errorReport(
         char const * condition, 
@@ -55,9 +56,7 @@ std::string AsioExpress::errorReport(
 
     errorMessage << endl;
 
-#ifdef WIN32
-    OutputDebugString(errorMessage.str().c_str());
-#endif
+    DebugMessage(errorMessage.str().c_str());
 
     return errorMessage.str(); 
 }

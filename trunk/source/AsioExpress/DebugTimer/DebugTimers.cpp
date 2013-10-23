@@ -11,6 +11,7 @@
 
 #include "AsioExpress/DebugTimer/DebugTimerManager.hpp"
 #include "AsioExpress/DebugTimer/DebugTimers.hpp"
+#include "AsioExpress/Platform/DebugMessage.hpp"
 
 namespace
 {
@@ -55,7 +56,7 @@ static void ProcessTimerStats(
       << "; totalTime=" << stats.totalTime
       << "; runs=" << stats.runs
       << "\n";
-    OutputDebugString(message.str().c_str());
+    DebugMessage(message.str().c_str());
   }
 
   std::string category = GetCategory(name);
@@ -84,7 +85,7 @@ static void ProcessTimerStats(
         << "; totalTime=" << runningStats.totalTime
         << "; runs=" << runningStats.runs
         << "\n";
-      OutputDebugString(message.str().c_str());
+      DebugMessage(message.str().c_str());
     }
 
     DebugTimerManager::Instance()->RemoveTimer(name);
@@ -145,7 +146,7 @@ void StatementDebugTimer(std::string name, char const * file, int line)
         << "StatementTimerStarted: "
         << description.str()
         << "\n";
-      OutputDebugString(message.str().c_str());
+      DebugMessage(message.str().c_str());
     }
 
     return;
@@ -168,7 +169,7 @@ void StatementDebugTimer(std::string name, char const * file, int line)
       << "; totalTime=" << stats.totalTime
       << "; runs=" << stats.runs
       << "\n";
-    OutputDebugString(message.str().c_str());
+    DebugMessage(message.str().c_str());
   }
 }
 
@@ -201,7 +202,7 @@ void StopStatementDebugTimer(std::string name, char const * file, int line)
       << "StatementTimerStopped: "
       << name
       << "\n";
-    OutputDebugString(message.str().c_str());
+    DebugMessage(message.str().c_str());
   }
 }
 
@@ -221,7 +222,7 @@ void FunctionExitDebugTimer(std::string const & name, char const * const file, i
       << "; " << file << ":" << line
       << "; executionTime=" << duration
       << "\n";
-    OutputDebugString(message.str().c_str());
+    DebugMessage(message.str().c_str());
   }
 }
 
@@ -237,7 +238,7 @@ void DisplayDebugTimers()
   DebugTimerManager::TimerNames timers;
   timerManager->GetTimerNames(timers);
 
-  OutputDebugString("Active debug timers:\n");
+  DebugMessage("Active debug timers:\n");
   DebugTimerManager::TimerNames::const_iterator name = timers.begin();
   DebugTimerManager::TimerNames::const_iterator  end = timers.end();
   for(; name != end; ++name)
@@ -245,12 +246,12 @@ void DisplayDebugTimers()
     StatisticsTimer & timer = timerManager->GetTimer(*name);
     if (timer.enabled())
     {
-      OutputDebugString("  ");
-      OutputDebugString(timer.getDescription().c_str());
-      OutputDebugString("\n");
+      DebugMessage("  ");
+      DebugMessage(timer.getDescription().c_str());
+      DebugMessage("\n");
     }
   }
-  OutputDebugString("End of active debug timers.\n");
+  DebugMessage("End of active debug timers.\n");
 }
 
 } // namespace AsioExpress

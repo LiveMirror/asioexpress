@@ -37,7 +37,7 @@ class CacheUpdateProcessor : private AsioExpress::Coroutine
     {
     }
 
-  void CacheUpdateProcessor::operator()(
+  void operator()(
       AsioExpress::Error error = AsioExpress::Error())
   {
     try
@@ -61,10 +61,10 @@ class CacheUpdateProcessor : private AsioExpress::Coroutine
         m_itemCount->clear();
 
         // load updated cache size information
-        CacheUpdate::Iterator  it = m_update->Begin();
-        CacheUpdate::Iterator end = m_update->End();
+        typename CacheUpdate::Iterator  it = m_update->Begin();
+        typename CacheUpdate::Iterator end = m_update->End();
         for(; it != end; ++it)
-          m_itemCount->insert(ItemCount::value_type(it->GetKey(),it->GetSize()));      
+          m_itemCount->insert(typename ItemCount::value_type(it->GetKey(),it->GetSize()));      
 
         OnExit(error);
       }//REENTER
@@ -79,11 +79,11 @@ class CacheUpdateProcessor : private AsioExpress::Coroutine
       m_completionHandler(error);
     }
 
-    AsioExpress::UniqueId     m_processorId;
-    CacheUpdatePointer                m_update;
-    ItemCountPointer                  m_itemCount;
-    AsyncUpdateFunction               m_updateFunction;
-    AsioExpress::CompletionHandler   m_completionHandler;
+    AsioExpress::UniqueId               m_processorId;
+    CacheUpdatePointer                  m_update;
+    ItemCountPointer                    m_itemCount;
+    AsyncUpdateFunction                 m_updateFunction;
+    AsioExpress::CompletionHandler      m_completionHandler;
 };
 
 } // namespace ResourceCachePrivate

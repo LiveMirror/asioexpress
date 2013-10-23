@@ -19,7 +19,7 @@ AsioExpress::CommonException::GetError() const
 }
 
 char const * 
-AsioExpress::CommonException::what() const
+AsioExpress::CommonException::what() const throw ()
 { 
   return error.Message();
 }

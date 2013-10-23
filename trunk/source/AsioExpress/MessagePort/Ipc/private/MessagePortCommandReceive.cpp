@@ -11,6 +11,7 @@
 #include "AsioExpress/MessagePort/Ipc/private/MessagePortCommandReceive.hpp"
 #include "AsioExpress/MessagePort/Ipc/private/MessagePortSysMessage.hpp"
 #include "AsioExpress/Yield.hpp" // Enable the pseudo-keywords REENTER, YIELD and FORK.
+#include "AsioExpress/Platform/DebugMessage.hpp"
 
 namespace AsioExpress {
 namespace MessagePort {
@@ -32,7 +33,7 @@ void MessagePortCommandReceive::operator() (AsioExpress::Error e)
     //
        
 #ifdef DEBUG_IPC
-      OutputDebugString("MessagePortCommandReceive: Waiting to receive message.\n");
+      DebugMessage("MessagePortCommandReceive: Waiting to receive message.\n");
 #endif
 
     YIELD 
@@ -56,7 +57,7 @@ void MessagePortCommandReceive::operator() (AsioExpress::Error e)
         // This is a disconnect message; return an error.
 
 #ifdef DEBUG_IPC
-      OutputDebugString("MessagePortCommandReceive: A disconnect message was received.\n");
+      DebugMessage("MessagePortCommandReceive: A disconnect message was received.\n");
 #endif
 
         AsioExpress::Error err(
@@ -71,7 +72,7 @@ void MessagePortCommandReceive::operator() (AsioExpress::Error e)
     // Step 3 - Receive was successful, invoke the callback.
     //
 #ifdef DEBUG_IPC
-      OutputDebugString("MessagePortCommandReceive: Message received.\n");
+      DebugMessage("MessagePortCommandReceive: Message received.\n");
 #endif
 
     m_ioService.post(boost::asio::detail::bind_handler(m_completionHandler, AsioExpress::Error()));

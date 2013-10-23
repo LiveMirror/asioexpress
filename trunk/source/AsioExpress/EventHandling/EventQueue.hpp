@@ -12,7 +12,7 @@
 #include <boost/bind.hpp>
 
 #include "AsioExpressError/Check.hpp"
-#include "AsioExpressError/Callstack.hpp"
+#include "AsioExpressError/CallStack.hpp"
 #include "AsioExpress/CompletionHandler.hpp"
 #include "AsioExpress/ErrorCodes.hpp"
 #include "AsioExpress/Timer/Timer.hpp"
@@ -174,8 +174,8 @@ void EventQueue<Event, Key>::AsyncWait(
 
   // Verify that we have a unique event and timer pointer.
   {
-    EventHandlerList::iterator  it = m_waitingEventHandlers.begin();
-    EventHandlerList::iterator end = m_waitingEventHandlers.end();
+    typename EventHandlerList::iterator  it = m_waitingEventHandlers.begin();
+    typename EventHandlerList::iterator end = m_waitingEventHandlers.end();
     for (; it != end; ++it)
     {
       CHECK_MSG(it->event != event, "Outstanding wait for this event pointer in call to EventQueue::AsyncWait.");
@@ -185,8 +185,8 @@ void EventQueue<Event, Key>::AsyncWait(
 
   // Look up waiting event.
   {
-    RegisteredEvents::iterator  it = m_registeredEvents.begin();
-    RegisteredEvents::iterator end = m_registeredEvents.end();
+    typename RegisteredEvents::iterator  it = m_registeredEvents.begin();
+    typename RegisteredEvents::iterator end = m_registeredEvents.end();
     for (; it != end; ++it)
     {
       if (it->key == key)
@@ -238,8 +238,8 @@ Error EventQueue<Event, Key>::Add(
       Event event)
 {
   // Look up waiting handler.
-  EventHandlerList::iterator  it = m_waitingEventHandlers.begin();
-  EventHandlerList::iterator end = m_waitingEventHandlers.end();
+  typename EventHandlerList::iterator  it = m_waitingEventHandlers.begin();
+  typename EventHandlerList::iterator end = m_waitingEventHandlers.end();
   for (; it != end; ++it)
   {
     if (it->key == key)
@@ -274,8 +274,8 @@ void EventQueue<Event, Key>::ShutDown()
   m_isShutDown = true;
 
   // Look up waiting handler.
-  EventHandlerList::iterator  it = m_waitingEventHandlers.begin();
-  EventHandlerList::iterator end = m_waitingEventHandlers.end();
+  typename EventHandlerList::iterator  it = m_waitingEventHandlers.begin();
+  typename EventHandlerList::iterator end = m_waitingEventHandlers.end();
   for (; it != end; ++it)
   {
     it->timer->Stop();
@@ -291,8 +291,8 @@ void EventQueue<Event, Key>::Timeout(
   if (!error)
     error = Error(ErrorCode::EventQueueTimeout);
 
-  EventHandlerList::iterator  it = m_waitingEventHandlers.begin();
-  EventHandlerList::iterator end = m_waitingEventHandlers.end();
+  typename EventHandlerList::iterator  it = m_waitingEventHandlers.begin();
+  typename EventHandlerList::iterator end = m_waitingEventHandlers.end();
   for (; it != end; ++it)
   {
     if (it->timer == timer)

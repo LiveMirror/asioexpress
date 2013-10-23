@@ -3,21 +3,20 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#pragma once
-
 #include "AsioExpress/pch.hpp"
 
+#include "AsioExpressConfig/config.hpp"
 #include "AsioExpressError/CatchMacros.hpp"
 #include "AsioExpress/MessagePort/Ipc/private/SendThread.hpp"
 #include "AsioExpress/MessagePort/Ipc/IpcErrorCodes.hpp"
 #include "AsioExpress/MessagePort/Ipc/private/MessagePortSysMessage.hpp"
+#include "AsioExpress/Platform/DebugMessage.hpp"
 
 namespace AsioExpress {
 namespace MessagePort {
 namespace Ipc {
 
-#pragma warning(push)
-#pragma warning(disable: 4355)
+WIN_DISABLE_WARNINGS_BEGIN(4355)
 SendThread::SendThread(
     boost::asio::io_service & ioService,
     MessageQueuePointer messageQueue) :
@@ -29,7 +28,7 @@ SendThread::SendThread(
   m_thread(boost::bind(&SendThread::SendFunction, this))
 {
 }
-#pragma warning(pop)
+WIN_DISABLE_WARNINGS_END
 
 SendThread::~SendThread()
 {
@@ -175,7 +174,7 @@ void SendThread::Send(SendParameters const & parameters)
   if (!successful)
   {
 #ifdef DEBUG_IPC
-    OutputDebugString("IPC::MessagePort::AsyncSend: Send error!\n");
+    DebugMessage("IPC::MessagePort::AsyncSend: Send error!\n");
 #endif
     CallCompletionHandler(
       parameters.completionHandler,

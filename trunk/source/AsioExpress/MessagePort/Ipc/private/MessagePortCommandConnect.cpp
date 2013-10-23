@@ -14,6 +14,7 @@
 #include "AsioExpress/MessagePort/Ipc/private/MessagePortSysMessage.hpp"
 #include "AsioExpress/MessagePort/Ipc/private/MessagePortCommandReceive.hpp"
 #include "AsioExpress/Yield.hpp" // Enable the pseudo-keywords REENTER, YIELD and FORK.
+#include "AsioExpress/Platform/DebugMessage.hpp"
 
 namespace
 {
@@ -38,7 +39,7 @@ void MessagePortCommandConnect::operator() (AsioExpress::Error e)
     // C2360: initialization of 'serverQueueName' is skipped by 'case' label
     {    
 #ifdef DEBUG_IPC
-      OutputDebugString("MessagePortCommandConnect: Finding new message queue ID.\n");
+      DebugMessage("MessagePortCommandConnect: Finding new message queue ID.\n");
 #endif
 
       m_messagePort.Disconnect();
@@ -86,7 +87,7 @@ void MessagePortCommandConnect::operator() (AsioExpress::Error e)
       // Step 2 - Create the message queues for client & server
       //
 #ifdef DEBUG_IPC
-      OutputDebugString("MessagePortCommandConnect: Create new message queues.\n");
+      DebugMessage("MessagePortCommandConnect: Create new message queues.\n");
 #endif
 
       try {
@@ -100,7 +101,7 @@ void MessagePortCommandConnect::operator() (AsioExpress::Error e)
       catch(boost::interprocess::interprocess_exception& ex) 
       {
 #ifdef DEBUG_IPC
-      OutputDebugString("MessagePortCommandConnect: Unable to create client/server message queues!\n");
+      DebugMessage("MessagePortCommandConnect: Unable to create client/server message queues!\n");
 #endif
         m_messagePort.Disconnect();
         AsioExpress::Error err(
@@ -126,12 +127,12 @@ void MessagePortCommandConnect::operator() (AsioExpress::Error e)
         int len = msg.Encode(buf);
 
 #ifdef DEBUG_IPC
-      OutputDebugString("MessagePortCommandConnect: Sending connect message.\n");
+      DebugMessage("MessagePortCommandConnect: Sending connect message.\n");
 #endif
         if ( !acceptor.try_send(buf, len, MessagePortSysMessage::SYS_MSG_PRIORITY) )
         {
 #ifdef DEBUG_IPC
-      OutputDebugString("MessagePortCommandConnect: Error sending connect message!\n");
+      DebugMessage("MessagePortCommandConnect: Error sending connect message!\n");
 #endif
           m_messagePort.Disconnect();
           AsioExpress::Error err(
@@ -157,7 +158,7 @@ void MessagePortCommandConnect::operator() (AsioExpress::Error e)
     //
 
 #ifdef DEBUG_IPC
-      OutputDebugString("MessagePortCommandConnect: Waiting for ACK message.\n");
+      DebugMessage("MessagePortCommandConnect: Waiting for ACK message.\n");
 #endif
 
     YIELD 
@@ -178,7 +179,7 @@ void MessagePortCommandConnect::operator() (AsioExpress::Error e)
     if ( msg2.GetMessageType() != MessagePortSysMessage::MSG_CONNECT_ACK )
     {
 #ifdef DEBUG_IPC
-      OutputDebugString("MessagePortCommandConnect: Invalid CONNECT-ACK response from server!\n");
+      DebugMessage("MessagePortCommandConnect: Invalid CONNECT-ACK response from server!\n");
 #endif
       m_messagePort.Disconnect();
       AsioExpress::Error err(
@@ -190,7 +191,7 @@ void MessagePortCommandConnect::operator() (AsioExpress::Error e)
 
     // Success
 #ifdef DEBUG_IPC
-      OutputDebugString("MessagePortCommandConnect: Connected.\n");
+      DebugMessage("MessagePortCommandConnect: Connected.\n");
 #endif
 
     m_messagePort.m_ioService.post(boost::asio::detail::bind_handler(m_completionHandler, AsioExpress::Error()));

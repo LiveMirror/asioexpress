@@ -93,7 +93,7 @@ void ClientMessage::AsyncSend(
     DataBufferPointer buffer, 
     H completionHandler)
 {
-  client->AsyncSend(buffer, completionHandler);
+  connection.GetClient()->AsyncSend(buffer, completionHandler);
 }
 
 inline void ClientMessage::CallCompletionHandler(

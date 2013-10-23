@@ -10,6 +10,6 @@
 namespace AsioExpress {
 
 typedef boost::asio::basic_deadline_timer<
-    DWORD, tick_count_traits> TickCountTimer;
+    uint32_t, tick_count_traits> TickCountTimer;
 
 } // namespace AsioExpress

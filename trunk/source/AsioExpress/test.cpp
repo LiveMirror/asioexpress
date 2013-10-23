@@ -3,18 +3,15 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#pragma once
-
 #include "AsioExpress/pch.hpp"
 
 #include "AsioExpressConfig/config.hpp"
 
 #include <string>
 
-#pragma warning(push)
-#pragma warning(disable: 4503)
+WIN_DISABLE_WARNINGS_BEGIN(4503)
 #include "boost/asio.hpp"
-#pragma warning(pop)
+WIN_DISABLE_WARNINGS_END
 
 #include "AsioExpress/Error.hpp"
 #include "AsioExpress/NullCompletionHandler.hpp"

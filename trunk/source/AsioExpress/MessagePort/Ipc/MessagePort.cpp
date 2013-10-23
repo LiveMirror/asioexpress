@@ -11,6 +11,7 @@
 #include "AsioExpress/MessagePort/Ipc/MessagePort.hpp"
 #include "AsioExpress/MessagePort/Ipc/private/MessagePortCommandConnect.hpp"
 #include "AsioExpress/MessagePort/Ipc/private/MessagePortCommandReceive.hpp"
+#include "AsioExpress/Platform/DebugMessage.hpp"
 
 namespace AsioExpress {
 namespace MessagePort {
@@ -83,13 +84,13 @@ void MessagePort::AsyncSend(
 {
   // Check that we're connected
 #ifdef DEBUG_IPC
-  OutputDebugString("IPC::MessagePort::AsyncSend: Sending message.\n");
+  DebugMessage("IPC::MessagePort::AsyncSend: Sending message.\n");
 #endif
 
   if ( !m_sendMessageQueue )
   {
 #ifdef DEBUG_IPC
-    OutputDebugString("IPC::MessagePort::AsyncSend: No connection has been established!\n");
+    DebugMessage("IPC::MessagePort::AsyncSend: No connection has been established!\n");
 #endif
 
     AsioExpress::Error err(

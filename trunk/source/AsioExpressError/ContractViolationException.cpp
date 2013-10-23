@@ -15,6 +15,6 @@ AsioExpress::ContractViolationException::ContractViolationException(
 {
 }
 
-AsioExpress::ContractViolationException::~ContractViolationException()
+AsioExpress::ContractViolationException::~ContractViolationException() throw ()
 {
 }

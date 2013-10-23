@@ -4,16 +4,24 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #pragma once
-#define WIN32_LEAN_AND_MEAN // Exclude rarely-used stuff from Windows headers
 
 #include "AsioExpressConfig/config.hpp"
-#include <windows.h>
+
+#ifdef _MSC_VER
+    #define WIN32_LEAN_AND_MEAN // Exclude rarely-used stuff from Windows headers
+    #include <windows.h>
+#endif // _MSC_VER
 
 #include <exception>
 #include <sstream>
 #include <string>
 
-#pragma warning(push)
-#pragma warning(disable: 4244 4512 4245)
+WIN_DISABLE_WARNINGS_BEGIN(4244 4512 4245)
 #include <boost/function.hpp>
-#pragma warning(pop)
+WIN_DISABLE_WARNINGS_END
+
+#include <exception>
+#include <sstream>
+#include <string>
+#include <boost/function.hpp>
+

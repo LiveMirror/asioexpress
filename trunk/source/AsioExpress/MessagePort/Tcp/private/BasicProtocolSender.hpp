@@ -43,11 +43,10 @@ private:
       version(ProtocolVersionBasic),
       length(length)
     {
-      memcpy_s(
+      memcpy(
         protocolHeader, 
-        sizeof(protocolHeader), 
         ProtocolHeaderText, 
-        ProtocolHeaderSize);
+        sizeof(protocolHeader));
     }
     char protocolHeader[ProtocolHeaderSize];
     ProtocolVersionType version;
@@ -90,7 +89,7 @@ void BasicProtocolSenderCommand<CompletionHandler>::operator()(
 
       boost::asio::async_write(
         *m_socket,
-        boost::asio::buffer(&header, sizeof Header), 
+        boost::asio::buffer(&header, sizeof(Header)), 
         *this);
     }
 

@@ -11,7 +11,6 @@
 
 namespace AsioExpress {
 namespace MessagePort {
-namespace ClientServer {
 
 class IServerEvents
 {
@@ -35,6 +34,5 @@ public:
 
 typedef boost::shared_ptr<IServerEvents> IServerEventsPointer;
 
-} // namespace ClientServer
 } // namespace MessagePort
 } // namespace AsioExpress

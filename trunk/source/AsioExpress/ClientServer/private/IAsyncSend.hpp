@@ -11,7 +11,6 @@
 
 namespace AsioExpress {
 namespace MessagePort {
-namespace ClientServer {
 
 class IAsyncSend
 {
@@ -24,6 +23,5 @@ public:
 
 typedef boost::shared_ptr<IAsyncSend> IAsyncSendPointer;  
 
-} // namespace ClientServer
 } // namespace MessagePort
 } // namespace AsioExpress

@@ -7,7 +7,6 @@
 #include <boost/asio.hpp>
 
 #include "AsioExpressError/EcToErrorAdapter.hpp"
-#include "AsioExpressError/Windows/WinErrorUtility.hpp"
 #include "AsioExpress/MessagePort/DataBuffer.hpp"
 #include "AsioExpress/MessagePort/SendQueue.hpp"
 #include "AsioExpress/MessagePort/Tcp/TcpErrorCodes.hpp"
@@ -141,7 +140,7 @@ SocketPointer MessagePort<ProtocolSender, ProtocolReceiver>::GetSocket() const
 template<typename ProtocolSender, typename ProtocolReceiver>
 void MessagePort<ProtocolSender, ProtocolReceiver>::SetMessagePortOptions()
 {
-  SetSocketOptions(m_socket->native());
+  SetSocketOptions(m_socket);
 }
 
 template<typename ProtocolSender, typename ProtocolReceiver>

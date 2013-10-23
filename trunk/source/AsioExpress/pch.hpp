@@ -7,22 +7,22 @@
 
 #include "AsioExpressConfig/config.hpp"
 
-#define WIN32_LEAN_AND_MEAN // Exclude rarely-used stuff from Windows headers
-#include <winsock2.h>
-#include <mstcpip.h>
-#include <ws2tcpip.h>
-#include <windows.h>
+#ifdef _MSC_VER
+    #define WIN32_LEAN_AND_MEAN // Exclude rarely-used stuff from Windows headers
+    #include <winsock2.h>
+    #include <mstcpip.h>
+    #include <ws2tcpip.h>
+    #include <windows.h>
+#endif // _MSC_VER
 
-#pragma warning(push)
-#pragma warning(disable: 4996)
+WIN_DISABLE_WARNINGS_BEGIN(4996)
 #include <map>
 #include <ostream>
 #include <stdexcept> 
 #include <string>
-#pragma warning(pop)
+WIN_DISABLE_WARNINGS_END
 
-#pragma warning(push)
-#pragma warning(disable: 4503 4127 4245)
+WIN_DISABLE_WARNINGS_BEGIN(4503 4127 4245)
 #include <boost/asio.hpp> 
 #include <boost/bind.hpp> 
 #include <boost/crc.hpp>
@@ -41,7 +41,7 @@
 #include <boost/thread/recursive_mutex.hpp>
 #include <boost/weak_ptr.hpp>
 #include <boost/interprocess/ipc/message_queue.hpp>
-#pragma warning(pop)
+WIN_DISABLE_WARNINGS_END
 
 #include "AsioExpressError/Check.hpp"
 #include "AsioExpressError/EcToErrorAdapter.hpp"

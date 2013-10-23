@@ -15,5 +15,14 @@
 #include <SDKDDKVer.h>
 
 #pragma warning(disable:4503)
+#pragma warning(disable: 4505) // "unreference local function removed" bug with templates
+
+#define WIN_DISABLE_WARNINGS_BEGIN(args) __pragma(warning(push)) __pragma(warning(disable: args))
+#define WIN_DISABLE_WARNINGS_END __pragma(warning(pop))
+
+#else // _MSC_VER
+
+#define WIN_DISABLE_WARNINGS_BEGIN(args)  
+#define WIN_DISABLE_WARNINGS_END
 
 #endif // _MSC_VER
