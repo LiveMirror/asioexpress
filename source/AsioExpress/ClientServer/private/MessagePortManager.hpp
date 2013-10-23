@@ -14,7 +14,6 @@
 
 namespace AsioExpress {
 namespace MessagePort {
-namespace ClientServer {
 
 template<typename MessagePort>
 class MessagePortManager : public IAsyncSend
@@ -76,8 +75,8 @@ void MessagePortManager<MessagePort>::Remove(MessagePortId id)
 template<typename MessagePort>
 void MessagePortManager<MessagePort>::RemoveAll()
 {
-  MessagePortMap::iterator  it = m_messagePortMap.begin();
-  MessagePortMap::iterator end = m_messagePortMap.end();
+  typename MessagePortMap::iterator  it = m_messagePortMap.begin();
+  typename MessagePortMap::iterator end = m_messagePortMap.end();
   for(; it != end; ++it)
   {
     it->second->Disconnect();
@@ -88,8 +87,8 @@ void MessagePortManager<MessagePort>::RemoveAll()
 template<typename MessagePort>
 void MessagePortManager<MessagePort>::GetIds(MessagePortIdList & list) const
 {
-  MessagePortMap::const_iterator  it = m_messagePortMap.begin();
-  MessagePortMap::const_iterator end = m_messagePortMap.end();
+  typename MessagePortMap::const_iterator  it = m_messagePortMap.begin();
+  typename MessagePortMap::const_iterator end = m_messagePortMap.end();
 
   for(; it != end; ++it)
   {
@@ -105,7 +104,7 @@ void MessagePortManager<MessagePort>::AsyncSend(
   if (m_messagePortMap.size() > 0)
   {
     CHECK(m_messagePortMap.size() == 1);  
-    MessagePortMap::iterator messagePortIterator = m_messagePortMap.begin();
+    typename MessagePortMap::iterator messagePortIterator = m_messagePortMap.begin();
     messagePortIterator->second->AsyncSend(buffer, completionHandler);
   }
   else
@@ -122,7 +121,7 @@ void MessagePortManager<MessagePort>::AsyncSend(
     DataBufferPointer buffer, 
     AsioExpress::CompletionHandler completionHandler)
 {
-  MessagePortMap::iterator messagePortIterator = m_messagePortMap.find(id);
+  typename MessagePortMap::iterator messagePortIterator = m_messagePortMap.find(id);
 
   if (messagePortIterator != m_messagePortMap.end())
   {
@@ -136,6 +135,5 @@ void MessagePortManager<MessagePort>::AsyncSend(
   }
 }
 
-} // namespace ClientServer
 } // namespace MessagePort
 } // namespace AsioExpress

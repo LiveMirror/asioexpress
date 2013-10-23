@@ -39,7 +39,7 @@ public:
       AsioExpress::CompletionHandler completionHandler);
 
 private:
-  typedef ClientServer::InternalMessagePortServer<MessagePortAcceptor> ImplementationType;
+  typedef InternalMessagePortServer<MessagePortAcceptor> ImplementationType;
   typedef boost::shared_ptr<ImplementationType> ImplementationPointer;
 
   ImplementationPointer  m_implementation;
@@ -50,7 +50,7 @@ MessagePortServer<MessagePortAcceptor>::MessagePortServer(
     boost::asio::io_service & ioService,
     EndPointType endPoint,
     ServerEventHandler * eventHandler) :
-  m_implementation(new ClientServer::InternalMessagePortServer<MessagePortAcceptor>(
+  m_implementation(new InternalMessagePortServer<MessagePortAcceptor>(
     ioService, 
     endPoint, 
     eventHandler))

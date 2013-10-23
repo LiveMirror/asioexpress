@@ -12,7 +12,7 @@
 #include <boost/bind.hpp>
 #include <boost/enable_shared_from_this.hpp>
 
-#include "AsioExpressError/Callstack.hpp"
+#include "AsioExpressError/CallStack.hpp"
 #include "AsioExpressError/Check.hpp"
 #include "AsioExpress/CompletionHandler.hpp"
 #include "AsioExpress/ErrorCodes.hpp"
@@ -86,7 +86,7 @@ inline void UniqueEventListener<E>::AsyncWait(
   m_completionHandler = completionHandler;
   m_timer = waitTimer;
   m_timer->AsyncWait(
-    boost::bind(&UniqueEventListener::Timeout, _1, shared_from_this()));
+    boost::bind(&UniqueEventListener::Timeout, _1, this->shared_from_this()));
 }
 
 template<typename E>

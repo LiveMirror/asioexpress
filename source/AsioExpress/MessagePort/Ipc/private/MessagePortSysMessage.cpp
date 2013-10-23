@@ -5,6 +5,8 @@
 
 #include "AsioExpress/pch.hpp"
 
+#include <stdint.h>
+
 #include "AsioExpressConfig/config.hpp"
 
 #include "AsioExpress/MessagePort/Ipc/private/MessagePortSysMessage.hpp"
@@ -40,13 +42,13 @@ bool MessagePortSysMessage::Decode(void* data)
   m_messageType = buf;
   ptr += 8;
 
-  DWORD32 numParams = *(DWORD32*) ptr;
-  ptr += sizeof(DWORD32);
+  uint32_t numParams = *(uint32_t*) ptr;
+  ptr += sizeof(uint32_t);
 
-  for ( DWORD32 i = 0; i < numParams; i++ )
+  for ( uint32_t i = 0; i < numParams; i++ )
   {
-    DWORD32 paramSize = *(DWORD32*) ptr;
-    ptr += sizeof(DWORD32);
+    uint32_t paramSize = *(uint32_t*) ptr;
+    ptr += sizeof(uint32_t);
 
     tmp.assign(ptr, paramSize);
     ptr += paramSize;
@@ -72,13 +74,13 @@ int MessagePortSysMessage::Encode(void* buffer)
 
   ptr += 8;
 
-  *(DWORD32*) ptr = (DWORD32) GetNumParams();
-  ptr += sizeof(DWORD32);
+  *(uint32_t*) ptr = (uint32_t) GetNumParams();
+  ptr += sizeof(uint32_t);
 
   for ( int i = 0; i < GetNumParams(); i++ )
   {
-    *(DWORD32*) ptr = (DWORD32) GetParam(i).size();
-    ptr += sizeof(DWORD32);
+    *(uint32_t*) ptr = (uint32_t) GetParam(i).size();
+    ptr += sizeof(uint32_t);
 
     memcpy(ptr, GetParam(i).c_str(), GetParam(i).size());
     ptr += GetParam(i).size();
@@ -90,11 +92,11 @@ int MessagePortSysMessage::Encode(void* buffer)
 
 int MessagePortSysMessage::RequiredEncodeBufferSize()
 {
-  int size = 8 + sizeof(DWORD32);
+  int size = 8 + sizeof(uint32_t);
 
   for ( int i = 0; i < GetNumParams(); i++ )
   {
-    size += sizeof(DWORD32);
+    size += sizeof(uint32_t);
     size += GetParam(i).size();
   }
 

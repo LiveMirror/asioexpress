@@ -14,7 +14,6 @@
 
 namespace AsioExpress {
 namespace MessagePort {
-namespace ClientServer {
 
 class BroadcastProcessor : private AsioExpress::Coroutine
 {
@@ -60,9 +59,8 @@ private:
     MessagePortIdListPointer          m_messagePortIdList;
     MessagePortIdList::size_type      m_index;
     DataBufferPointer                 m_buffer;
-    AsioExpress::CompletionHandler   m_completionHandler;
+    AsioExpress::CompletionHandler    m_completionHandler;
 };
 
-} // namespace ClientServer
 } // namespace MessagePort
 } // namespace AsioExpress

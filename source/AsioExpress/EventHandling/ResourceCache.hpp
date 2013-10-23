@@ -12,7 +12,7 @@
 #include <boost/function.hpp>
 #include <boost/bind.hpp>
 
-#include "AsioExpressError/Callstack.hpp"
+#include "AsioExpressError/CallStack.hpp"
 #include "AsioExpress/CompletionHandler.hpp"
 #include "AsioExpress/ErrorCodes.hpp"
 #include "AsioExpress/Timer/Timer.hpp"
@@ -295,8 +295,8 @@ void ResourceCache<R,K>::ShutDown()
   // Indicate that this event is canceled.
   m_isShutDown = true;
 
-  Requests::iterator request = m_requests->begin();
-  Requests::iterator     end = m_requests->end();
+  typename Requests::iterator request = m_requests->begin();
+  typename Requests::iterator     end = m_requests->end();
   for(; request != end; ++request)
   {
     request->timer->Stop();
@@ -312,7 +312,7 @@ void ResourceCache<R,K>::Timeout(AsioExpress::Error error, ResourceItemPointer i
 template<typename R, typename K>
 void ResourceCache<R,K>::ReturnError(AsioExpress::Error error, ResourceItemPointer item)
 {
-  Requests::iterator request 
+  typename Requests::iterator request 
     = std::find(m_requests->begin(), m_requests->end(), item);
   if (request != m_requests->end())
   {

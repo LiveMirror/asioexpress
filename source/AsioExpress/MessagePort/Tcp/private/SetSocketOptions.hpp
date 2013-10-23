@@ -5,11 +5,13 @@
 
 #pragma once
 
+#include "AsioExpress/MessagePort/Tcp/private/SocketPointer.hpp"
+
 namespace AsioExpress {
 namespace MessagePort {
 namespace Tcp {
 
-extern void SetSocketOptions(SOCKET s);
+extern void SetSocketOptions(SocketPointer const & socket);
 
 } // namespace Tcp
 } // namespace MessagePort

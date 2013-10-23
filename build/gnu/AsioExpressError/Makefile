@@ -1,0 +1,74 @@
+CC = g++
+LINK = g++
+LD = ld
+AR = ar rc
+
+PROJECT         = AsioExpressError
+SPATH           = ../../../source
+BIN_DIR         = ../../../bin
+OBJ_DIR         = ./$(CONFIGURATION)_objs
+OBJ_DIR_EXISTS  = $(OBJ_DIR)/exists 
+BASE_CFLAGS     = -Wall -Werror -std=c++03 -fPIC -I$(SPATH) -c
+DBG_CFLAGS      = -g -O0 -D _DEBUG -D_GNU_SOURCE
+REL_CFLAGS      = -O2 -D NDEBUG -D_GNU_SOURCE -fwhole-program
+
+TARGET  	= $(BIN_DIR)/$(CONFIGURATION)/$(PROJECT).a
+SOURCE_DIR  	= $(SPATH)/$(PROJECT)
+VPATH           = $(shell find $(SOURCE_DIR) -type d -print)   # folders to search
+INCLUDE_DIRS    = $(SPATH)/AsioExpressConfig
+LIBS            = 
+EXTERN_LIBS     = 
+
+AUTO_SOURCES     = $(shell find $(SOURCE_DIR) -path $(SOURCE_DIR)/Windows -prune -o -type f -name '*.cpp' -print)
+PLAT_SOURCES     = 
+SOURCES          = $(AUTO_SOURCES) $(PLAT_SOURCES)
+EXTERN_INCLUDES  = $(shell find $(INCLUDE_DIRS) -type f -name '*.h*' -print)
+INCLUDES         = $(shell find $(SOURCE_DIR)  -path $(SOURCE_DIR)/Windows -prune -o -type f -name '*.h*' -print) $(EXTERN_INCLUDES)
+
+OBJECTS = $(addprefix $(OBJ_DIR)/, $(notdir $(SOURCES:.cpp=.o))) 
+CFLAGS  = $(BASE_CFLAGS)  $(addprefix -I, $(INCLUDE_DIRS))
+
+.SECONDARY: # do not delete intermediate files 
+
+.PHONY: debug
+debug:
+	$(MAKE) EXTRA_CFLAGS="$(DBG_CFLAGS)" CONFIGURATION=debug build
+
+.PHONY: release
+release:
+	$(MAKE) EXTRA_CFLAGS="$(REL_CFLAGS)" CONFIGURATION=release build
+	
+.PHONY: all
+all: debug release
+
+.PHONY: build
+build: $(TARGET) 
+	
+$(TARGET): $(OBJECTS) $(LIBS)
+	if [ ! -d $(BIN_DIR) ]; then mkdir $(BIN_DIR); fi
+	if [ ! -d $(BIN_DIR)/$(CONFIGURATION) ]; then mkdir $(BIN_DIR)/$(CONFIGURATION); fi
+	$(AR) $@ $^	
+
+$(OBJ_DIR)/%.o: %.cpp $(INCLUDES) $(OBJ_DIR_EXISTS) 
+	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $< -o $@
+
+$(OBJ_DIR_EXISTS): 
+	if [ ! -d $(OBJ_DIR) ]; then mkdir $(OBJ_DIR); fi
+	touch $(OBJ_DIR_EXISTS)
+
+.PHONY: clean
+clean: clean-debug clean-release
+	
+.PHONY: clean-debug
+clean-debug:
+	$(MAKE) CONFIGURATION=debug clean-target
+
+.PHONY: clean-release
+clean-release:
+	$(MAKE) CONFIGURATION=release clean-target
+
+.PHONY: clean-target
+clean-target:
+	-rm -f $(TARGET) 2</dev/null
+	-rm -rf $(OBJ_DIR) 2</dev/null
+	-rm -f ../../../include/$(PROJECT)

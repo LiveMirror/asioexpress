@@ -3,16 +3,12 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#pragma once
-
 #include "AsioExpress/pch.hpp"
 
 namespace AsioExpress {
 namespace MessagePort {
 
-extern long const InvalidMessagePortId = -1;
-
-typedef long MessagePortId;
+long const InvalidMessagePortId = -1;
 
 } // namespace MessagePort
 } // namespace AsioExpress

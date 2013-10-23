@@ -12,6 +12,7 @@
 #include "AsioExpress/MessagePort/Ipc/private/MessagePortCommandReceive.hpp"
 #include "AsioExpress/MessagePort/Ipc/IpcErrorCodes.hpp"
 #include "AsioExpress/Yield.hpp" // Enable the pseudo-keywords REENTER, YIELD and FORK.
+#include "AsioExpress/Platform/DebugMessage.hpp"
 
 namespace AsioExpress {
 namespace MessagePort {
@@ -35,7 +36,7 @@ void MessagePortCommandAccept::operator() (AsioExpress::Error e)
     YIELD 
     {
 #ifdef DEBUG_IPC
-      OutputDebugString("MessagePortCommandAccept: Waiting for connect message.\n");
+      DebugMessage("MessagePortCommandAccept: Waiting for connect message.\n");
 #endif
 
       MessagePortCommandReceive(m_acceptor.m_ioService,
@@ -58,7 +59,7 @@ void MessagePortCommandAccept::operator() (AsioExpress::Error e)
       if ( msg.GetMessageType() != MessagePortSysMessage::MSG_CONNECT || msg.GetNumParams() != 2 )
       {
 #ifdef DEBUG_IPC
-        OutputDebugString("MessagePortCommandAccept: Invalid CONNECT command recieved!\n");
+        DebugMessage("MessagePortCommandAccept: Invalid CONNECT command recieved!\n");
 #endif
 
         CallCompletionHandler(
@@ -72,14 +73,14 @@ void MessagePortCommandAccept::operator() (AsioExpress::Error e)
       //
 
 #ifdef DEBUG_IPC
-      OutputDebugString("MessagePortCommandAccept: Connect message received. Setting up message queues...\n");
+      DebugMessage("MessagePortCommandAccept: Connect message received. Setting up message queues...\n");
 #endif
 
       AsioExpress::Error err = m_messagePort.SetupWithMessageQueues(msg.GetParam(0), msg.GetParam(1));
       if ( err )
       {
 #ifdef DEBUG_IPC
-        OutputDebugString("MessagePortCommandAccept: Error setting up message queues!\n");
+        DebugMessage("MessagePortCommandAccept: Error setting up message queues!\n");
 #endif
         CallCompletionHandler(err);
         return;
@@ -95,12 +96,12 @@ void MessagePortCommandAccept::operator() (AsioExpress::Error e)
       try 
       {
 #ifdef DEBUG_IPC
-        OutputDebugString("MessagePortCommandAccept: Sending connection ACK.\n");
+        DebugMessage("MessagePortCommandAccept: Sending connection ACK.\n");
 #endif
         if ( !m_messagePort.m_sendMessageQueue->try_send(m_tempBuffer->Get(), len, MessagePortSysMessage::SYS_MSG_PRIORITY) )
         {
 #ifdef DEBUG_IPC
-        OutputDebugString("MessagePortCommandAccept: Error sending connection ACK!\n");
+        DebugMessage("MessagePortCommandAccept: Error sending connection ACK!\n");
 #endif
           m_messagePort.Disconnect();
           CallCompletionHandler(

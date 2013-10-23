@@ -29,14 +29,14 @@ public:
     ///
     /// A virtual destructor makes deleting references to base classes safe.
     ///
-    virtual ~CommonException()
+    virtual ~CommonException() throw ()
     {
     }
 
     ///
     /// Returns a text description of the exception.
     ///
-    virtual char const * what() const;
+    virtual char const * what() const throw ();
 
     ///
     /// Returns a text description of the exception.

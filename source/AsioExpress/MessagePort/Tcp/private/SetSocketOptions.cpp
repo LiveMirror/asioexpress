@@ -4,21 +4,17 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include "AsioExpress/pch.hpp"
-//
-//#include "AsioExpressConfig/config.hpp"
-//#include <winsock2.h>
-//#include <mstcpip.h>
-//#include <ws2tcpip.h>
-//#include <windows.h>
-
-
 
 #include "AsioExpress/MessagePort/Tcp/TcpErrorCodes.hpp"
 #include "AsioExpress/MessagePort/Tcp/private/SetSocketOptions.hpp"
+
+#ifdef _MSC_VER
+
 #include "AsioExpressError/Windows/WinErrorUtility.hpp"
 
-void AsioExpress::MessagePort::Tcp::SetSocketOptions(SOCKET s)
+void AsioExpress::MessagePort::Tcp::SetSocketOptions(SocketPointer const & socket)
 {
+  SOCKET s = socket->native();
   int keepalive = 1;
   int returnCode = setsockopt(
     s, 
@@ -61,3 +57,12 @@ void AsioExpress::MessagePort::Tcp::SetSocketOptions(SOCKET s)
     throw AsioExpress::CommonException(error);
   }
 }
+
+#else // _MSC_VER
+
+void AsioExpress::MessagePort::Tcp::SetSocketOptions(SocketPointer const & socket)
+{
+    //TODO: add keep alive code
+}
+
+#endif // _MSC_VER

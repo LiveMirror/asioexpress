@@ -49,7 +49,7 @@ class AddResourceItemsProcessor : private AsioExpress::Coroutine
     {
     }
 
-  void AddResourceItemsProcessor::operator()(
+  void operator()(
       AsioExpress::Error error = AsioExpress::Error())
   {
     try

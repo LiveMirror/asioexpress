@@ -26,7 +26,7 @@ public:
     ///
     /// A virtual destructor makes deleting references to base classes safe.
     ///
-    virtual ~BasicException()
+    virtual ~BasicException() throw ()
     {
     }
 };

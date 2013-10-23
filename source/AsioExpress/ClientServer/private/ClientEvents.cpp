@@ -3,9 +3,6 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-
-#pragma once
-
 #include "AsioExpress/pch.hpp"
 
 #include <boost/bind.hpp>
@@ -18,7 +15,6 @@
 
 namespace AsioExpress {
 namespace MessagePort {
-namespace ClientServer {
 
 ClientEvents::ClientEvents(ClientEventHandler * eventHandler) :
   m_eventHandler(eventHandler)
@@ -69,6 +65,5 @@ AsioExpress::Error ClientEvents::HandleMessageError(
   ASIOEXPRESS_CATCH_ERROR_AND_DO(return error)
 }
 
-} // namespace ClientServer
 } // namespace MessagePort
 } // namespace AsioExpress

@@ -23,17 +23,19 @@ public:
 
   void ProcStart(AsioExpress::Coroutine coroutine)
   {
-    UNREFERENCED_PARAMETER(coroutine);
 #ifdef _DEBUG
     AsioExpress::StatementDebugTimer(m_processorId.Get(), m_processorId.Get().c_str(), coroutine.GetCurrentLine());
+#else
+    (void)coroutine;
 #endif
   }
 
   void ProcExit(AsioExpress::Coroutine coroutine)
   {
-    UNREFERENCED_PARAMETER(coroutine);
 #ifdef _DEBUG
     AsioExpress::FunctionExitDebugTimer(m_processorId.Get(), m_processorId.Get().c_str(), coroutine.GetCurrentLine());
+#else
+    (void)coroutine;
 #endif
   }
 

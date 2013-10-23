@@ -10,6 +10,7 @@
 
 #include "AsioExpressError/CatchMacros.hpp"
 #include "AsioExpress/Service/ServiceCommand.hpp"
+#include "AsioExpress/Platform/DebugMessage.hpp"
 
 namespace AsioExpress {
     namespace Service {
@@ -33,7 +34,7 @@ public:
         AsioExpress::Error error = command->Run();
         assert(!error);
       }
-      ASIOEXPRESS_CATCH_ERROR_AND_DO(OutputDebugString(error.Message()))        
+      ASIOEXPRESS_CATCH_ERROR_AND_DO(DebugMessage(error.Message()))        
     } 
 
 private: 

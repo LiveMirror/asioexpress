@@ -18,7 +18,7 @@ public:
   static const char* MSG_CONNECT_ACK;
   static const char* MSG_DISCONNECT;
 
-  static const int SYS_MSG_PRIORITY = 10;
+  static const unsigned int SYS_MSG_PRIORITY = 10;
 
 public:
   inline MessagePortSysMessage(const std::string& messageType = "")

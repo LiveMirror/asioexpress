@@ -5,8 +5,6 @@
 
 #pragma once
 
-#pragma warning(disable: 4505) // "unreference local function removed" bug with templates
-
 #include <string>
 
 #include <boost/asio.hpp>
@@ -24,7 +22,6 @@
 
 namespace AsioExpress {
 namespace MessagePort {
-namespace ClientServer {
 
 template<typename MessagePortAcceptor>
 class InternalMessagePortServer : 
@@ -57,9 +54,9 @@ public:
 private:
   typedef boost::shared_ptr<MessagePortAcceptor> MessagePortAcceptorPointer;
   typedef typename MessagePortAcceptor::MessagePortType MessagePortType;
-  typedef ClientServer::MessagePortManager<MessagePortType> MessagePortManagerType;
+  typedef MessagePortManager<MessagePortType> MessagePortManagerType;
   typedef boost::shared_ptr<MessagePortManagerType> MessagePortManagerPointer;
-  typedef ClientServer::Server<MessagePortAcceptor> ServerType;
+  typedef Server<MessagePortAcceptor> ServerType;
 
   InternalMessagePortServer & operator=(InternalMessagePortServer const &);
 
@@ -67,11 +64,10 @@ private:
   EndPointType                        m_endPoint;
   MessagePortManagerPointer           m_messagePortManager;
   MessagePortAcceptorPointer          m_acceptor;
-  ClientServer::IServerEventsPointer  m_serverEvents;
+  IServerEventsPointer  m_serverEvents;
 };
 
-#pragma warning(push)
-#pragma warning(disable: 4355)
+WIN_DISABLE_WARNINGS_BEGIN(4355)
 template<typename MessagePortAcceptor>
 InternalMessagePortServer<MessagePortAcceptor>::InternalMessagePortServer(
     boost::asio::io_service & ioService,
@@ -80,10 +76,10 @@ InternalMessagePortServer<MessagePortAcceptor>::InternalMessagePortServer(
   m_ioService(ioService),
   m_endPoint(endPoint),
   m_messagePortManager(new MessagePortManagerType(ioService)),
-  m_serverEvents(new ClientServer::ServerEvents(eventHandler))
+  m_serverEvents(new ServerEvents(eventHandler))
 {
 }
-#pragma warning(pop)
+WIN_DISABLE_WARNINGS_END
 
 template<typename MessagePortAcceptor>
 void InternalMessagePortServer<MessagePortAcceptor>::Start()
@@ -92,7 +88,7 @@ void InternalMessagePortServer<MessagePortAcceptor>::Start()
 
   ServerType server(
     m_ioService,
-    shared_from_this(),
+    this->shared_from_this(),
     m_serverEvents,
     m_acceptor, 
     m_messagePortManager);
@@ -134,7 +130,7 @@ void InternalMessagePortServer<MessagePortAcceptor>::AsyncBroadcast(
 {
   MessagePortIdList idList;
   m_messagePortManager->GetIds(idList);
-  ClientServer::BroadcastProcessor proc(
+  BroadcastProcessor proc(
     m_ioService,
     m_messagePortManager, 
     idList, 
@@ -143,6 +139,5 @@ void InternalMessagePortServer<MessagePortAcceptor>::AsyncBroadcast(
   proc();
 }
 
-} // namespace ClientServer
 } // namespace MessagePort
 } // namespace AsioExpress

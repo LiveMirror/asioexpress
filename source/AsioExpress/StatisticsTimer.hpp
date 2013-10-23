@@ -23,7 +23,7 @@ struct TimerStats
   {
   }
   unsigned long   duration;
-  __int64         totalTime;
+  long long       totalTime;
   unsigned long   runs;
   unsigned long   highValue;
   unsigned long   lowValue;

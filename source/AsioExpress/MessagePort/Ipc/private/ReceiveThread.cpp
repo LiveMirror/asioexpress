@@ -3,9 +3,9 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#pragma once
-
 #include "AsioExpress/pch.hpp"
+
+#include "AsioExpressConfig/config.hpp"
 
 #include "AsioExpressError/CatchMacros.hpp"
 #include "AsioExpress/MessagePort/Ipc/private/ReceiveThread.hpp"
@@ -15,8 +15,7 @@ namespace AsioExpress {
 namespace MessagePort {
 namespace Ipc {
 
-#pragma warning(push)
-#pragma warning(disable: 4355)
+WIN_DISABLE_WARNINGS_BEGIN(4355)
 ReceiveThread::ReceiveThread(
     boost::asio::io_service & ioService,
     MessageQueuePointer messageQueue) :
@@ -29,7 +28,7 @@ ReceiveThread::ReceiveThread(
   m_thread(boost::bind(&ReceiveThread::ReceiveFunction, this))
 {
 }
-#pragma warning(pop)
+WIN_DISABLE_WARNINGS_END
 
 ReceiveThread::~ReceiveThread()
 {

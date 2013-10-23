@@ -19,7 +19,7 @@ class ContractViolationException : public CommonException
 {
 public:
     ContractViolationException(std::string const & message);
-    virtual ~ContractViolationException();
+    virtual ~ContractViolationException() throw ();
 
 private:
     ContractViolationException();

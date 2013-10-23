@@ -9,7 +9,7 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/foreach.hpp>
 
-#include "AsioExpressError/Callstack.hpp"
+#include "AsioExpressError/CallStack.hpp"
 #include "AsioExpressError/Check.hpp"
 
 #include "AsioExpress/CompletionHandler.hpp"
@@ -218,7 +218,7 @@ inline void UniqueEvent<E,K>::Add(
       Key key,
       Event eventValue)
 {
-  Listeners::iterator eventListener = m_eventListeners->find(key);
+  typename Listeners::iterator eventListener = m_eventListeners->find(key);
 
   // If the listener has timed-out it will not be found and is not an error.
   // It just means this event was devlivered too late.
@@ -240,7 +240,7 @@ inline void UniqueEvent<E,K>::ShutDown()
   m_isShutDown = true;
 
   // Cancel all waiting listeners.
-  BOOST_FOREACH( Listeners::value_type &it, *m_eventListeners )
+  BOOST_FOREACH( typename Listeners::value_type &it, *m_eventListeners )
   {
     UniqueEventListenerPointer eventListener(it.second);
     eventListener->Cancel();

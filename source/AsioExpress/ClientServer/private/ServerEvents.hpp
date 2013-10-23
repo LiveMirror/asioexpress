@@ -12,7 +12,6 @@
 
 namespace AsioExpress {
 namespace MessagePort {
-namespace ClientServer {
 
 class ServerEvents : public IServerEvents
 {
@@ -40,6 +39,5 @@ private:
   ServerEventHandlerPointer   m_eventHandler;
 };
 
-} // namespace ClientServer
 } // namespace MessagePort
 } // namespace AsioExpress

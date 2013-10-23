@@ -87,7 +87,7 @@ void BasicProtocolReceiverCommand<CompletionHandler>::operator()(
     {
       boost::asio::async_read(
         *m_socket,
-        boost::asio::buffer(m_header.get(), sizeof Header), 
+        boost::asio::buffer(m_header.get(), sizeof(Header)), 
         *this);
     }
 
@@ -112,7 +112,7 @@ void BasicProtocolReceiverCommand<CompletionHandler>::operator()(
 
       boost::asio::async_read(
         *m_socket,
-        boost::asio::buffer(m_bufferSize.get(), sizeof BufferSizeType), 
+        boost::asio::buffer(m_bufferSize.get(), sizeof(BufferSizeType)), 
         *this);
     }
 

@@ -12,7 +12,7 @@
 #include "AsioExpress/Timer/Timer.hpp"
 #include "AsioExpressError/Check.hpp"
 
-#define BOOST_CHECK_EQUAL_LOC(file,line,x,y) BOOST_CHECK_MESSAGE( x == y, ##x## << " != "  << ##y## << "; " << x << " != " << y << " file: " << file << ":" << line);
+#define BOOST_CHECK_EQUAL_LOC(file,line,x,y) BOOST_CHECK_MESSAGE( x == y, #x << " != "  << #y << "; " << x << " != " << y << " file: " << file << ":" << line);
 
 namespace AsioExpress {
 namespace Testing {

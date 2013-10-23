@@ -5,8 +5,6 @@
 
 #pragma once
 
-#pragma warning(disable: 4505) // "unreference local function removed" bug with templates
-
 #include <string>
 
 #include <boost/asio.hpp>
@@ -23,7 +21,6 @@
 
 namespace AsioExpress {
 namespace MessagePort {
-namespace ClientServer {
 
 template<typename MessagePort>
 class InternalMessagePortClient : 
@@ -38,7 +35,21 @@ public:
     EndPointType endPoint,
     ClientEventHandler * eventHandler);
 
-  virtual void Connect();
+//  virtual void Connect();
+virtual void Connect()
+{
+  if (m_isShutDown)
+    return;
+
+  ClientType client(
+    m_ioService, 
+    this->shared_from_this(),
+    m_clientEvents,
+    m_endPoint, 
+    m_messagePortManager);
+  
+  client();
+}
 
   virtual void Disconnect();
 
@@ -49,9 +60,9 @@ public:
       AsioExpress::CompletionHandler completionHandler);
  
 private:
-  typedef ClientServer::MessagePortManager<MessagePort> MessagePortManagerType;
+  typedef MessagePortManager<MessagePort> MessagePortManagerType;
   typedef boost::shared_ptr<MessagePortManagerType> MessagePortManagerPointer;
-  typedef ClientServer::Client<MessagePort> ClientType;
+  typedef Client<MessagePort> ClientType;
 
   InternalMessagePortClient & operator=(InternalMessagePortClient const &);
 
@@ -60,12 +71,11 @@ private:
   boost::asio::io_service &           m_ioService;
   EndPointType                        m_endPoint;
   MessagePortManagerPointer           m_messagePortManager;
-  ClientServer::IClientEventsPointer  m_clientEvents;
+  IClientEventsPointer                m_clientEvents;
   bool                                m_isShutDown;
 };
 
-#pragma warning(push)
-#pragma warning(disable: 4355)
+WIN_DISABLE_WARNINGS_BEGIN(4355)
 template<typename MessagePort>
 InternalMessagePortClient<MessagePort>::InternalMessagePortClient(
     boost::asio::io_service & ioService,
@@ -74,27 +84,27 @@ InternalMessagePortClient<MessagePort>::InternalMessagePortClient(
   m_ioService(ioService),
   m_endPoint(endPoint),
   m_messagePortManager(new MessagePortManagerType(ioService)),
-  m_clientEvents(new ClientServer::ClientEvents(eventHandler)),
+  m_clientEvents(new ClientEvents(eventHandler)),
   m_isShutDown(false)
 {
 }
-#pragma warning(pop)
+WIN_DISABLE_WARNINGS_END
 
-template<typename MessagePort>
-void InternalMessagePortClient<MessagePort>::Connect()
-{
-  if (m_isShutDown)
-    return;
-
-  ClientType client(
-    m_ioService, 
-    shared_from_this(),
-    m_clientEvents,
-    m_endPoint, 
-    m_messagePortManager);
-  
-  client();
-}
+//template<typename MessagePort>
+//void InternalMessagePortClient<MessagePort>::Connect()
+//{
+//  if (m_isShutDown)
+//    return;
+//
+//  ClientType client(
+//    m_ioService, 
+//    shared_from_this(),
+//    m_clientEvents,
+//    m_endPoint, 
+//    m_messagePortManager);
+//  
+//  client();
+//}
 
 template<typename MessagePort>
 void InternalMessagePortClient<MessagePort>::Disconnect()
@@ -118,6 +128,5 @@ void InternalMessagePortClient<MessagePort>::AsyncSend(
   m_messagePortManager->AsyncSend(buffer, completionHandler);
 }
 
-} // namespace ClientServer
 } // namespace MessagePort
 } // namespace AsioExpress

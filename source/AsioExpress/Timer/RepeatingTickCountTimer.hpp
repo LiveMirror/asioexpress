@@ -5,22 +5,19 @@
 
 #pragma once
 
-#ifndef WIN32_LEAN_AND_MEAN
-  #define WIN32_LEAN_AND_MEAN   // Exclude rarely-used stuff from Windows headers
-#endif
 #include "AsioExpressConfig/config.hpp"
-#include <windows.h>
 
 #include "AsioExpress/Timer/TickCountTraits.hpp"
 #include "AsioExpress/Timer/BasicRepeatingTimer.hpp"
+#include <stdint.h>
 
 namespace AsioExpress {
 
 typedef BasicRepeatingTimer<
-  DWORD, 
+  uint32_t, 
   tick_count_traits, 
   boost::asio::deadline_timer_service<
-    DWORD, 
+    uint32_t, 
     tick_count_traits> > RepeatingTickCountTimer;
 
 } // namespace AsioExpress

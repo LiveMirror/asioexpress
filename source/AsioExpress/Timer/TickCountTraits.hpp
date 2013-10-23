@@ -6,16 +6,6 @@
 //
 #pragma once 
 
-#if defined(WIN32)
-  #ifndef WIN32_LEAN_AND_MEAN
-    #define WIN32_LEAN_AND_MEAN   // Exclude rarely-used stuff from Windows headers
-  #endif
-  #include "AsioExpressConfig/config.hpp"
-  #include <windows.h>
-#else
-# error This is for Windows only!
-#endif
-
 #ifdef max // the Windows max macro conflicts with the limits library
 #undef max
 #endif
@@ -24,21 +14,24 @@
 #include <ctime>
 #include <cassert>
 #include <limits>
+#include <stdint.h>
+
+#include "AsioExpress/Platform/GetClockCount.hpp"
 
 namespace AsioExpress {
 
 struct tick_count_traits
 {
-  // The time type. This type has no constructor that takes a DWORD to ensure
+  // The time type. This type has no constructor that takes a uint32_t to ensure
   // that the timer can only be used with relative times.
   class time_type
   {
   public:
     time_type() : ticks_(0) {}
-    DWORD get_ticks() const {return ticks_;}
+    uint32_t get_ticks() const {return ticks_;}
   private:
     friend struct tick_count_traits;
-    DWORD ticks_;
+    uint32_t ticks_;
   };
 
   // The duration type.
@@ -57,7 +50,7 @@ struct tick_count_traits
   static time_type now()
   {
     time_type result;
-    result.ticks_ = ::GetTickCount();
+    result.ticks_ = GetClockCount();
     return result;
   }
 
@@ -72,19 +65,19 @@ struct tick_count_traits
   // Subtract one time from another.
   static duration_type subtract(const time_type& t1, const time_type& t2)
   {
-    // DWORD tick count values wrap periodically, so we'll use a heuristic that
+    // uint32_t tick count values wrap periodically, so we'll use a heuristic that
     // says that if subtracting t1 from t2 yields a value smaller than 2^31,
     // then t1 is probably less than t2. This means that we can't handle
     // durations larger than 2^31, which shouldn't be a problem in practice.
-    static DWORD const diff_limit(static_cast<DWORD>(1 << 31));
+    static uint32_t const diff_limit(static_cast<uint32_t>(1 << 31));
     long duration(0);
     if (t1.ticks_ < t2.ticks_)
     {
-      DWORD diff = t2.ticks_ - t1.ticks_;
+      uint32_t diff = t2.ticks_ - t1.ticks_;
       if (diff >= diff_limit)
       {
         duration = static_cast<long>(
-          std::numeric_limits<DWORD>::max() - t2.ticks_ + t1.ticks_ + 1);
+          std::numeric_limits<uint32_t>::max() - t2.ticks_ + t1.ticks_ + 1);
       }
       else
       {
@@ -93,11 +86,11 @@ struct tick_count_traits
     }
     else
     {
-      DWORD diff = t1.ticks_ - t2.ticks_;
+      uint32_t diff = t1.ticks_ - t2.ticks_;
       if (diff >= diff_limit)
       {
         duration = - static_cast<long>(
-          std::numeric_limits<DWORD>::max() - t1.ticks_ + t2.ticks_ + 1);
+          std::numeric_limits<uint32_t>::max() - t1.ticks_ + t2.ticks_ + 1);
       }
       else
       {
