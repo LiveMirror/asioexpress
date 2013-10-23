@@ -9,7 +9,7 @@ namespace AsioExpress {
 
 void DebugMessage(char const * const message)
 {
-    DebugMessage(message);
+    OutputDebugString(message);
 }
 
 } // namespace AsioExpress

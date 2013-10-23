@@ -56,7 +56,5 @@ std::string AsioExpress::errorReport(
 
     errorMessage << endl;
 
-    DebugMessage(errorMessage.str().c_str());
-
     return errorMessage.str(); 
 }

@@ -155,6 +155,9 @@
     <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\Ipc\IpcErrorCodes.cpp">
       <Filter>Source Files\MessagePort\Ipc</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\AsioExpress\Platform\DebugMessageWin.cpp">
+      <Filter>Source Files\Platform</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\source\AsioExpress\CompletionHandler.hpp">
@@ -483,6 +486,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\ServerInterface.hpp">
       <Filter>Source Files\ClientServer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\Platform\DebugMessage.hpp">
+      <Filter>Source Files\Platform</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
