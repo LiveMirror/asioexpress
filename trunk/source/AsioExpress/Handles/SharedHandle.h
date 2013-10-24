@@ -191,7 +191,7 @@ public:
     /// was choosen to be compatible with boost::shared_ptr which SharedHandle
     /// emulates.
     ///
-    long use_count() const
+    int use_count() const
     {
         return sharedPointer.use_count();
     }

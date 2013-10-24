@@ -6,4 +6,3 @@
 
 #include "AsioExpressError/pch.hpp"
 
-#include <crtdbg.h>

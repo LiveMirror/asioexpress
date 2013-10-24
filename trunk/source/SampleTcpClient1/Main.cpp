@@ -6,25 +6,33 @@
 #include "SampleTcpClient1/pch.hpp"
 
 #include <iostream>
+#include <csignal>
 
 #include "SampleTcpClient1/App.hpp"
 
 boost::function0<void> console_ctrl_function;
 
-BOOL WINAPI console_ctrl_handler(DWORD ctrl_type)
+//BOOL WINAPI console_ctrl_handler(DWORD ctrl_type)
+//{
+//  switch (ctrl_type)
+//  {
+//  case CTRL_C_EVENT:
+//  case CTRL_BREAK_EVENT:
+//  case CTRL_CLOSE_EVENT:
+//  case CTRL_SHUTDOWN_EVENT:
+//    console_ctrl_function();
+//    return TRUE;
+//  default:
+//    return FALSE;
+//  }
+//}
+
+// SIGINT handler
+void int_handler(int)
 {
-  switch (ctrl_type)
-  {
-  case CTRL_C_EVENT:
-  case CTRL_BREAK_EVENT:
-  case CTRL_CLOSE_EVENT:
-  case CTRL_SHUTDOWN_EVENT:
     console_ctrl_function();
-    return TRUE;
-  default:
-    return FALSE;
-  }
 }
+
 
 class ShutDownFunc
 {
@@ -71,7 +79,9 @@ int main(int argc, char* argv[])
 
   // Set console control handler to allow client to be stopped.
   console_ctrl_function = ShutDownFunc(ioService, app);
-  SetConsoleCtrlHandler(console_ctrl_handler, TRUE);
+
+  //  SetConsoleCtrlHandler(console_ctrl_handler, TRUE);
+  signal(SIGINT, int_handler);
 
   app.Start();
 

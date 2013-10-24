@@ -5,10 +5,14 @@
 
 #include "AsioExpressErrorTest/pch.hpp"
 
+
+#ifdef _MSC_VER
 #include "AsioExpressError/Windows/Win32Exception.hpp"
+#include "AsioExpressWinStack/CallStackService.h"
+#endif
+
 #include "AsioExpress/InstanceManager.hpp"
 #include "AsioExpress/DebugTimer/DebugTimerMacros.hpp"
-#include "AsioExpressWinStack/CallStackService.h"
 
 #define BOOST_TEST_MAIN
 #include <boost/test/unit_test.hpp>
@@ -19,7 +23,9 @@ struct GlobalSetup
 {
     GlobalSetup() 
     { 
+#ifdef _MSC_VER
       Win32Exception::installHandler();
+#endif
     }
 
     ~GlobalSetup()         

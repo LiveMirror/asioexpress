@@ -3943,9 +3943,11 @@ public:
 		}
 	}
 	MockRepository()
+#ifdef HM_NO_EXCEPTIONS
 		: autoExpect(DEFAULT_AUTOEXPECT)
-#ifndef HM_NO_EXCEPTIONS
-		, latentException(0)
+#else
+		: latentException(0)
+		, autoExpect(DEFAULT_AUTOEXPECT)
 #endif
 	{
 		MockRepoInstanceHolder<0>::instance = this;

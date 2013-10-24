@@ -8,7 +8,7 @@
 
 namespace AsioExpress {
 
-unsigned long GetClockCount(void)
+unsigned int GetClockCount(void)
 {
   timeb tb;
   ftime( &tb );

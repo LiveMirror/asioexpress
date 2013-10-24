@@ -16,7 +16,7 @@
 static Logger logger("SampleServer1", 5);
 
 AsioExpress::Error CommonErrorHandler(
-    AsioExpress::MessagePort::ServerConnection & connection,
+    AsioExpress::MessagePort::ServerConnection connection,
     AsioExpress::Error const & error)
 {
   if (error.GetErrorCode() == AsioExpress::ErrorCode::UniqueEventTimeout)

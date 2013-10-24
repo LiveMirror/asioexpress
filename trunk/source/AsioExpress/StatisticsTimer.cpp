@@ -59,7 +59,7 @@ TimerStats StatisticsTimer::duration()
   return stats;
 }
 
-unsigned long StatisticsTimer::elapsed()
+unsigned int StatisticsTimer::elapsed()
 {
   return timer.duration();
 }

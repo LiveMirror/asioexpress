@@ -5,14 +5,14 @@ AR = ar rc
 
 PROJECT         = AsioExpress
 SPATH           = ../../../source
-BIN_DIR         = ../../../bin
+OUT_DIR         = ../../../bin/$(CONFIGURATION)
 OBJ_DIR         = ./$(CONFIGURATION)_objs
 OBJ_DIR_EXISTS  = $(OBJ_DIR)/exists 
-BASE_CFLAGS     = -Wall -Werror -std=c++03 -fPIC -I$(SPATH) -c
+BASE_CFLAGS     = -Wall -Werror -std=c++03 -pthread -fPIC -I$(SPATH) -c
 DBG_CFLAGS      = -g -O0 -D _DEBUG -D_GNU_SOURCE
 REL_CFLAGS      = -O2 -D NDEBUG -D_GNU_SOURCE -fwhole-program
 
-TARGET  	= $(BIN_DIR)/$(CONFIGURATION)/$(PROJECT).a
+TARGET  	= $(OUT_DIR)/$(PROJECT).a
 SOURCE_DIR  	= $(SPATH)/$(PROJECT)
 VPATH           = $(shell find $(SOURCE_DIR) -type d -print)   # folders to search
 INCLUDE_DIRS    = $(SPATH)/AsioExpressConfig $(SPATH)/AsioExpressError
@@ -51,8 +51,7 @@ $(PCH_TARGET): $(PCH_SOURCE) $(INCLUDES)
 	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $< -o $@
 
 $(TARGET): $(OBJECTS) $(LIBS)
-	if [ ! -d $(BIN_DIR) ]; then mkdir $(BIN_DIR); fi
-	if [ ! -d $(BIN_DIR)/$(CONFIGURATION) ]; then mkdir $(BIN_DIR)/$(CONFIGURATION); fi
+	mkdir -p $(OUT_DIR)
 	$(AR) $@ $^	
 
 $(OBJ_DIR)/%.o: %.cpp $(INCLUDES) $(OBJ_DIR_EXISTS) $(PCH_TARGET) 

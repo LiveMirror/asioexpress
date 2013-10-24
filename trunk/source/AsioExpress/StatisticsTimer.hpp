@@ -19,14 +19,14 @@ struct TimerStats
     totalTime(0),
     runs(0),
     highValue(0),
-    lowValue(std::numeric_limits<unsigned long>::max())
+    lowValue(std::numeric_limits<unsigned int>::max())
   {
   }
-  unsigned long   duration;
+  unsigned int   duration;
   long long       totalTime;
-  unsigned long   runs;
-  unsigned long   highValue;
-  unsigned long   lowValue;
+  unsigned int   runs;
+  unsigned int   highValue;
+  unsigned int   lowValue;
 };
 
 class StatisticsTimer
@@ -44,7 +44,7 @@ public:
 
   TimerStats duration();
 
-  unsigned long elapsed();
+  unsigned int elapsed();
 
   void setDescription(std::string description);
 

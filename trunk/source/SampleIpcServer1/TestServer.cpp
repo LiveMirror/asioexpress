@@ -3,14 +3,14 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include "stdafx.h"
-
 #include <set>
 #include <boost/asio.hpp>
 #include <iostream>
-#include "AsioExpress/MessagePort\Ipc\EndPoint.hpp"
-#include "AsioExpress/MessagePort\Ipc\MessagePort.hpp"
-#include "AsioExpress/MessagePort\Ipc\MessagePortAcceptor.hpp"
+#include <csignal>
+
+#include "AsioExpress/MessagePort/Ipc/EndPoint.hpp"
+#include "AsioExpress/MessagePort/Ipc/MessagePort.hpp"
+#include "AsioExpress/MessagePort/Ipc/MessagePortAcceptor.hpp"
 #include "AsioExpress/Error.hpp"
 #include "AsioExpress/ClientServer/MessagePortServer.hpp"
 #include "AsioExpress/ClientServer/MessagePortId.hpp"
@@ -21,19 +21,25 @@ ConnectionList connectionList;
 boost::asio::io_service ioService;
 boost::function0<void> shutdown_function;
 
-BOOL WINAPI console_ctrl_handler(DWORD ctrl_type)
+//BOOL WINAPI console_ctrl_handler(DWORD ctrl_type)
+//{
+//  switch (ctrl_type)
+//  {
+//  case CTRL_C_EVENT:
+//  case CTRL_BREAK_EVENT:
+//  case CTRL_CLOSE_EVENT:
+//  case CTRL_SHUTDOWN_EVENT:
+//    ioService.post(shutdown_function); 
+//    return TRUE;
+//  default:
+//    return FALSE;
+//  }
+//}
+
+// SIGINT handler
+void int_handler(int)
 {
-  switch (ctrl_type)
-  {
-  case CTRL_C_EVENT:
-  case CTRL_BREAK_EVENT:
-  case CTRL_CLOSE_EVENT:
-  case CTRL_SHUTDOWN_EVENT:
-    ioService.post(shutdown_function); 
-    return TRUE;
-  default:
-    return FALSE;
-  }
+  ioService.post(shutdown_function); 
 }
 
 typedef AsioExpress::MessagePort::MessagePortServer<AsioExpress::MessagePort::Ipc::MessagePortAcceptor> ServerType;
@@ -46,9 +52,9 @@ public:
   {
     std::cout 
       << "Client connected; ID="
-      << connection.messagePortId
+      << connection.GetMessagePortId()
       << "\n";
-    connectionList.insert(connection.messagePortId);
+    connectionList.insert(connection.GetMessagePortId());
   }
 
   virtual void ClientDisconnected(
@@ -57,19 +63,19 @@ public:
   {
     std::cout 
       << "Client disconnected; ID=" 
-      << connection.messagePortId 
+      << connection.GetMessagePortId() 
       << "; "
       << error.Message()
       << "\n";
-    connectionList.erase(connection.messagePortId);
+    connectionList.erase(connection.GetMessagePortId());
   }
 
   virtual void AsyncProcessMessage(
       AsioExpress::MessagePort::ServerMessage serverMessage)
   {
-    serverMessage.server->AsyncBroadcast(
-      serverMessage.dataBuffer,
-      serverMessage.completionHandler);
+    serverMessage.AsyncBroadcast(
+      serverMessage.GetDataBuffer(),
+      serverMessage.GetCompletionHandler());
 
     //ConnectionList::iterator  id = connectionList.begin();
     //ConnectionList::iterator end = connectionList.end();
@@ -117,7 +123,7 @@ private:
   }
 };
 
-int _tmain(int argc, _TCHAR* argv[])
+int main(int argc, char* argv[])
 {
   {
     ServerType server(
@@ -128,7 +134,8 @@ int _tmain(int argc, _TCHAR* argv[])
     // Set console control handler to allow server to be stopped.
     shutdown_function = boost::bind(&ServerType::Stop, &server);
  
-    SetConsoleCtrlHandler(console_ctrl_handler, TRUE);
+    //SetConsoleCtrlHandler(console_ctrl_handler, TRUE);
+    signal(SIGINT, int_handler);
 
     server.Start();
 

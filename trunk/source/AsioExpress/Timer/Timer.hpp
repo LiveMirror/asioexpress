@@ -20,7 +20,7 @@ public:
       CompletionHandler completionHandler) = 0;
 
   virtual void AsyncWait(
-      unsigned long milliseconds, 
+      unsigned int milliseconds, 
       CompletionHandler completionHandler) = 0;
 
   virtual void Stop() = 0;
