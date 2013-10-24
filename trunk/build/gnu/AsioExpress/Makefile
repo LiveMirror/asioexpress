@@ -5,7 +5,7 @@ AR = ar rc
 
 PROJECT         = AsioExpress
 SPATH           = ../../../source
-OUT_DIR         = ../../../bin/$(CONFIGURATION)
+OUT_DIR         = ../../../lib/$(CONFIGURATION)
 OBJ_DIR         = ./$(CONFIGURATION)_objs
 OBJ_DIR_EXISTS  = $(OBJ_DIR)/exists 
 BASE_CFLAGS     = -Wall -Werror -std=c++03 -pthread -fPIC -I$(SPATH) -c

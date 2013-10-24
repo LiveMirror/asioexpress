@@ -144,5 +144,5 @@ int main(int argc, char* argv[])
 
   std::cout << "\nPress any key to exit...\n";
 
-	return 0;
+  return 0;
 }
