@@ -15,7 +15,7 @@
 
 namespace
 {
-  unsigned long DebugTimerPrintThreshold = 25;
+  unsigned int DebugTimerPrintThreshold = 25;
 };
 
 namespace AsioExpress {
@@ -210,7 +210,7 @@ void FunctionExitDebugTimer(std::string const & name, char const * const file, i
 {
   StatisticsTimer & timer = DebugTimerManager::Instance()->GetTimer(name);
 
-  unsigned long duration = timer.elapsed();
+  unsigned int duration = timer.elapsed();
 
   if (duration >= DebugTimerPrintThreshold)
   {

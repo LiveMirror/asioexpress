@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "AsioExpress/Testing/HippoMocks.h"
+#include "AsioExpress/Testing/hippomocks.h"
 #include "AsioExpress/CompletionHandler.hpp"
 #include "AsioExpress/Handles/PointerHandle.h"
 
@@ -26,7 +26,7 @@ PointerValueParam<T> PointerValue(T& t) { return PointerValueParam<T>(t); }
 template <typename T>
 struct comparer<boost::shared_ptr<T> const &>
 { 
-	static inline bool compare(typename PointerValueParam<T> a, typename boost::shared_ptr<T> const & b)
+	static inline bool compare(typename HippoMocks::PointerValueParam<T> a, typename boost::shared_ptr<T> const & b)
 	{
 		return a.value == *b;
 	}
@@ -43,7 +43,7 @@ struct comparer<boost::shared_ptr<T> const &>
 template <typename T>
 struct comparer<boost::shared_ptr<T> >
 { 
-	static inline bool compare(typename PointerValueParam<T> a, typename boost::shared_ptr<T> b)
+	static inline bool compare(typename HippoMocks::PointerValueParam<T> a, typename boost::shared_ptr<T> b)
 	{
 		return a.value == *b;
 	}
@@ -60,15 +60,16 @@ struct comparer<boost::shared_ptr<T> >
 template <typename T>
 struct comparer<T*>
 { 
-	static inline bool compare(typename PointerValueParam<T> a, typename T* b)
+	typedef T Type;
+	static inline bool compare(typename HippoMocks::PointerValueParam<Type> a, Type * b)
 	{
 		return a.value == *b;
 	}
-	static inline bool compare(typename T* a, typename T* b)
+	static inline bool compare(Type * a, Type * b)
 	{
 		return a == b;
 	}
-	static inline bool compare(DontCare, typename T*)
+	static inline bool compare(DontCare, Type *)
 	{
 		return true;
 	}

@@ -8,9 +8,9 @@
 namespace AsioExpress {
 namespace MessagePort {
 
-extern long const InvalidMessagePortId;
+extern int const InvalidMessagePortId;
 
-typedef long MessagePortId;
+typedef int MessagePortId;
 typedef std::vector<MessagePortId> MessagePortIdList;
 typedef boost::shared_ptr<MessagePortIdList> MessagePortIdListPointer;
 

@@ -39,11 +39,11 @@ struct tick_count_traits
   {
   public:
     duration_type() : ticks_(0) {}
-    duration_type(long ticks) : ticks_(ticks) {}
-    long get_ticks() const {return ticks_;}
+    duration_type(int ticks) : ticks_(ticks) {}
+    int get_ticks() const {return ticks_;}
   private:
     friend struct tick_count_traits;
-    long ticks_;
+    int ticks_;
   };
 
   // Get the current time.
@@ -70,18 +70,18 @@ struct tick_count_traits
     // then t1 is probably less than t2. This means that we can't handle
     // durations larger than 2^31, which shouldn't be a problem in practice.
     static uint32_t const diff_limit(static_cast<uint32_t>(1 << 31));
-    long duration(0);
+    int duration(0);
     if (t1.ticks_ < t2.ticks_)
     {
       uint32_t diff = t2.ticks_ - t1.ticks_;
       if (diff >= diff_limit)
       {
-        duration = static_cast<long>(
+        duration = static_cast<int>(
           std::numeric_limits<uint32_t>::max() - t2.ticks_ + t1.ticks_ + 1);
       }
       else
       {
-        duration = - static_cast<long>(diff);
+        duration = - static_cast<int>(diff);
       }
     }
     else
@@ -89,12 +89,12 @@ struct tick_count_traits
       uint32_t diff = t1.ticks_ - t2.ticks_;
       if (diff >= diff_limit)
       {
-        duration = - static_cast<long>(
+        duration = - static_cast<int>(
           std::numeric_limits<uint32_t>::max() - t1.ticks_ + t2.ticks_ + 1);
       }
       else
       {
-        duration = static_cast<long>(diff);
+        duration = static_cast<int>(diff);
       }
     }
     return duration_type(duration);

@@ -4,10 +4,10 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #pragma once
-#pragma warning(push)
-#pragma warning(disable: 4244)
+
+WIN_DISABLE_WARNINGS_BEGIN(disable: 4244)
 #include "boost/shared_ptr.hpp"
-#pragma warning(pop)
+WIN_DISABLE_WARNINGS_END
 
 #include "AsioExpressError/Check.hpp"
 

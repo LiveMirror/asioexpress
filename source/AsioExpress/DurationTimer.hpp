@@ -16,17 +16,17 @@ class DurationTimer
 public:
   DurationTimer();
 
-  unsigned long duration();
+  unsigned int duration();
 
   void reset();
 
 private:
-  unsigned long startTime;
+  unsigned int startTime;
 };
 
-inline unsigned long getDuration(unsigned long time0, unsigned long time1)
+inline unsigned int getDuration(unsigned int time0, unsigned int time1)
 {
-  return time0 <= time1 ? time1 - time0 : std::numeric_limits<unsigned long>::max() - time0 + time1;
+  return time0 <= time1 ? time1 - time0 : std::numeric_limits<unsigned int>::max() - time0 + time1;
 }
 
 } // namespace AsioExpress

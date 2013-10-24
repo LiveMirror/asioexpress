@@ -9,7 +9,7 @@ namespace AsioExpress {
 namespace MessagePort {
 namespace Tcp {
 
-typedef long ProtocolVersionType;
+typedef int ProtocolVersionType;
 
 extern char const *   ProtocolHeaderText;
 

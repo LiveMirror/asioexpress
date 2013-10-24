@@ -1,29 +1,31 @@
 CC = g++
-LINK = g++
+LINK = g++ -pthread
 LD = ld
 AR = ar rc
 
-PROJECT         = AsioExpressError
+PROJECT         = SampleTcpClient1
 SPATH           = ../../../source
-OUT_DIR         = ../../../lib/$(CONFIGURATION)
+OUT_DIR         = ../../../bin/$(CONFIGURATION)
+LIB_DIR         = ../../../lib/$(CONFIGURATION)
 OBJ_DIR         = ./$(CONFIGURATION)_objs
 OBJ_DIR_EXISTS  = $(OBJ_DIR)/exists 
-BASE_CFLAGS     = -Wall -Werror -std=c++03 -fPIC -I$(SPATH) -c
+BASE_CFLAGS     = -Wall -Werror -std=c++03 -pthread -fPIC -I$(SPATH) -c
 DBG_CFLAGS      = -g -O0 -D _DEBUG -D_GNU_SOURCE
 REL_CFLAGS      = -O2 -D NDEBUG -D_GNU_SOURCE -fwhole-program
 
-TARGET  	= $(OUT_DIR)/$(PROJECT).a
+TARGET  	= $(OUT_DIR)/$(PROJECT)
 SOURCE_DIR  	= $(SPATH)/$(PROJECT)
 VPATH           = $(shell find $(SOURCE_DIR) -type d -print)   # folders to search
-INCLUDE_DIRS    = $(SPATH)/AsioExpressConfig
+INCLUDE_DIRS    = $(SPATH)/AsioExpressConfig $(SPATH)/AsioExpressError $(SPATH)/AsioExpress
 LIBS            = 
-EXTERN_LIBS     = 
+EXTERN_LIBS     = $(LIB_DIR)/AsioExpressError.a $(LIB_DIR)/AsioExpress.a \
+                  /usr/lib/libboost_system.a /usr/lib/libboost_thread.a
 
-AUTO_SOURCES     = $(shell find $(SOURCE_DIR) -path $(SOURCE_DIR)/Windows -prune -o -type f -name '*.cpp' -print)
+AUTO_SOURCES     = $(shell find $(SOURCE_DIR) -type f -name '*.cpp' -print)
 PLAT_SOURCES     = 
 SOURCES          = $(AUTO_SOURCES) $(PLAT_SOURCES)
 EXTERN_INCLUDES  = $(shell find $(INCLUDE_DIRS) -type f -name '*.h*' -print)
-INCLUDES         = $(shell find $(SOURCE_DIR)  -path $(SOURCE_DIR)/Windows -prune -o -type f -name '*.h*' -print) $(EXTERN_INCLUDES)
+INCLUDES         = $(shell find $(SOURCE_DIR) -type f -name '*.h*' -print) $(EXTERN_INCLUDES)
 
 OBJECTS = $(addprefix $(OBJ_DIR)/, $(notdir $(SOURCES:.cpp=.o))) 
 CFLAGS  = $(BASE_CFLAGS)  $(addprefix -I, $(INCLUDE_DIRS))
@@ -46,8 +48,8 @@ build: $(TARGET)
 	
 $(TARGET): $(OBJECTS) $(LIBS)
 	mkdir -p $(OUT_DIR)
-	$(AR) $@ $^	
-
+	$(LINK) -o $@ $^ $(EXTERN_LIBS) 
+	
 $(OBJ_DIR)/%.o: %.cpp $(INCLUDES) $(OBJ_DIR_EXISTS) 
 	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $< -o $@
 
@@ -57,7 +59,7 @@ $(OBJ_DIR_EXISTS):
 
 .PHONY: clean
 clean: clean-debug clean-release
-
+	
 .PHONY: clean-debug
 clean-debug:
 	$(MAKE) CONFIGURATION=debug clean-target
@@ -70,4 +72,3 @@ clean-release:
 clean-target:
 	-rm -f $(TARGET) 2</dev/null
 	-rm -rf $(OBJ_DIR) 2</dev/null
-	-rm -f ../../../include/$(PROJECT)

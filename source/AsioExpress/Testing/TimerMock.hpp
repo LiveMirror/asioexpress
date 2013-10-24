@@ -39,7 +39,7 @@ public:
   }
 
   virtual void AsyncWait(
-      unsigned long milliseconds, 
+      unsigned int milliseconds, 
       CompletionHandler completionHandler)
   {
     BOOST_CHECK_MESSAGE(!m_isWaiting, "TimerMock: Too many AsyncWait calls.");
@@ -57,7 +57,7 @@ public:
     // timer concurency guarantee.
   }
 
-  void AssertAsyncWaitCalled(char const * const file, int line, unsigned long milliseconds = 0)
+  void AssertAsyncWaitCalled(char const * const file, int line, unsigned int milliseconds = 0)
   {
     BOOST_CHECK_EQUAL_LOC(file, line, m_waitCallCount, 1);
     BOOST_CHECK_EQUAL_LOC(file, line, milliseconds, m_milliseconds);
@@ -106,7 +106,7 @@ private:
   bool                  m_isWaiting;
   int                   m_waitCallCount;
   int                   m_stopCallCount;
-  unsigned long         m_milliseconds;
+  unsigned int         m_milliseconds;
   CompletionHandler     m_completionHandler;
 };
 

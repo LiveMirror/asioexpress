@@ -26,7 +26,7 @@ public:
 
   StandardTimer(
       boost::asio::io_service & ioService, 
-      unsigned long milliseconds) :
+      unsigned int milliseconds) :
     m_timer(ioService),
     m_milliseconds(milliseconds)
   {
@@ -40,7 +40,7 @@ public:
   }
 
   virtual void AsyncWait(
-      unsigned long milliseconds, 
+      unsigned int milliseconds, 
       CompletionHandler completionHandler)
   {
     m_timer.expires_from_now(milliseconds);
@@ -54,7 +54,7 @@ public:
 
 private:
   TickCountTimer  m_timer;
-  unsigned long   m_milliseconds;
+  unsigned int   m_milliseconds;
 };
 
 } // namespace AsioExpress

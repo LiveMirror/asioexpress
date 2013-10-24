@@ -20,7 +20,7 @@ DurationTimer::DurationTimer() :
 {
 }
 
-unsigned long DurationTimer::duration()
+unsigned int DurationTimer::duration()
 {
   return getDuration(startTime, GetClockCount());
 }

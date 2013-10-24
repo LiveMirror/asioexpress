@@ -3,9 +3,9 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include "stdafx.h"
 #include <iostream>
 #include <boost/asio.hpp>
+#include <csignal>
 
 #include "AsioExpress/Error.hpp"
 #include "AsioExpress/NullCompletionHandler.hpp"
@@ -20,19 +20,25 @@
 boost::asio::io_service ioService;
 boost::function0<void> shutdown_function;
 
-BOOL WINAPI console_ctrl_handler(DWORD ctrl_type)
+//BOOL WINAPI console_ctrl_handler(DWORD ctrl_type)
+//{
+//  switch (ctrl_type)
+//  {
+//  case CTRL_C_EVENT:
+//  case CTRL_BREAK_EVENT:
+//  case CTRL_CLOSE_EVENT:
+//  case CTRL_SHUTDOWN_EVENT:
+//    ioService.post(shutdown_function); 
+//    return TRUE;
+//  default:
+//    return FALSE;
+//  }
+//}
+
+// SIGINT handler
+void int_handler(int)
 {
-  switch (ctrl_type)
-  {
-  case CTRL_C_EVENT:
-  case CTRL_BREAK_EVENT:
-  case CTRL_CLOSE_EVENT:
-  case CTRL_SHUTDOWN_EVENT:
-    ioService.post(shutdown_function); 
-    return TRUE;
-  default:
-    return FALSE;
-  }
+  ioService.post(shutdown_function); 
 }
 
 typedef AsioExpress::MessagePort::MessagePortClient<AsioExpress::MessagePort::Ipc::MessagePort> ClientType;
@@ -49,12 +55,12 @@ public:
   virtual void ClientConnected(
       AsioExpress::MessagePort::ClientConnection connection) 
   {
-    printf("Client connected; ID=%d\n", connection.messagePortId);
+    printf("Client connected; ID=%d\n", connection.GetMessagePortId());
  
     m_connection.reset(new AsioExpress::MessagePort::ClientConnection(
-      connection.ioService, 
-      connection.messagePortId, 
-      connection.client));
+      connection.GetIoService(), 
+      connection.GetMessagePortId(), 
+      connection.GetClient()));
 
     m_timer.AsyncWait(boost::bind(&MyEventHandler::DoSend, this, _1));
   }
@@ -63,7 +69,7 @@ public:
       AsioExpress::MessagePort::ClientConnection connection, 
       AsioExpress::Error) 
   {
-    printf("Client disconnected; ID=%d\n", connection.messagePortId);
+    printf("Client disconnected; ID=%d\n", connection.GetMessagePortId());
     m_timer.Stop();
   }
 
@@ -71,9 +77,9 @@ public:
       AsioExpress::MessagePort::ClientMessage clientMessage)
   {
     std::string msg;
-    msg.assign(clientMessage.dataBuffer->Get(), clientMessage.dataBuffer->Size());
+    msg.assign(clientMessage.GetDataBuffer()->Get(), clientMessage.GetDataBuffer()->Size());
     printf("RECV: %s\n", msg.c_str());
-    clientMessage.completionHandler(AsioExpress::Error());
+    clientMessage.CallCompletionHandler(AsioExpress::Error());
   }
   
   virtual AsioExpress::Error ConnectionError(
@@ -108,7 +114,7 @@ private:
 
     if ( m_sendCount > 9 )
     {
-      m_connection->client->Disconnect();
+      m_connection->GetClient()->Disconnect();
       m_timer.Stop();
       return;
     }
@@ -124,7 +130,7 @@ private:
 
     printf("Start send; %s\n", message.str().c_str());
 
-    m_connection->client->AsyncSend(
+    m_connection->GetClient()->AsyncSend(
       dataBuffer, 
       boost::bind(&MyEventHandler::SendCompleted, this, _1));
   }
@@ -143,7 +149,7 @@ private:
 };
 
 
-int _tmain(int argc, _TCHAR* argv[])
+int main(int argc, char* argv[])
 {
   ClientType client(
     ioService, 
@@ -154,7 +160,8 @@ int _tmain(int argc, _TCHAR* argv[])
   // Set console control handler to allow client to be stopped.
   shutdown_function = boost::bind(&ClientType::Disconnect, &client);
 
-  SetConsoleCtrlHandler(console_ctrl_handler, TRUE);
+  //SetConsoleCtrlHandler(console_ctrl_handler, TRUE);
+  signal(SIGINT, int_handler);
 
   ioService.run();
 

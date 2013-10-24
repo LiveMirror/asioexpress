@@ -22,10 +22,10 @@ public:
       AppErrorHandlerPointer errorHandler,
       EchoManagerPointer const & echoManager,
       int sampleArgument) :
+    m_logger("SampleTcpServer1.EventHandler", 5),
     m_errorHandler(errorHandler),
     m_echoManager(echoManager),
-    m_sampleArgument(sampleArgument),
-    m_logger("SampleTcpServer1.EventHandler", 5)
+    m_sampleArgument(sampleArgument)
   {
   }
 

@@ -8,7 +8,7 @@
 namespace AsioExpress {
 namespace MessagePort {
 
-long const InvalidMessagePortId = -1;
+int const InvalidMessagePortId = -1;
 
 } // namespace MessagePort
 } // namespace AsioExpress
