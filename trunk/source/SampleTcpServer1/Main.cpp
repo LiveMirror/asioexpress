@@ -11,7 +11,7 @@
 
 boost::function0<void> console_ctrl_function;
 
-//#ifdef _MSC_VER
+// Windows signal handler
 //BOOL WINAPI console_ctrl_handler(DWORD ctrl_type)
 //{
 //  switch (ctrl_type)
@@ -26,7 +26,6 @@ boost::function0<void> console_ctrl_function;
 //    return FALSE;
 //  }
 //}
-//#else _MSC_VER
 
 // SIGINT handler
 void int_handler(int)
@@ -79,7 +78,9 @@ int main(int argc, char* argv[])
   // Set console control handler to allow server to be stopped.
   console_ctrl_function = ShutDownFunc(ioService, app);
 
+  // Setup Windows signal handler
   //  SetConsoleCtrlHandler(console_ctrl_handler, TRUE);
+
   signal(SIGINT, int_handler);
 
   app.Start();

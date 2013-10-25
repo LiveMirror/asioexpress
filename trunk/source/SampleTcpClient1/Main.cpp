@@ -12,6 +12,7 @@
 
 boost::function0<void> console_ctrl_function;
 
+// Windows signal handler
 //BOOL WINAPI console_ctrl_handler(DWORD ctrl_type)
 //{
 //  switch (ctrl_type)
@@ -80,7 +81,9 @@ int main(int argc, char* argv[])
   // Set console control handler to allow client to be stopped.
   console_ctrl_function = ShutDownFunc(ioService, app);
 
+  // Setup Windows signal handler
   //  SetConsoleCtrlHandler(console_ctrl_handler, TRUE);
+
   signal(SIGINT, int_handler);
 
   app.Start();

@@ -5,7 +5,7 @@
 
 #pragma once
 
-WIN_DISABLE_WARNINGS_BEGIN(disable: 4244)
+WIN_DISABLE_WARNINGS_BEGIN(4244)
 #include "boost/shared_ptr.hpp"
 WIN_DISABLE_WARNINGS_END
 
