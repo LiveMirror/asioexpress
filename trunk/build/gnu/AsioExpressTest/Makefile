@@ -1,5 +1,5 @@
 CC = g++
-LINK = g++
+LINK = g++ -pthread
 LD = ld
 AR = ar rc
 

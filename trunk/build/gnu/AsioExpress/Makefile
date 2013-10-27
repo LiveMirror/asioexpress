@@ -5,6 +5,7 @@ AR = ar rc
 
 PROJECT         = AsioExpress
 SPATH           = ../../../source
+IPATH           = ../../../include
 OUT_DIR         = ../../../lib/$(CONFIGURATION)
 OBJ_DIR         = ./$(CONFIGURATION)_objs
 OBJ_DIR_EXISTS  = $(OBJ_DIR)/exists 
@@ -12,8 +13,9 @@ BASE_CFLAGS     = -Wall -Werror -std=c++03 -pthread -fPIC -I$(SPATH) -c
 DBG_CFLAGS      = -g -O0 -D _DEBUG -D_GNU_SOURCE
 REL_CFLAGS      = -O2 -D NDEBUG -D_GNU_SOURCE -fwhole-program
 
-TARGET  	= $(OUT_DIR)/$(PROJECT).a
-SOURCE_DIR  	= $(SPATH)/$(PROJECT)
+TARGET          = $(OUT_DIR)/$(PROJECT).a
+SOURCE_DIR      = $(SPATH)/$(PROJECT)
+INC_DIR         = $(IPATH)/$(PROJECT)
 VPATH           = $(shell find $(SOURCE_DIR) -type d -print)   # folders to search
 INCLUDE_DIRS    = $(SPATH)/AsioExpressConfig $(SPATH)/AsioExpressError
 LIBS            = 
@@ -23,9 +25,10 @@ AUTO_SOURCES     = $(shell find $(SOURCE_DIR) -path $(SOURCE_DIR)/Platform -prun
 PLAT_SOURCES     = $(shell find $(SOURCE_DIR)/Platform -type f -name '*Linux.cpp' -print)
 SOURCES          = $(AUTO_SOURCES) $(PLAT_SOURCES)
 EXTERN_INCLUDES  = $(shell find $(INCLUDE_DIRS) -type f -name '*.h*')
-INCLUDES         = $(shell find $(SOURCE_DIR) -type f -name '*.h*') $(EXTERN_INCLUDES)
+LOCAL_INCLUDES   = $(shell find $(SOURCE_DIR) -type f -name '*.h*')
+INCLUDES         = $(LOCAL_INCLUDES) $(EXTERN_INCLUDES)
 
-OBJECTS = $(addprefix $(OBJ_DIR)/, $(notdir $(SOURCES:.cpp=.o))) 
+OBJECTS = $(addprefix $(OBJ_DIR)/, $(notdir $(SOURCES:.cpp=.o)))
 CFLAGS  = $(BASE_CFLAGS)  $(addprefix -I, $(INCLUDE_DIRS))
 
 PCH_TARGET      = $(OBJ_DIR)/pch.hpp.gch
@@ -45,7 +48,13 @@ release:
 all: debug release
 
 .PHONY: build
-build: $(TARGET)
+build: $(TARGET) $(INC_DIR)
+
+$(INC_DIR): $(LOCAL_INCLUDES)
+	rm -rf $(INC_DIR)
+	mkdir -p $(INC_DIR)
+	cp -ar $(SOURCE_DIR) $(IPATH)
+	find $(INC_DIR)/ -iname '*.cpp' -exec rm {} \; 
 
 $(PCH_TARGET): $(PCH_SOURCE) $(INCLUDES)
 	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $< -o $@
