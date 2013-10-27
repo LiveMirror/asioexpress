@@ -7,13 +7,15 @@ PROJECT         = AsioExpressError
 SPATH           = ../../../source
 IPATH           = ../../../include
 OUT_DIR         = ../../../lib/$(CONFIGURATION)
-OBJ_DIR         = ./$(CONFIGURATION)_objs
-OBJ_DIR_EXISTS  = $(OBJ_DIR)/exists 
-BASE_CFLAGS     = -Wall -Werror -std=c++03 -fPIC -I$(SPATH) -c
+BASE_CFLAGS     = -Wall -Werror -std=c++03 -pthread -fPIC -I$(SPATH) -c
 DBG_CFLAGS      = -g -O0 -D _DEBUG -D_GNU_SOURCE
 REL_CFLAGS      = -O2 -D NDEBUG -D_GNU_SOURCE -fwhole-program
 
-TARGET          = $(OUT_DIR)/$(PROJECT).a
+PROJECT_LC      := $(shell echo $(PROJECT) | tr A-Z a-z)
+TARGET          = $(OUT_DIR)/lib$(PROJECT_LC).a
+OBJ_DIR         = ./$(CONFIGURATION)_objs
+OBJ_DIR_EXISTS  = $(OBJ_DIR)/exists 
+
 SOURCE_DIR      = $(SPATH)/$(PROJECT)
 INC_DIR         = $(IPATH)/$(PROJECT)
 VPATH           = $(shell find $(SOURCE_DIR) -type d -print)   # folders to search
