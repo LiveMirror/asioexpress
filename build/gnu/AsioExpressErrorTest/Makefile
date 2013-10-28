@@ -1,33 +1,37 @@
-CC = g++
-LINK = g++
-LD = ld
-AR = ar rc
+CC := g++
+LINK := g++
+LD := ld
+AR := ar rc
 
-PROJECT         = AsioExpressErrorTest
-SPATH           = ../../../source
-OUT_DIR         = ../../../bin/$(CONFIGURATION)
-LIB_DIR         = ../../../lib/$(CONFIGURATION)
-OBJ_DIR         = ./$(CONFIGURATION)_objs
-OBJ_DIR_EXISTS  = $(OBJ_DIR)/exists 
-BASE_CFLAGS     = -Wall -Werror -std=c++03 -fPIC -I$(SPATH) -c
-DBG_CFLAGS      = -g -O0 -D _DEBUG -D_GNU_SOURCE
-REL_CFLAGS      = -O2 -D NDEBUG -D_GNU_SOURCE -fwhole-program
+# may be overridden
+BOOST_INCLUDE  ?= /usr/include
+BOOST_LIB      ?= /usr/lib
 
-TARGET  	= $(OUT_DIR)/$(PROJECT)
-SOURCE_DIR  	= $(SPATH)/$(PROJECT)
-VPATH           = $(shell find $(SOURCE_DIR) -type d -print)   # folders to search
-INCLUDE_DIRS    = $(SPATH)/AsioExpressConfig $(SPATH)/AsioExpressError $(SPATH)/AsioExpress
-LIBS            = 
-EXTERN_LIBS     = $(LIB_DIR)/AsioExpressError.a $(LIB_DIR)/AsioExpress.a /usr/lib/libboost_unit_test_framework.a /usr/lib/libboost_system.a
+PROJECT         := AsioExpressErrorTest
+SPATH           := ../../../source
+OUT_DIR         := ../../../bin/$(CONFIGURATION)
+LIB_DIR         := ../../../lib/$(CONFIGURATION)
+OBJ_DIR         := ./$(CONFIGURATION)_objs
+OBJ_DIR_EXISTS  := $(OBJ_DIR)/exists 
+BASE_CFLAGS     := -Wall -Werror -std=c++03 -fPIC -I$(SPATH) -I$(BOOST_INCLUDE) -c
+DBG_CFLAGS      := -g -O0 -D _DEBUG -D_GNU_SOURCE
+REL_CFLAGS      := -O2 -D NDEBUG -D_GNU_SOURCE -fwhole-program
 
-AUTO_SOURCES     = $(shell find $(SOURCE_DIR) -type f -name '*.cpp' -print)
-PLAT_SOURCES     = 
-SOURCES          = $(AUTO_SOURCES) $(PLAT_SOURCES)
-EXTERN_INCLUDES  = $(shell find $(INCLUDE_DIRS) -type f -name '*.h*' -print)
-INCLUDES         = $(shell find $(SOURCE_DIR) -type f -name '*.h*' -print) $(EXTERN_INCLUDES)
+TARGET  	:= $(OUT_DIR)/$(PROJECT)
+SOURCE_DIR  	:= $(SPATH)/$(PROJECT)
+VPATH           := $(shell find $(SOURCE_DIR) -type d -print)   # folders to search
+INCLUDE_DIRS    := $(SPATH)/AsioExpressConfig $(SPATH)/AsioExpressError $(SPATH)/AsioExpress
+LIBS            := 
+EXTERN_LIBS     := $(LIB_DIR)/AsioExpressError.a $(LIB_DIR)/AsioExpress.a /usr/lib/libboost_unit_test_framework.a /usr/lib/libboost_system.a
 
-OBJECTS = $(addprefix $(OBJ_DIR)/, $(notdir $(SOURCES:.cpp=.o))) 
-CFLAGS  = $(BASE_CFLAGS)  $(addprefix -I, $(INCLUDE_DIRS))
+AUTO_SOURCES     := $(shell find $(SOURCE_DIR) -type f -name '*.cpp' -print)
+PLAT_SOURCES     := 
+SOURCES          := $(AUTO_SOURCES) $(PLAT_SOURCES)
+EXTERN_INCLUDES  := $(shell find $(INCLUDE_DIRS) -type f -name '*.h*' -print)
+INCLUDES         := $(shell find $(SOURCE_DIR) -type f -name '*.h*' -print) $(EXTERN_INCLUDES)
+
+OBJECTS := $(addprefix $(OBJ_DIR)/, $(notdir $(SOURCES:.cpp=.o))) 
+CFLAGS  := $(BASE_CFLAGS)  $(addprefix -I, $(INCLUDE_DIRS))
 
 .SECONDARY: # do not delete intermediate files 
 

@@ -1,37 +1,41 @@
-CC = g++
-LINK = g++
-LD = ld
-AR = ar rc
+CC := g++
+LINK := g++
+LD := ld
+AR := ar rc
 
-PROJECT         = AsioExpressError
-SPATH           = ../../../source
-IPATH           = ../../../include
-OUT_DIR         = ../../../lib/$(CONFIGURATION)
-BASE_CFLAGS     = -Wall -Werror -std=c++03 -pthread -fPIC -I$(SPATH) -c
-DBG_CFLAGS      = -g -O0 -D _DEBUG -D_GNU_SOURCE
-REL_CFLAGS      = -O2 -D NDEBUG -D_GNU_SOURCE -fwhole-program
+# may be overridden
+BOOST_INCLUDE  ?= /usr/include
+BOOST_LIB      ?= /usr/lib
+
+PROJECT         := AsioExpressError
+SPATH           := ../../../source
+IPATH           := ../../../include
+OUT_DIR         := ../../../lib/$(CONFIGURATION)
+BASE_CFLAGS     := -Wall -Werror -std=c++03 -pthread -fPIC -I$(SPATH) -I$(BOOST_INCLUDE) -c
+DBG_CFLAGS      := -g -O0 -D _DEBUG -D_GNU_SOURCE
+REL_CFLAGS      := -O2 -D NDEBUG -D_GNU_SOURCE -fwhole-program
 
 PROJECT_LC      := $(shell echo $(PROJECT) | tr A-Z a-z)
-TARGET          = $(OUT_DIR)/lib$(PROJECT_LC).a
-OBJ_DIR         = ./$(CONFIGURATION)_objs
-OBJ_DIR_EXISTS  = $(OBJ_DIR)/exists 
+TARGET          := $(OUT_DIR)/lib$(PROJECT_LC).a
+OBJ_DIR         := ./$(CONFIGURATION)_objs
+OBJ_DIR_EXISTS  := $(OBJ_DIR)/exists 
 
-SOURCE_DIR      = $(SPATH)/$(PROJECT)
-INC_DIR         = $(IPATH)/$(PROJECT)
-VPATH           = $(shell find $(SOURCE_DIR) -type d -print)   # folders to search
-INCLUDE_DIRS    = $(SPATH)/AsioExpressConfig
-LIBS            = 
-EXTERN_LIBS     = 
+SOURCE_DIR      := $(SPATH)/$(PROJECT)
+INC_DIR         := $(IPATH)/$(PROJECT)
+VPATH           := $(shell find $(SOURCE_DIR) -type d -print)   # folders to search
+INCLUDE_DIRS    := $(SPATH)/AsioExpressConfig
+LIBS            := 
+EXTERN_LIBS     := 
 
-AUTO_SOURCES     = $(shell find $(SOURCE_DIR) -path $(SOURCE_DIR)/Windows -prune -o -type f -name '*.cpp' -print)
-PLAT_SOURCES     = 
-SOURCES          = $(AUTO_SOURCES) $(PLAT_SOURCES)
-EXTERN_INCLUDES  = $(shell find $(INCLUDE_DIRS) -type f -name '*.h*' -print)
-LOCAL_INCLUDES   = $(shell find $(SOURCE_DIR)  -path $(SOURCE_DIR)/Windows -prune -o -type f -name '*.h*' -print)
-INCLUDES         = $(LOCAL_INCLUDES) $(EXTERN_INCLUDES)
+AUTO_SOURCES     := $(shell find $(SOURCE_DIR) -path $(SOURCE_DIR)/Windows -prune -o -type f -name '*.cpp' -print)
+PLAT_SOURCES     := 
+SOURCES          := $(AUTO_SOURCES) $(PLAT_SOURCES)
+EXTERN_INCLUDES  := $(shell find $(INCLUDE_DIRS) -type f -name '*.h*' -print)
+LOCAL_INCLUDES   := $(shell find $(SOURCE_DIR)  -path $(SOURCE_DIR)/Windows -prune -o -type f -name '*.h*' -print)
+INCLUDES         := $(LOCAL_INCLUDES) $(EXTERN_INCLUDES)
 
-OBJECTS = $(addprefix $(OBJ_DIR)/, $(notdir $(SOURCES:.cpp=.o))) 
-CFLAGS  = $(BASE_CFLAGS)  $(addprefix -I, $(INCLUDE_DIRS))
+OBJECTS := $(addprefix $(OBJ_DIR)/, $(notdir $(SOURCES:.cpp=.o))) 
+CFLAGS  := $(BASE_CFLAGS)  $(addprefix -I, $(INCLUDE_DIRS))
 
 .SECONDARY: # do not delete intermediate files 
 
@@ -81,4 +85,4 @@ clean-release:
 clean-target:
 	-rm -f $(TARGET) 2</dev/null
 	-rm -rf $(OBJ_DIR) 2</dev/null
-	-rm -f ../../../include/$(PROJECT)
+	-rm -rf $(INC_DIR)
