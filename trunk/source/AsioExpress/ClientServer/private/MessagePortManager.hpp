@@ -22,6 +22,8 @@ public:
   typedef boost::shared_ptr<MessagePort> MessagePortPointer;
 
   MessagePortManager(boost::asio::io_service& ioService);
+  
+  virtual ~MessagePortManager() {};
 
   MessagePortId Add(MessagePortPointer messagePort);
 
