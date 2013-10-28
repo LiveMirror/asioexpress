@@ -6,8 +6,14 @@ SOURCE     = $(SOURCE_DIR)/config.hpp
 
 #.SECONDARY: # do not delete intermediate files 
 
-.PHONY: build
-build: $(TARGET)
+.PHONY: debug
+debug: $(TARGET)
+
+.PHONY: release 
+release: $(TARGET)
+
+.PHONY: all
+all: $(TARGET)
 
 $(TARGET): $(SOURCE)
 	mkdir -p $(TARGET_DIR)

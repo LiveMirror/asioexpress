@@ -82,11 +82,11 @@ BOOST_AUTO_TEST_CASE(TestInitialization)
 
   resourceCache.AsyncUpdate(completionHandler);
 
-  BOOST_CHECK_EQUAL(resourceCache.GetCacheSize(1), 0);
-  BOOST_CHECK_EQUAL(resourceCache.GetCacheSize(2), 2);
-  BOOST_CHECK_EQUAL(resourceCache.GetCacheSize(3), 6);
-  BOOST_CHECK_EQUAL(resourceCache.GetCacheSize(4), 8);
-  BOOST_CHECK_EQUAL(resourceCache.GetCacheSize(5), 0);
+  BOOST_CHECK_EQUAL(resourceCache.GetCacheSize(1), 0U);
+  BOOST_CHECK_EQUAL(resourceCache.GetCacheSize(2), 2U);
+  BOOST_CHECK_EQUAL(resourceCache.GetCacheSize(3), 6U);
+  BOOST_CHECK_EQUAL(resourceCache.GetCacheSize(4), 8U);
+  BOOST_CHECK_EQUAL(resourceCache.GetCacheSize(5), 0U);
 
   BOOST_CHECK_EQUAL(completionHandler.Calls(), 1);
 
@@ -143,7 +143,7 @@ BOOST_AUTO_TEST_CASE(TestAddOne)
   resourceCache.AsyncUpdate(initHandler);
 
   resourceCache.Add(1, 3);
-  BOOST_CHECK_EQUAL(resourceCache.GetCacheSize(1), 3);
+  BOOST_CHECK_EQUAL(resourceCache.GetCacheSize(1), 3U);
 }
 
 BOOST_AUTO_TEST_CASE(TestAddTwo)
@@ -159,7 +159,7 @@ BOOST_AUTO_TEST_CASE(TestAddTwo)
 
   resourceCache.Add(1, 2);
   resourceCache.Add(1, 3);
-  BOOST_CHECK_EQUAL(resourceCache.GetCacheSize(1), 5);
+  BOOST_CHECK_EQUAL(resourceCache.GetCacheSize(1), 5U);
 }
 
 BOOST_AUTO_TEST_CASE(TestWaitOne)
@@ -185,7 +185,7 @@ BOOST_AUTO_TEST_CASE(TestWaitOne)
   BOOST_CHECK_EQUAL(getHandler.Calls(), 0);
 
   resourceCache.Add(1, 1);
-  BOOST_CHECK_EQUAL(resourceCache.GetCacheSize(1), 0);
+  BOOST_CHECK_EQUAL(resourceCache.GetCacheSize(1), 0U);
 
   BOOST_CHECK_EQUAL(resourceCache.GetRemoveCalls(), 1);
   BOOST_CHECK_EQUAL(resourceCache.GetKeyParam(), 1);
@@ -216,7 +216,7 @@ BOOST_AUTO_TEST_CASE(TestWaitOneAddOther)
   BOOST_CHECK_EQUAL(getHandler.Calls(), 0);
 
   resourceCache.Add(2, 1);
-  BOOST_CHECK_EQUAL(resourceCache.GetCacheSize(2), 3);
+  BOOST_CHECK_EQUAL(resourceCache.GetCacheSize(2), 3U);
 
   BOOST_CHECK_EQUAL(resourceCache.GetRemoveCalls(), 0);
   BOOST_CHECK_EQUAL(getHandler.Calls(), 0);
@@ -254,7 +254,7 @@ BOOST_AUTO_TEST_CASE(TestWaitTwoAddOne)
   BOOST_CHECK_EQUAL(getHandler2.Calls(), 0);
 
   resourceCache.Add(1, 1);
-  BOOST_CHECK_EQUAL(resourceCache.GetCacheSize(1), 0);
+  BOOST_CHECK_EQUAL(resourceCache.GetCacheSize(1), 0U);
 
   BOOST_CHECK_EQUAL(resourceCache.GetRemoveCalls(), 1);
   BOOST_CHECK_EQUAL(resourceCache.GetKeyParam(), 1);
@@ -295,7 +295,7 @@ BOOST_AUTO_TEST_CASE(TestWaitTwoAddTwo)
   BOOST_CHECK_EQUAL(getHandler2.Calls(), 0);
 
   resourceCache.Add(1, 2);
-  BOOST_CHECK_EQUAL(resourceCache.GetCacheSize(1), 0);
+  BOOST_CHECK_EQUAL(resourceCache.GetCacheSize(1), 0U);
 
   BOOST_CHECK_EQUAL(resourceCache.GetRemoveCalls(), 2);
   BOOST_CHECK_EQUAL(resourceCache.GetKeyParam(), 1);
@@ -340,7 +340,7 @@ BOOST_AUTO_TEST_CASE(TestWaitTwoAddThree)
   BOOST_CHECK_EQUAL(getHandler2.Calls(), 0);
 
   resourceCache.Add(1, 3);
-  BOOST_CHECK_EQUAL(resourceCache.GetCacheSize(1), 1);
+  BOOST_CHECK_EQUAL(resourceCache.GetCacheSize(1), 1U);
 
   BOOST_CHECK_EQUAL(resourceCache.GetRemoveCalls(), 2);
   BOOST_CHECK_EQUAL(resourceCache.GetKeyParam(), 1);

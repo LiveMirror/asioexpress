@@ -21,7 +21,7 @@ public:
   }
 
 protected:
-  ~ServerMessageProcessor() {};
+  virtual ~ServerMessageProcessor() {};
 
   boost::asio::io_service & GetIoService() const;
 

@@ -22,7 +22,8 @@ SOURCE_DIR  	:= $(SPATH)/$(PROJECT)
 VPATH           := $(shell find $(SOURCE_DIR) -type d -print)   # folders to search
 INCLUDE_DIRS    := $(SPATH)/AsioExpressConfig $(SPATH)/AsioExpressError $(SPATH)/AsioExpress
 LIBS            := 
-EXTERN_LIBS     := $(LIB_DIR)/AsioExpressError.a $(LIB_DIR)/AsioExpress.a /usr/lib/libboost_unit_test_framework.a /usr/lib/libboost_system.a
+EXTERN_LIBS     := $(LIB_DIR)/AsioExpressError.a $(LIB_DIR)/AsioExpress.a \
+                   /usr/lib/libboost_unit_test_framework.a /usr/lib/libboost_system.a  -lrt
 
 AUTO_SOURCES     := $(shell find $(SOURCE_DIR) -type f -name '*.cpp' -print)
 PLAT_SOURCES     := 

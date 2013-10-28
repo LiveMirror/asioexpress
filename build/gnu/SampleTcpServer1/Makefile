@@ -23,7 +23,7 @@ VPATH           := $(shell find $(SOURCE_DIR) -type d -print)   # folders to sea
 INCLUDE_DIRS    := $(SPATH)/AsioExpressConfig $(SPATH)/AsioExpressError $(SPATH)/AsioExpress
 LIBS            := 
 EXTERN_LIBS     := $(LIB_DIR)/libasioexpress.a $(LIB_DIR)/libasioexpresserror.a \
-                  $(BOOST_LIB)/libboost_system.a $(BOOST_LIB)/libboost_thread.a
+                  $(BOOST_LIB)/libboost_system.a $(BOOST_LIB)/libboost_thread.a -lrt
 
 AUTO_SOURCES     := $(shell find $(SOURCE_DIR) -type f -name '*.cpp' -print)
 PLAT_SOURCES     := 
