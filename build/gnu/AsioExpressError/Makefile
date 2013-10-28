@@ -11,9 +11,9 @@ PROJECT         := AsioExpressError
 SPATH           := ../../../source
 IPATH           := ../../../include
 OUT_DIR         := ../../../lib/$(CONFIGURATION)
-BASE_CFLAGS     := -Wall -Werror -std=c++03 -pthread -fPIC -I$(SPATH) -I$(BOOST_INCLUDE) -c
-DBG_CFLAGS      := -g -O0 -D _DEBUG -D_GNU_SOURCE
-REL_CFLAGS      := -O2 -D NDEBUG -D_GNU_SOURCE -fwhole-program
+BASE_CFLAGS     := -D_GNU_SOURCE -Wall -Werror -std=c++03 -pthread -fPIC -I$(SPATH) -I$(BOOST_INCLUDE) -c
+DBG_CFLAGS      := -g -O0 -D _DEBUG
+REL_CFLAGS      := -O2 -D NDEBUG -fwhole-program
 
 PROJECT_LC      := $(shell echo $(PROJECT) | tr A-Z a-z)
 TARGET          := $(OUT_DIR)/lib$(PROJECT_LC).a
