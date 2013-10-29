@@ -60,7 +60,8 @@ $(INC_DIR): $(LOCAL_INCLUDES)
 	rm -rf $(INC_DIR)
 	mkdir -p $(INC_DIR)
 	cp -ar $(SOURCE_DIR) $(IPATH)
-	find $(INC_DIR)/ -iname '*.cpp' -exec rm {} \; 
+	find $(INC_DIR)/ -iname '*.cpp' -exec rm {} \;
+	rm -rf $(INC_DIR)/Proc/CodeGen
 
 $(PCH_TARGET): $(PCH_SOURCE) $(INCLUDES)
 	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $< -o $@
