@@ -4,6 +4,7 @@ default:
 	$(MAKE) -C AsioExpressConfig $(BUILD_TARGET)
 	$(MAKE) -C AsioExpressError $(BUILD_TARGET)
 	$(MAKE) -C AsioExpress $(BUILD_TARGET)
+	$(MAKE) -C AsioExpressErrorTest $(BUILD_TARGET)
 	$(MAKE) -C AsioExpressTest $(BUILD_TARGET)
 	$(MAKE) -C SampleTcpServer1 $(BUILD_TARGET)
 	$(MAKE) -C SampleTcpClient1 $(BUILD_TARGET)

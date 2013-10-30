@@ -24,4 +24,3 @@ WIN_DISABLE_WARNINGS_END
 #include <sstream>
 #include <string>
 #include <boost/function.hpp>
-

@@ -5,26 +5,31 @@
 
 #include "AsioExpressErrorTest/pch.hpp"
 
+#ifdef _MSC_VER
 #include "AsioExpressError/Windows/Win32Exception.hpp"
 #include "AsioExpressWinStack/CallStackService.h"
+#endif // _MSC_VER
 
 #define BOOST_TEST_MAIN
 #include <boost/test/unit_test.hpp>
-
-using namespace AsioExpress;
 
 struct GlobalSetup 
 {
     GlobalSetup() 
     { 
-      Win32Exception::installHandler();
-      InitializeCallStackService();
-      StartCallStackService();
+#ifdef _MSC_VER
+        using namespace AsioExpress;
+        Win32Exception::installHandler();
+        InitializeCallStackService();
+        StartCallStackService();
+#endif // _MSC_VER
     }
 
     ~GlobalSetup()         
     { 
-      StopCallStackService();
+#ifdef _MSC_VER
+        StopCallStackService();
+#endif // _MSC_VER
     }
 };
 
