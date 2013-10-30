@@ -1,5 +1,5 @@
 CC := g++
-LINK := g++
+LINK := g++ -pthread
 LD := ld
 AR := ar rc
 
@@ -13,19 +13,19 @@ OUT_DIR         := ../../../bin/$(CONFIGURATION)
 LIB_DIR         := ../../../lib/$(CONFIGURATION)
 OBJ_DIR         := ./$(CONFIGURATION)_objs
 OBJ_DIR_EXISTS  := $(OBJ_DIR)/exists 
-BASE_CFLAGS     := -D_GNU_SOURCE -Wall -Werror -std=c++03 -fPIC -I$(SPATH) -I$(BOOST_INCLUDE) -c
+BASE_CFLAGS     := -D_GNU_SOURCE -Wall -Werror -std=c++03 -I$(SPATH) -I$(BOOST_INCLUDE) -c
 DBG_CFLAGS      := -g -O0 -D _DEBUG
 REL_CFLAGS      := -O2 -D NDEBUG -fwhole-program
 
 TARGET  	:= $(OUT_DIR)/$(PROJECT)
 SOURCE_DIR  	:= $(SPATH)/$(PROJECT)
 VPATH           := $(shell find $(SOURCE_DIR) -type d -print)   # folders to search
-INCLUDE_DIRS    := $(SPATH)/AsioExpressConfig $(SPATH)/AsioExpressError $(SPATH)/AsioExpress
+INCLUDE_DIRS    := $(SPATH)/AsioExpressConfig $(SPATH)/AsioExpressError
 LIBS            := 
-EXTERN_LIBS     := $(LIB_DIR)/AsioExpressError.a $(LIB_DIR)/AsioExpress.a \
+EXTERN_LIBS     := $(LIB_DIR)/libasioexpresserror.a \
                    /usr/lib/libboost_unit_test_framework.a /usr/lib/libboost_system.a  -lrt
 
-AUTO_SOURCES     := $(shell find $(SOURCE_DIR) -type f -name '*.cpp' -print)
+AUTO_SOURCES     := $(shell find $(SOURCE_DIR) -type f -name '*.cpp' ! -name 'Win32*' ! -name 'pch.cpp' -print)
 PLAT_SOURCES     := 
 SOURCES          := $(AUTO_SOURCES) $(PLAT_SOURCES)
 EXTERN_INCLUDES  := $(shell find $(INCLUDE_DIRS) -type f -name '*.h*' -print)

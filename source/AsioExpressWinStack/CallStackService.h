@@ -18,7 +18,7 @@ namespace AsioExpress {
 
 ///
 /// Call this function to allocate the stack tracing information that is
-/// needed for subsequent GetCallStack function calls. Use this finction 
+/// needed for subsequent GetCallStack function calls. Use this function 
 /// to avoid performance penalties the first time you call GetCallStack.
 /// 
 extern ASIOEXPRESSWINSTACK_API void StartCallStackService();

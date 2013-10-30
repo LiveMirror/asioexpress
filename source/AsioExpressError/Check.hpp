@@ -58,10 +58,9 @@
 /// it evaluates false.
 /// @param An expression that can be evaluated at compile time. A runtime
 /// expression will generate a campiler error.
-#define STATIC_CHECK(staticExpression)                                            \
-  __pragma(warning(push))                                                         \
-  __pragma(warning(disable: 4127))                                                \
-  do { typedef char contractStaticCheck[(staticExpression) ? 1 : -1]; } while(0)  \
-  __pragma(warning(pop))
+#define STATIC_CHECK(staticExpression)  \
+  WIN_DISABLE_WARNINGS_BEGIN(4127)      \
+  do { typedef char contractStaticCheck[(staticExpression) ? 1 : -1]; } while(0) \
+  WIN_DISABLE_WARNINGS_END
 
 #endif //CONTRACT_CHECK_H

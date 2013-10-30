@@ -11,7 +11,7 @@ PROJECT         := AsioExpress
 SPATH           := ../../../source
 IPATH           := ../../../include
 OUT_DIR         := ../../../lib/$(CONFIGURATION)
-BASE_CFLAGS     := -D_GNU_SOURCE -Wall -Werror -std=c++03 -pthread -fPIC -I$(SPATH) -I$(BOOST_INCLUDE) -c
+BASE_CFLAGS     := -D_GNU_SOURCE -Wall -Werror -std=c++03 -pthread -I$(SPATH) -I$(BOOST_INCLUDE) -c
 DBG_CFLAGS      := -g -O0 -D _DEBUG
 REL_CFLAGS      := -O2 -D NDEBUG -fwhole-program
 

@@ -225,7 +225,7 @@ BOOST_AUTO_TEST_CASE(TestCheckFailedMacro)
 #endif
 }
 
-#pragma warning(disable:4101)
+WIN_DISABLE_WARNINGS_BEGIN(4101)
 BOOST_AUTO_TEST_CASE(TestStaticCheckMacro)
 {
     int const ARRAY_SIZE = 2;
@@ -234,5 +234,6 @@ BOOST_AUTO_TEST_CASE(TestStaticCheckMacro)
     // Lets check that our array is the correct size.
     STATIC_CHECK(sizeof(intArray) / sizeof(int) == ARRAY_SIZE);
 }
+WIN_DISABLE_WARNINGS_END
 
 BOOST_AUTO_TEST_SUITE_END()

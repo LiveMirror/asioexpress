@@ -11,7 +11,7 @@ PROJECT         := AsioExpressError
 SPATH           := ../../../source
 IPATH           := ../../../include
 OUT_DIR         := ../../../lib/$(CONFIGURATION)
-BASE_CFLAGS     := -D_GNU_SOURCE -Wall -Werror -std=c++03 -pthread -fPIC -I$(SPATH) -I$(BOOST_INCLUDE) -c
+BASE_CFLAGS     := -D_GNU_SOURCE -Wall -Werror -std=c++03 -pthread -I$(SPATH) -I$(BOOST_INCLUDE) -c
 DBG_CFLAGS      := -g -O0 -D _DEBUG
 REL_CFLAGS      := -O2 -D NDEBUG -fwhole-program
 
@@ -27,7 +27,7 @@ INCLUDE_DIRS    := $(SPATH)/AsioExpressConfig
 LIBS            := 
 EXTERN_LIBS     := 
 
-AUTO_SOURCES     := $(shell find $(SOURCE_DIR) -path $(SOURCE_DIR)/Windows -prune -o -type f -name '*.cpp' -print)
+AUTO_SOURCES     := $(shell find $(SOURCE_DIR) -path $(SOURCE_DIR)/Windows -prune -o -type f -name '*.cpp' ! -name 'pch.cpp' -print)
 PLAT_SOURCES     := 
 SOURCES          := $(AUTO_SOURCES) $(PLAT_SOURCES)
 EXTERN_INCLUDES  := $(shell find $(INCLUDE_DIRS) -type f -name '*.h*' -print)
