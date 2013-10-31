@@ -88,73 +88,73 @@
     LOG_MACRO_ENABLE_WARNINGS
 
 #if !defined(LOG_DISABLE_TRACE)
-#define LOG_TRACE(ioService, logger, msg) LOG_MACRO_WRAPPER(ioService, logger, msg, Trace)
-#define LOG_TRACE_STR(ioService, logger, msg) LOG_MACRO_STR_WRAPPER(ioService, logger, msg, Trace)
-#define LOG_TRACE_DIRECT(logger, msg) LOG_MACRO_DIRECT_WRAPPER(logger, msg, Trace)
-#define LOG_TRACE_STR_DIRECT(logger, msg) LOG_MACRO_STR_DIRECT_WRAPPER(logger, msg, Trace)
+#define TRACE_MSG(ioService, logger, msg) LOG_MACRO_WRAPPER(ioService, logger, msg, Trace)
+#define TRACE_STR(ioService, logger, msg) LOG_MACRO_STR_WRAPPER(ioService, logger, msg, Trace)
+#define TRACE_MSG_DIRECT(logger, msg) LOG_MACRO_DIRECT_WRAPPER(logger, msg, Trace)
+#define TRACE_STR_DIRECT(logger, msg) LOG_MACRO_STR_DIRECT_WRAPPER(logger, msg, Trace)
 #else
-#define LOG_TRACE(ioService, logger, msg) LOG_MACRO_DO_NOTHING
-#define LOG_TRACE_STR(ioService, logger, msg) LOG_MACRO_DO_NOTHING
-#define LOG_TRACE_DIRECT(logger, msg) LOG_MACRO_DO_NOTHING
-#define LOG_TRACE_STR_DIRECT(logger, msg) LOG_MACRO_DO_NOTHING
+#define TRACE_MSG(ioService, logger, msg) LOG_MACRO_DO_NOTHING
+#define TRACE_STR(ioService, logger, msg) LOG_MACRO_DO_NOTHING
+#define TRACE_MSG_DIRECT(logger, msg) LOG_MACRO_DO_NOTHING
+#define TRACE_STR_DIRECT(logger, msg) LOG_MACRO_DO_NOTHING
 #endif
 
 #if !defined(LOG_DISABLE_DEBUG)
-#define LOG_DEBUG(ioService, logger, msg) LOG_MACRO_WRAPPER(ioService, logger, msg, Debug)
-#define LOG_DEBUG_STR(ioService, logger, msg) LOG_MACRO_STR_WRAPPER(ioService, logger, msg, Debug)
-#define LOG_DEBUG_DIRECT(logger, msg) LOG_MACRO_DIRECT_WRAPPER(logger, msg, Debug)
-#define LOG_DEBUG_STR_DIRECT(logger, msg) LOG_MACRO_STR_DIRECT_WRAPPER(logger, msg, Debug)
+#define DEBUG_MSG(ioService, logger, msg) LOG_MACRO_WRAPPER(ioService, logger, msg, Debug)
+#define DEBUG_STR(ioService, logger, msg) LOG_MACRO_STR_WRAPPER(ioService, logger, msg, Debug)
+#define DEBUG_MSG_DIRECT(logger, msg) LOG_MACRO_DIRECT_WRAPPER(logger, msg, Debug)
+#define DEBUG_STR_DIRECT(logger, msg) LOG_MACRO_STR_DIRECT_WRAPPER(logger, msg, Debug)
 #else
-#define LOG_DEBUG(ioService, logger, msg) LOG_MACRO_DO_NOTHING
-#define LOG_DEBUG_STR(ioService, logger, msg) LOG_MACRO_DO_NOTHING
-#define LOG_DEBUG_DIRECT(ioService, logger, msg) LOG_MACRO_DO_NOTHING
-#define LOG_DEBUG_STR_DIRECT(ioService, logger, msg) LOG_MACRO_DO_NOTHING
+#define DEBUG_MSG(ioService, logger, msg) LOG_MACRO_DO_NOTHING
+#define DEBUG_STR(ioService, logger, msg) LOG_MACRO_DO_NOTHING
+#define DEBUG_MSG_DIRECT(ioService, logger, msg) LOG_MACRO_DO_NOTHING
+#define DEBUG_STR_DIRECT(ioService, logger, msg) LOG_MACRO_DO_NOTHING
 #endif
 
 #if !defined(LOG_DISABLE_INFO)
-#define LOG_INFO(ioService, logger, msg) LOG_MACRO_WRAPPER(ioService, logger, msg, Info)
-#define LOG_INFO_STR(ioService, logger, msg) LOG_MACRO_STR_WRAPPER(ioService, logger, msg, Info)
-#define LOG_INFO_DIRECT(logger, msg) LOG_MACRO_DIRECT_WRAPPER(logger, msg, Info)
-#define LOG_INFO_STR_DIRECT(logger, msg) LOG_MACRO_STR_DIRECT_WRAPPER(logger, msg, Info)
+#define INFO_MSG(ioService, logger, msg) LOG_MACRO_WRAPPER(ioService, logger, msg, Info)
+#define INFO_STR(ioService, logger, msg) LOG_MACRO_STR_WRAPPER(ioService, logger, msg, Info)
+#define INFO_MSG_DIRECT(logger, msg) LOG_MACRO_DIRECT_WRAPPER(logger, msg, Info)
+#define INFO_STR_DIRECT(logger, msg) LOG_MACRO_STR_DIRECT_WRAPPER(logger, msg, Info)
 #else
-#define LOG_INFO(ioService, logger, msg) LOG_MACRO_DO_NOTHING
-#define LOG_INFO_STR(ioService, logger, msg) LOG_MACRO_DO_NOTHING
-#define LOG_INFO_DIRECT(ioService, logger, msg) LOG_MACRO_DO_NOTHING
-#define LOG_INFO_STR_DIRECT(ioService, logger, msg) LOG_MACRO_DO_NOTHING
+#define INFO_MSG(ioService, logger, msg) LOG_MACRO_DO_NOTHING
+#define INFO_STR(ioService, logger, msg) LOG_MACRO_DO_NOTHING
+#define INFO_MSG_DIRECT(ioService, logger, msg) LOG_MACRO_DO_NOTHING
+#define INFO_STR_DIRECT(ioService, logger, msg) LOG_MACRO_DO_NOTHING
 #endif
 
 #if !defined(LOG_DISABLE_WARN)
-#define LOG_WARN(ioService, logger, msg) LOG_MACRO_WRAPPER(ioService, logger, msg, Warn)
-#define LOG_WARN_STR(ioService, logger, msg) LOG_MACRO_STR_WRAPPER(ioService, logger, msg, Warn)
-#define LOG_WARN_DIRECT(logger, msg) LOG_MACRO_DIRECT_WRAPPER(logger, msg, Warn)
-#define LOG_WARN_STR_DIRECT(logger, msg) LOG_MACRO_STR_DIRECT_WRAPPER(logger, msg, Warn)
+#define WARN_MSG(ioService, logger, msg) LOG_MACRO_WRAPPER(ioService, logger, msg, Warn)
+#define WARN_STR(ioService, logger, msg) LOG_MACRO_STR_WRAPPER(ioService, logger, msg, Warn)
+#define WARN_MSG_DIRECT(logger, msg) LOG_MACRO_DIRECT_WRAPPER(logger, msg, Warn)
+#define WARN_STR_DIRECT(logger, msg) LOG_MACRO_STR_DIRECT_WRAPPER(logger, msg, Warn)
 #else
-#define LOG_WARN(ioService, logger, msg) LOG_MACRO_DO_NOTHING
-#define LOG_WARN_STR(ioService, logger, msg) LOG_MACRO_DO_NOTHING
-#define LOG_WARN_DIRECT(ioService, logger, msg) LOG_MACRO_DO_NOTHING
-#define LOG_WARN_STR_DIRECT(ioService, logger, msg) LOG_MACRO_DO_NOTHING
+#define WARN_MSG(ioService, logger, msg) LOG_MACRO_DO_NOTHING
+#define WARN_STR(ioService, logger, msg) LOG_MACRO_DO_NOTHING
+#define WARN_MSG_DIRECT(ioService, logger, msg) LOG_MACRO_DO_NOTHING
+#define WARN_STR_DIRECT(ioService, logger, msg) LOG_MACRO_DO_NOTHING
 #endif
 
 #if !defined(LOG_DISABLE_ERROR)
-#define LOG_ERROR(ioService, logger, msg) LOG_MACRO_WRAPPER(ioService, logger, msg, Error)
-#define LOG_ERROR_STR(ioService, logger, msg) LOG_MACRO_STR_WRAPPER(ioService, logger, msg, Error)
-#define LOG_ERROR_DIRECT(logger, msg) LOG_MACRO_DIRECT_WRAPPER(logger, msg, Error)
-#define LOG_ERROR_STR_DIRECT(logger, msg) LOG_MACRO_STR_DIRECT_WRAPPER(logger, msg, Error)
+#define ERROR_MSG(ioService, logger, msg) LOG_MACRO_WRAPPER(ioService, logger, msg, Error)
+#define ERROR_STR(ioService, logger, msg) LOG_MACRO_STR_WRAPPER(ioService, logger, msg, Error)
+#define ERROR_MSG_DIRECT(logger, msg) LOG_MACRO_DIRECT_WRAPPER(logger, msg, Error)
+#define ERROR_STR_DIRECT(logger, msg) LOG_MACRO_STR_DIRECT_WRAPPER(logger, msg, Error)
 #else
-#define LOG_ERROR(ioService, logger, msg) LOG_MACRO_DO_NOTHING
-#define LOG_ERROR_STR(ioService, logger, msg) LOG_MACRO_DO_NOTHING
-#define LOG_ERROR_DIRECT(ioService, logger, msg) LOG_MACRO_DO_NOTHING
-#define LOG_ERROR_STR_DIRECT(ioService, logger, msg) LOG_MACRO_DO_NOTHING
+#define ERROR_MSG(ioService, logger, msg) LOG_MACRO_DO_NOTHING
+#define ERROR_STR(ioService, logger, msg) LOG_MACRO_DO_NOTHING
+#define ERROR_MSG_DIRECT(ioService, logger, msg) LOG_MACRO_DO_NOTHING
+#define ERROR_STR_DIRECT(ioService, logger, msg) LOG_MACRO_DO_NOTHING
 #endif
 
 #if !defined(LOG_DISABLE_FATAL)
-#define LOG_FATAL(ioService, logger, msg) LOG_MACRO_WRAPPER(ioService, logger, msg, Fatal)
-#define LOG_FATAL_STR(ioService, logger, msg) LOG_MACRO_STR_WRAPPER(ioService, logger, msg, Fatal)
-#define LOG_FATAL_DIRECT(logger, msg) LOG_MACRO_DIRECT_WRAPPER(logger, msg, Fatal)
-#define LOG_FATAL_STR_DIRECT(logger, msg) LOG_MACRO_STR_DIRECT_WRAPPER(logger, msg, Fatal)
+#define FATAL_MSG(ioService, logger, msg) LOG_MACRO_WRAPPER(ioService, logger, msg, Fatal)
+#define FATAL_STR(ioService, logger, msg) LOG_MACRO_STR_WRAPPER(ioService, logger, msg, Fatal)
+#define FATAL_MSG_DIRECT(logger, msg) LOG_MACRO_DIRECT_WRAPPER(logger, msg, Fatal)
+#define FATAL_STR_DIRECT(logger, msg) LOG_MACRO_STR_DIRECT_WRAPPER(logger, msg, Fatal)
 #else
-#define LOG_FATAL(ioService, logger, msg) LOG_MACRO_DO_NOTHING
-#define LOG_FATAL_STR(ioService, logger, msg) LOG_MACRO_DO_NOTHING
-#define LOG_FATAL_DIRECT(ioService, logger, msg) LOG_MACRO_DO_NOTHING
-#define LOG_FATAL_STR_DIRECT(ioService, logger, msg) LOG_MACRO_DO_NOTHING
+#define FATAL_MSG(ioService, logger, msg) LOG_MACRO_DO_NOTHING
+#define FATAL_STR(ioService, logger, msg) LOG_MACRO_DO_NOTHING
+#define FATAL_MSG_DIRECT(ioService, logger, msg) LOG_MACRO_DO_NOTHING
+#define FATAL_STR_DIRECT(ioService, logger, msg) LOG_MACRO_DO_NOTHING
 #endif

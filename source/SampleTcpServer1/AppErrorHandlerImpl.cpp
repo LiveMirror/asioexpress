@@ -22,7 +22,7 @@ AsioExpress::Error CommonErrorHandler(
   if (error.GetErrorCode() == AsioExpress::ErrorCode::UniqueEventTimeout)
   {
     // Log error.
-    LOG_ERROR_STR(connection.GetIoService(), logger, error.Message());
+    ERROR_STR(connection.GetIoService(), logger, error.Message());
 
     // No error returned back to the server.
     return AsioExpress::Error();
@@ -30,7 +30,7 @@ AsioExpress::Error CommonErrorHandler(
 
   if (error.IsAsioError())
   {
-    LOG_ERROR(connection.GetIoService(), logger, error.Message());
+    ERROR_MSG(connection.GetIoService(), logger, error.Message());
     
     // TODO: we may need API to disconnect the client in the future. 
     // server.Diconnect(messagePortId);

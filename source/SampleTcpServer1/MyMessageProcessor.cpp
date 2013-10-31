@@ -39,12 +39,12 @@ void MyMessageProcessor::operator()(AsioExpress::Error error)
   {
       YIELD 
       {
-        LOG_INFO(GetIoService(), logger, "Sending message back to sender.");
+        INFO_MSG(GetIoService(), logger, "Sending message back to sender.");
         AsyncSend(GetMessagePortId(), GetDataBuffer(), *this);
       }
 
       {
-        LOG_INFO(GetIoService(), logger, "Processor Complete.");
+        INFO_MSG(GetIoService(), logger, "Processor Complete.");
         CallCompletionHandler(error);
         STOP_STATEMENT_DEBUG_TIMER(m_processorId, __FILE__, __LINE__);
       }

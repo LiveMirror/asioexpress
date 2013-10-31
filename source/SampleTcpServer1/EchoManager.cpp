@@ -22,7 +22,7 @@ static void EchoProcessor(
   {
     YIELD
     {
-      LOG_INFO_STR(message.GetIoService(), logger, "Sending message back to sender.");
+      INFO_STR(message.GetIoService(), logger, "Sending message back to sender.");
       message.AsyncSend(
         message.GetMessagePortId(), 
         message.GetDataBuffer(),
@@ -34,7 +34,7 @@ static void EchoProcessor(
     //{
     //}
 
-    LOG_INFO_STR(message.GetIoService(), logger, "Processor Complete.");
+    INFO_STR(message.GetIoService(), logger, "Processor Complete.");
     context.Complete();
   }
 }

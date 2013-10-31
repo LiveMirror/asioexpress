@@ -33,24 +33,24 @@ public:
   {
     std::ostringstream message;
     message << "Client connected; MessagePortId=" << connection.GetMessagePortId();
-    LOG_INFO(connection.GetIoService(), m_logger, message.str());
+    INFO_MSG(connection.GetIoService(), m_logger, message.str());
   }
 
   virtual void ClientDisconnected(AsioExpress::MessagePort::ServerConnection connection, AsioExpress::Error)
   {
     std::ostringstream message;
     message << "Client disconnected; MessagePortId=" << connection.GetMessagePortId();
-    LOG_INFO(connection.GetIoService(), m_logger, message.str());
+    INFO_MSG(connection.GetIoService(), m_logger, message.str());
   }
 
   virtual void AsyncProcessMessage(AsioExpress::MessagePort::ServerMessage serverMessage)
   {
-    LOG_INFO(serverMessage.GetIoService(), m_logger, "Message Recieved.");
+    INFO_MSG(serverMessage.GetIoService(), m_logger, "Message Recieved.");
 
     MyIncomingMessage message;
     message.ParseFromArray(serverMessage.GetDataBuffer()->Get(), serverMessage.GetDataBuffer()->Size());
 
-    LOG_INFO(serverMessage.GetIoService(), m_logger, "Message type:" << message.message_type());
+    INFO_MSG(serverMessage.GetIoService(), m_logger, "Message type:" << message.message_type());
 
     if (message.message_type() == 1)
     {
