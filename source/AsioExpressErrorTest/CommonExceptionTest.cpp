@@ -6,6 +6,8 @@
 
 #include "AsioExpressErrorTest/pch.hpp"
 
+#include <iostream>
+
 #include <boost/test/unit_test.hpp>
 #include <boost/system/error_code.hpp>
 

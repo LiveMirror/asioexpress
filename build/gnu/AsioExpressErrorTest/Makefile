@@ -15,15 +15,15 @@ OBJ_DIR         := ./$(CONFIGURATION)_objs
 OBJ_DIR_EXISTS  := $(OBJ_DIR)/exists 
 BASE_CFLAGS     := -D_GNU_SOURCE -Wall -Werror -std=c++03 -I$(SPATH) -I$(BOOST_INCLUDE) -c
 DBG_CFLAGS      := -g -O0 -D _DEBUG
-REL_CFLAGS      := -O2 -D NDEBUG -fwhole-program
+REL_CFLAGS      := -O3 -D NDEBUG
 
 TARGET  	:= $(OUT_DIR)/$(PROJECT)
 SOURCE_DIR  	:= $(SPATH)/$(PROJECT)
 VPATH           := $(shell find $(SOURCE_DIR) -type d -print)   # folders to search
 INCLUDE_DIRS    := $(SPATH)/AsioExpressConfig $(SPATH)/AsioExpressError
-LIBS            := 
-EXTERN_LIBS     := $(LIB_DIR)/libasioexpresserror.a \
-                   /usr/lib/libboost_unit_test_framework.a /usr/lib/libboost_system.a  -lrt
+
+LIBS            := $(LIB_DIR)/libasioexpresserror.a \
+                   /usr/lib/libboost_unit_test_framework.a /usr/lib/libboost_system.a -lrt
 
 AUTO_SOURCES     := $(shell find $(SOURCE_DIR) -type f -name '*.cpp' ! -name 'Win32*' ! -name 'pch.cpp' -print)
 PLAT_SOURCES     := 
@@ -52,8 +52,8 @@ build: $(TARGET)
 	
 $(TARGET): $(OBJECTS) $(LIBS)
 	mkdir -p $(OUT_DIR)
-	$(LINK) -o $@ $^ $(EXTERN_LIBS) 
-	
+	$(LINK) -o $@ $^ $(LIBS) 
+
 $(OBJ_DIR)/%.o: %.cpp $(INCLUDES) $(OBJ_DIR_EXISTS) 
 	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $< -o $@
 
