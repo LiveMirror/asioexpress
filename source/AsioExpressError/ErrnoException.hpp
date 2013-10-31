@@ -23,9 +23,9 @@ public:
     /// @param errno -- The "errno" error code returned by the failed operation.
     /// @param description -- A text string describing the operation that failed.
     ///
-    ErrnoException(int errno, std::string description) :
+    ErrnoException(int errorCode, std::string description) :
         CommonException(Error(boost::system::error_code(
-                                 errno, 
+                                 errorCode, 
                                  boost::system::generic_category()),
                               AppendCallStack(description)))
     {
