@@ -16,7 +16,7 @@ void Terminate(AsioExpress::Error error)
 {
   try
   {
-    LOG_FATAL_STR_DIRECT(logger, error.Message());
+    FATAL_STR_DIRECT(logger, error.Message());
   }
   catch(...)
   {

@@ -78,7 +78,7 @@ protected:
 
     Message message(msg.str());
 
-    LOG_INFO(m_ioService, m_logger, "Sending message: " << message.GetText());
+    INFO_MSG(m_ioService, m_logger, "Sending message: " << message.GetText());
 
     m_client->AsyncSend(message.GetDataBuffer(), AsioExpress::NullCompletionHandler);
   }

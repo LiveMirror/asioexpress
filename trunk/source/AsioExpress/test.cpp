@@ -262,33 +262,33 @@ void func()
 
   int logInt = 42;
 
-  LOG_TRACE(ioService,logger,"test " << logInt);
-  LOG_TRACE_STR(ioService,logger,"test");
-  LOG_TRACE_DIRECT(logger,"test " << logInt);
-  LOG_TRACE_STR_DIRECT(logger,"test");
+  TRACE_MSG(ioService,logger,"test " << logInt);
+  TRACE_STR(ioService,logger,"test");
+  TRACE_MSG_DIRECT(logger,"test " << logInt);
+  TRACE_STR_DIRECT(logger,"test");
 
-  LOG_DEBUG(ioService,logger,"test " << logInt);
-  LOG_DEBUG_STR(ioService,logger,"test");
-  LOG_DEBUG_DIRECT(logger,"test " << logInt);
-  LOG_DEBUG_STR_DIRECT(logger,"test");
+  DEBUG_MSG(ioService,logger,"test " << logInt);
+  DEBUG_STR(ioService,logger,"test");
+  DEBUG_MSG_DIRECT(logger,"test " << logInt);
+  DEBUG_STR_DIRECT(logger,"test");
 
-  LOG_INFO(ioService,logger,"test " << logInt);
-  LOG_INFO_STR(ioService,logger,"test");
-  LOG_INFO_DIRECT(logger,"test " << logInt);
-  LOG_INFO_STR_DIRECT(logger,"test");
+  INFO_MSG(ioService,logger,"test " << logInt);
+  INFO_STR(ioService,logger,"test");
+  INFO_MSG_DIRECT(logger,"test " << logInt);
+  INFO_STR_DIRECT(logger,"test");
 
-  LOG_WARN(ioService,logger,"test " << logInt);
-  LOG_WARN_STR(ioService,logger,"test");
-  LOG_WARN_DIRECT(logger,"test " << logInt);
-  LOG_WARN_STR_DIRECT(logger,"test");
+  WARN_MSG(ioService,logger,"test " << logInt);
+  WARN_STR(ioService,logger,"test");
+  WARN_MSG_DIRECT(logger,"test " << logInt);
+  WARN_STR_DIRECT(logger,"test");
 
-  LOG_ERROR(ioService,logger,"test " << logInt);
-  LOG_ERROR_STR(ioService,logger,"test");
-  LOG_ERROR_DIRECT(logger,"test " << logInt);
-  LOG_ERROR_STR_DIRECT(logger,"test");
+  ERROR_MSG(ioService,logger,"test " << logInt);
+  ERROR_STR(ioService,logger,"test");
+  ERROR_MSG_DIRECT(logger,"test " << logInt);
+  ERROR_STR_DIRECT(logger,"test");
 
-  LOG_FATAL(ioService,logger,"test " << logInt);
-  LOG_FATAL_STR(ioService,logger,"test");
-  LOG_FATAL_DIRECT(logger,"test " << logInt);
-  LOG_FATAL_STR_DIRECT(logger,"test");
+  FATAL_MSG(ioService,logger,"test " << logInt);
+  FATAL_STR(ioService,logger,"test");
+  FATAL_MSG_DIRECT(logger,"test " << logInt);
+  FATAL_STR_DIRECT(logger,"test");
 }

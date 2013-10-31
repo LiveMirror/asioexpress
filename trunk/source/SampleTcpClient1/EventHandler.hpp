@@ -31,12 +31,12 @@ public:
 
   virtual void ClientConnected(AsioExpress::MessagePort::ClientConnection connection)
   {
-    LOG_INFO_STR(connection.GetIoService(), m_logger, "Client connected.");
+    INFO_STR(connection.GetIoService(), m_logger, "Client connected.");
   }
 
   virtual void ClientDisconnected(AsioExpress::MessagePort::ClientConnection connection, AsioExpress::Error)
   {
-    LOG_INFO_STR(connection.GetIoService(), m_logger, "Client disconnected.");
+    INFO_STR(connection.GetIoService(), m_logger, "Client disconnected.");
     m_reconnectHandler();
   }
 
@@ -46,20 +46,20 @@ public:
 
     message->ParseFromArray(clientMessage.GetDataBuffer()->Get(), clientMessage.GetDataBuffer()->Size());
 
-    LOG_INFO(clientMessage.GetIoService(), m_logger, "Received: " <<  message->GetText());
+    INFO_MSG(clientMessage.GetIoService(), m_logger, "Received: " <<  message->GetText());
 
     clientMessage.CallCompletionHandler(AsioExpress::Error());
   }
 
   virtual AsioExpress::Error ConnectionError(AsioExpress::MessagePort::ClientConnection connection, AsioExpress::Error error)
   {
-    LOG_INFO(connection.GetIoService(), m_logger, "Connection Error: " << error.Message());
+    INFO_MSG(connection.GetIoService(), m_logger, "Connection Error: " << error.Message());
     return m_errorHandler->ConnectionError(connection, error);
   }
 
   virtual AsioExpress::Error MessageError(AsioExpress::MessagePort::ClientMessage message, AsioExpress::Error error)
   {
-    LOG_INFO(message.GetIoService(), m_logger, "Message Error: " << error.Message());
+    INFO_MSG(message.GetIoService(), m_logger, "Message Error: " << error.Message());
     return m_errorHandler->MessageError(message, error);
   }
 
