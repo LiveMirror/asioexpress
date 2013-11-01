@@ -68,7 +68,7 @@ static bool Receive(
         dataBuffer->Resize(recvSize);
         memcpy(dataBuffer->Get(), tempBuffer.Get(), recvSize);
         
-        return true;
+        break;
       }
       else if ( hasTimeout && expiryTime <= nextTimeout )
       {
