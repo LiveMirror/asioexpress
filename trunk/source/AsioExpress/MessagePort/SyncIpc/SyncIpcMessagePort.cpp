@@ -122,7 +122,7 @@ void SyncIpcMessagePort::Send(
     } 
     
   }
-  catch(AsioExpress::CommonException const & e)
+  catch(...)
   {
     Disconnect();
     throw;

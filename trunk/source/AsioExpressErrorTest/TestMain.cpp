@@ -28,6 +28,7 @@ struct GlobalSetup
     ~GlobalSetup()         
     { 
 #ifdef _MSC_VER
+        using namespace AsioExpress;
         StopCallStackService();
 #endif // _MSC_VER
     }

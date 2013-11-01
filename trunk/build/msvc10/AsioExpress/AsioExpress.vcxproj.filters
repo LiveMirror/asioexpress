@@ -8,18 +8,6 @@
     <Filter Include="Source Files\MessagePort">
       <UniqueIdentifier>{f39b05b0-bcd1-4fda-8045-5a8409ec1b1b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\MessagePort\Tcp">
-      <UniqueIdentifier>{37175ff2-fe86-4fe1-b00d-d69f73ed60bb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\MessagePort\Tcp\private">
-      <UniqueIdentifier>{07fd8ef4-296f-42bd-a5c0-6a8bbf6e0afb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\MessagePort\Ipc">
-      <UniqueIdentifier>{569f68b3-a065-42ac-8dec-1da7c134d295}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\MessagePort\Ipc\private">
-      <UniqueIdentifier>{d6d0fc33-5899-4807-96e1-700faf11ead1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\ClientServer">
       <UniqueIdentifier>{310496f9-662b-47ad-b232-aba86f2c8029}</UniqueIdentifier>
     </Filter>
@@ -69,6 +57,24 @@
     <Filter Include="Source Files\Handles">
       <UniqueIdentifier>{e9848293-e30d-40e7-8be0-7d4545b9572c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\MessagePort\Tcp">
+      <UniqueIdentifier>{4dd291ed-7e0f-4b75-9fe4-f8d690fadbd9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\MessagePort\Ipc">
+      <UniqueIdentifier>{2cbef860-759b-4546-85cb-2f2f8da1441f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\MessagePort\SyncIpc">
+      <UniqueIdentifier>{74ba29ac-0745-47d0-a460-848c01ce6eef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\MessagePort\Ipc\private">
+      <UniqueIdentifier>{82c740a2-2df0-4cd7-b0fb-8c38b3c2cecc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\MessagePort\SyncIpc\private">
+      <UniqueIdentifier>{d9b08a9c-5b51-4071-b61d-dcaa866a4f63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\MessagePort\Tcp\private">
+      <UniqueIdentifier>{695fc53c-2829-478f-a4a2-10a75f18d136}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\AsioExpress\CompletionHandler.cpp">
@@ -82,39 +88,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\AsioExpress\test.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\Tcp\TcpErrorCodes.cpp">
-      <Filter>Source Files\MessagePort\Tcp</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\Tcp\private\ProtocolConstants.cpp">
-      <Filter>Source Files\MessagePort\Tcp\private</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\Tcp\private\SetSocketOptions.cpp">
-      <Filter>Source Files\MessagePort\Tcp\private</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\Ipc\MessagePort.cpp">
-      <Filter>Source Files\MessagePort\Ipc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\Ipc\MessagePortAcceptor.cpp">
-      <Filter>Source Files\MessagePort\Ipc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\MessagePortCommandAccept.cpp">
-      <Filter>Source Files\MessagePort\Ipc\private</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\MessagePortCommandConnect.cpp">
-      <Filter>Source Files\MessagePort\Ipc\private</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\MessagePortCommandReceive.cpp">
-      <Filter>Source Files\MessagePort\Ipc\private</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\MessagePortSysMessage.cpp">
-      <Filter>Source Files\MessagePort\Ipc\private</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\ReceiveThread.cpp">
-      <Filter>Source Files\MessagePort\Ipc\private</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\SendThread.cpp">
-      <Filter>Source Files\MessagePort\Ipc\private</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\AsioExpress\ClientServer\MessagePortId.cpp">
       <Filter>Source Files\ClientServer</Filter>
@@ -152,11 +125,53 @@
     <ClCompile Include="..\..\..\source\AsioExpress\InstanceManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\AsioExpress\Platform\DebugMessageWin.cpp">
+      <Filter>Source Files\Platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\IpcCommandAccept.cpp">
+      <Filter>Source Files\MessagePort\Ipc\private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\IpcCommandConnect.cpp">
+      <Filter>Source Files\MessagePort\Ipc\private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\IpcCommandReceive.cpp">
+      <Filter>Source Files\MessagePort\Ipc\private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\IpcReceiveThread.cpp">
+      <Filter>Source Files\MessagePort\Ipc\private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\IpcSendThread.cpp">
+      <Filter>Source Files\MessagePort\Ipc\private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\IpcSysMessage.cpp">
+      <Filter>Source Files\MessagePort\Ipc\private</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\Ipc\IpcErrorCodes.cpp">
       <Filter>Source Files\MessagePort\Ipc</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\AsioExpress\Platform\DebugMessageWin.cpp">
-      <Filter>Source Files\Platform</Filter>
+    <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\Ipc\IpcMessagePort.cpp">
+      <Filter>Source Files\MessagePort\Ipc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\Ipc\IpcMessagePortAcceptor.cpp">
+      <Filter>Source Files\MessagePort\Ipc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\SyncIpc\SyncIpcMessagePort.cpp">
+      <Filter>Source Files\MessagePort\SyncIpc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\SyncIpc\private\SyncIpcCommandConnect.cpp">
+      <Filter>Source Files\MessagePort\SyncIpc\private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\SyncIpc\private\SyncIpcCommandReceive.cpp">
+      <Filter>Source Files\MessagePort\SyncIpc\private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\Tcp\TcpErrorCodes.cpp">
+      <Filter>Source Files\MessagePort\Tcp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\Tcp\private\TcpProtocolConstants.cpp">
+      <Filter>Source Files\MessagePort\Tcp\private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\Tcp\private\TcpSetSocketOptions.cpp">
+      <Filter>Source Files\MessagePort\Tcp\private</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -198,54 +213,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\SendQueue.hpp">
       <Filter>Source Files\MessagePort</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Tcp\EndPoint.hpp">
-      <Filter>Source Files\MessagePort\Tcp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Tcp\private\MessagePort.hpp">
-      <Filter>Source Files\MessagePort\Tcp\private</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Tcp\private\MessagePortAcceptor.hpp">
-      <Filter>Source Files\MessagePort\Tcp\private</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Tcp\private\ProtocolConstants.hpp">
-      <Filter>Source Files\MessagePort\Tcp\private</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Tcp\private\SetSocketOptions.hpp">
-      <Filter>Source Files\MessagePort\Tcp\private</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Tcp\private\SocketPointer.hpp">
-      <Filter>Source Files\MessagePort\Tcp\private</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\EndPoint.hpp">
-      <Filter>Source Files\MessagePort\Ipc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\MessagePort.hpp">
-      <Filter>Source Files\MessagePort\Ipc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\MessagePortAcceptor.hpp">
-      <Filter>Source Files\MessagePort\Ipc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\MessagePortCommandAccept.hpp">
-      <Filter>Source Files\MessagePort\Ipc\private</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\MessagePortCommandConnect.hpp">
-      <Filter>Source Files\MessagePort\Ipc\private</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\MessagePortCommandReceive.hpp">
-      <Filter>Source Files\MessagePort\Ipc\private</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\MessagePortSysMessage.hpp">
-      <Filter>Source Files\MessagePort\Ipc\private</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\MessageQueuePointer.hpp">
-      <Filter>Source Files\MessagePort\Ipc\private</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\ReceiveThread.hpp">
-      <Filter>Source Files\MessagePort\Ipc\private</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\SendThread.hpp">
-      <Filter>Source Files\MessagePort\Ipc\private</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\ClientConnection.hpp">
       <Filter>Source Files\ClientServer</Filter>
@@ -406,18 +373,6 @@
     <ClInclude Include="..\..\..\source\AsioExpress\Testing\AutoCompletionHandler.hpp">
       <Filter>Source Files\Testing</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Tcp\BasicMessagePort.hpp">
-      <Filter>Source Files\MessagePort\Tcp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Tcp\BasicMessagePortAcceptor.hpp">
-      <Filter>Source Files\MessagePort\Tcp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Tcp\private\BasicProtocolReceiver.hpp">
-      <Filter>Source Files\MessagePort\Tcp\private</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Tcp\private\BasicProtocolSender.hpp">
-      <Filter>Source Files\MessagePort\Tcp\private</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\AsioExpress\Timer\BasicRepeatingTimer.hpp">
       <Filter>Source Files\Timer</Filter>
     </ClInclude>
@@ -460,12 +415,6 @@
     <ClInclude Include="..\..\..\source\AsioExpress\InstanceManager.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Tcp\TcpErrorCodes.hpp">
-      <Filter>Source Files\MessagePort\Tcp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\IpcErrorCodes.hpp">
-      <Filter>Source Files\MessagePort\Ipc</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\AsioExpress\Testing\hippomocks.h">
       <Filter>Source Files\Testing</Filter>
     </ClInclude>
@@ -489,6 +438,87 @@
     </ClInclude>
     <ClInclude Include="..\..\..\source\AsioExpress\Platform\DebugMessage.hpp">
       <Filter>Source Files\Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\IpcCommandAccept.hpp">
+      <Filter>Source Files\MessagePort\Ipc\private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\IpcCommandConnect.hpp">
+      <Filter>Source Files\MessagePort\Ipc\private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\IpcCommandReceive.hpp">
+      <Filter>Source Files\MessagePort\Ipc\private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\IpcReceiveThread.hpp">
+      <Filter>Source Files\MessagePort\Ipc\private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\IpcSendThread.hpp">
+      <Filter>Source Files\MessagePort\Ipc\private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\IpcSysMessage.hpp">
+      <Filter>Source Files\MessagePort\Ipc\private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\MessageQueuePointer.hpp">
+      <Filter>Source Files\MessagePort\Ipc\private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\IpcEndPoint.hpp">
+      <Filter>Source Files\MessagePort\Ipc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\IpcErrorCodes.hpp">
+      <Filter>Source Files\MessagePort\Ipc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\IpcMessagePort.hpp">
+      <Filter>Source Files\MessagePort\Ipc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\IpcMessagePortAcceptor.hpp">
+      <Filter>Source Files\MessagePort\Ipc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\SyncIpc\SyncIpcEndPoint.hpp">
+      <Filter>Source Files\MessagePort\SyncIpc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\SyncIpc\SyncIpcMessagePort.hpp">
+      <Filter>Source Files\MessagePort\SyncIpc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\SyncIpc\private\MessageQueuePointer.hpp">
+      <Filter>Source Files\MessagePort\SyncIpc\private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\SyncIpc\private\SyncIpcCommandConnect.hpp">
+      <Filter>Source Files\MessagePort\SyncIpc\private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\SyncIpc\private\SyncIpcCommandReceive.hpp">
+      <Filter>Source Files\MessagePort\SyncIpc\private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Tcp\BasicMessagePort.hpp">
+      <Filter>Source Files\MessagePort\Tcp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Tcp\BasicMessagePortAcceptor.hpp">
+      <Filter>Source Files\MessagePort\Tcp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Tcp\EndPoint.hpp">
+      <Filter>Source Files\MessagePort\Tcp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Tcp\TcpErrorCodes.hpp">
+      <Filter>Source Files\MessagePort\Tcp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Tcp\private\BasicProtocolReceiver.hpp">
+      <Filter>Source Files\MessagePort\Tcp\private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Tcp\private\BasicProtocolSender.hpp">
+      <Filter>Source Files\MessagePort\Tcp\private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Tcp\private\MessagePort.hpp">
+      <Filter>Source Files\MessagePort\Tcp\private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Tcp\private\MessagePortAcceptor.hpp">
+      <Filter>Source Files\MessagePort\Tcp\private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Tcp\private\SocketPointer.hpp">
+      <Filter>Source Files\MessagePort\Tcp\private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Tcp\private\TcpProtocolConstants.hpp">
+      <Filter>Source Files\MessagePort\Tcp\private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Tcp\private\TcpSetSocketOptions.hpp">
+      <Filter>Source Files\MessagePort\Tcp\private</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
