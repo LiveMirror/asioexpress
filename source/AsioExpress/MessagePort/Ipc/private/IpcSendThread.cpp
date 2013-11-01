@@ -7,17 +7,17 @@
 
 #include "AsioExpressConfig/config.hpp"
 #include "AsioExpressError/CatchMacros.hpp"
-#include "AsioExpress/MessagePort/Ipc/private/SendThread.hpp"
-#include "AsioExpress/MessagePort/Ipc/IpcErrorCodes.hpp"
-#include "AsioExpress/MessagePort/Ipc/private/MessagePortSysMessage.hpp"
 #include "AsioExpress/Platform/DebugMessage.hpp"
+#include "AsioExpress/MessagePort/Ipc/IpcErrorCodes.hpp"
+#include "AsioExpress/MessagePort/Ipc/private/IpcSendThread.hpp"
+#include "AsioExpress/MessagePort/Ipc/private/IpcSysMessage.hpp"
 
 namespace AsioExpress {
 namespace MessagePort {
 namespace Ipc {
 
 WIN_DISABLE_WARNINGS_BEGIN(4355)
-SendThread::SendThread(
+IpcSendThread::IpcSendThread(
     boost::asio::io_service & ioService,
     MessageQueuePointer messageQueue) :
   m_ioService(ioService),
@@ -25,17 +25,17 @@ SendThread::SendThread(
   m_isClosing(false),
   m_sendFailed(false),
   m_alertThrown(false),
-  m_thread(boost::bind(&SendThread::SendFunction, this))
+  m_thread(boost::bind(&IpcSendThread::SendFunction, this))
 {
 }
 WIN_DISABLE_WARNINGS_END
 
-SendThread::~SendThread()
+IpcSendThread::~IpcSendThread()
 {
   Close();
 }
 
-void SendThread::AsyncSend(
+void IpcSendThread::AsyncSend(
     DataBufferPointer dataBuffer, 
     unsigned int priority,
     AsioExpress::CompletionHandler completionHandler)
@@ -45,14 +45,14 @@ void SendThread::AsyncSend(
     throw AsioExpress::CommonException(
       AsioExpress::Error(
         ErrorCode::MessageQueueSendFailed,
-        "SendThread(): Message queue send call failed."));
+        "IpcSendThread(): Message queue send call failed."));
   }
 
   if (m_isClosing)
   {
     AsioExpress::Error err(
       boost::asio::error::operation_aborted,
-      "IPC SendThread(): Send was canceled.");
+      "IpcSendThread(): Send was canceled.");
     m_ioService.post(boost::asio::detail::bind_handler(completionHandler, err));
     return;
   }
@@ -76,7 +76,7 @@ void SendThread::AsyncSend(
   }
 }
 
-void SendThread::Close()
+void IpcSendThread::Close()
 {
   m_isClosing = true;
 
@@ -90,7 +90,7 @@ void SendThread::Close()
   m_thread.join();
 }
 
-void SendThread::SendFunction()
+void IpcSendThread::SendFunction()
 {
   boost::unique_lock<boost::mutex> alertLock(m_alertMutex);
 
@@ -113,7 +113,7 @@ void SendThread::SendFunction()
 
   // Send disconnect message.
   //
-  MessagePortSysMessage msg(MessagePortSysMessage::MSG_DISCONNECT);
+  IpcSysMessage msg(IpcSysMessage::MSG_DISCONNECT);
   DataBuffer dataBuffer(msg.RequiredEncodeBufferSize());
   (void)msg.Encode(dataBuffer.Get());
   try
@@ -121,7 +121,7 @@ void SendThread::SendFunction()
     (void)m_messageQueue->try_send(
       dataBuffer.Get(), 
       dataBuffer.Size(), 
-      MessagePortSysMessage::SYS_MSG_PRIORITY);
+      IpcSysMessage::SYS_MSG_PRIORITY);
   }
   catch(boost::interprocess::interprocess_exception &) 
   {    
@@ -129,7 +129,7 @@ void SendThread::SendFunction()
   }
 }
 
-void SendThread::Send()
+void IpcSendThread::Send()
 {
   SendQueue sendQueueCopy;
 
@@ -159,12 +159,12 @@ void SendThread::Send()
       p, end,
       AsioExpress::Error(
         ErrorCode::MessageQueueSendFailed,
-        "SendThread(): Message queue send call failed."));
+        "IpcSendThread(): Message queue send call failed."));
   }
   ASIOEXPRESS_CATCH_ERROR_AND_DO(CallCompletionHandlers(p, end, error))
 }
 
-void SendThread::Send(SendParameters const & parameters)
+void IpcSendThread::Send(SendParameters const & parameters)
 {
   bool successful = m_messageQueue->try_send(
     parameters.dataBuffer->Get(), 
@@ -174,12 +174,12 @@ void SendThread::Send(SendParameters const & parameters)
   if (!successful)
   {
 #ifdef DEBUG_IPC
-    DebugMessage("IPC::MessagePort::AsyncSend: Send error!\n");
+    DebugMessage("IpcMessagePort::AsyncSend: Send error!\n");
 #endif
     CallCompletionHandler(
       parameters.completionHandler,
       ErrorCode::MessageQueueFull,
-      "MessagePort::AsyncSend(): Recipient's message queue is full.");
+      "IpcMessagePort::AsyncSend(): Recipient's message queue is full.");
     return;
   }
 
@@ -188,7 +188,7 @@ void SendThread::Send(SendParameters const & parameters)
     AsioExpress::Error());
 }
 
-void SendThread::CallCompletionHandlers(
+void IpcSendThread::CallCompletionHandlers(
     SendQueue::iterator parameters,
     SendQueue::iterator end,
     AsioExpress::Error error)
@@ -199,7 +199,7 @@ void SendThread::CallCompletionHandlers(
   }
 }
 
-void SendThread::CallCompletionHandler(
+void IpcSendThread::CallCompletionHandler(
     AsioExpress::CompletionHandler completionHandler,
     boost::system::error_code errorCode,
     std::string message)
@@ -207,7 +207,7 @@ void SendThread::CallCompletionHandler(
   CallCompletionHandler(completionHandler, AsioExpress::Error(errorCode, message));
 }
 
-void SendThread::CallCompletionHandler(
+void IpcSendThread::CallCompletionHandler(
     AsioExpress::CompletionHandler completionHandler,
     AsioExpress::Error error)
 {

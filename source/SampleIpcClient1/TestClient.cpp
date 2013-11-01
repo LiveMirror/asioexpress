@@ -10,9 +10,9 @@
 #include "AsioExpress/Error.hpp"
 #include "AsioExpress/NullCompletionHandler.hpp"
 
-#include "AsioExpress/MessagePort/Ipc/EndPoint.hpp"
-#include "AsioExpress/MessagePort/Ipc/MessagePort.hpp"
-#include "AsioExpress/MessagePort/Ipc/MessagePortAcceptor.hpp"
+#include "AsioExpress/MessagePort/Ipc/IpcEndPoint.hpp"
+#include "AsioExpress/MessagePort/Ipc/IpcMessagePort.hpp"
+#include "AsioExpress/MessagePort/Ipc/IpcMessagePortAcceptor.hpp"
 #include "AsioExpress/Timer/StandardRepeatingTimer.hpp"
 
 #include "AsioExpress/ClientServer/MessagePortClient.hpp"
@@ -41,7 +41,7 @@ void int_handler(int)
   ioService.post(shutdown_function); 
 }
 
-typedef AsioExpress::MessagePort::MessagePortClient<AsioExpress::MessagePort::Ipc::MessagePort> ClientType;
+typedef AsioExpress::MessagePort::MessagePortClient<AsioExpress::MessagePort::Ipc::IpcMessagePort> ClientType;
 
 class MyEventHandler : public AsioExpress::MessagePort::ClientEventHandler
 {
@@ -153,7 +153,7 @@ int main(int argc, char* argv[])
 {
   ClientType client(
     ioService, 
-    AsioExpress::MessagePort::Ipc::EndPoint("nowhere"),
+    AsioExpress::MessagePort::Ipc::IpcEndPoint("nowhere"),
     new MyEventHandler(ioService));
   client.Connect();
 

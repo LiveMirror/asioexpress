@@ -7,8 +7,8 @@
 
 #include <boost/asio.hpp>
 #include "AsioExpress/Coroutine.hpp"
-#include "AsioExpress/MessagePort/Ipc/MessagePort.hpp"
-#include "AsioExpress/MessagePort/Ipc/MessagePortAcceptor.hpp"
+#include "AsioExpress/MessagePort/Ipc/IpcMessagePort.hpp"
+#include "AsioExpress/MessagePort/Ipc/IpcMessagePortAcceptor.hpp"
 
 namespace AsioExpress {
 namespace MessagePort {
@@ -16,12 +16,12 @@ namespace Ipc {
 
 class MessagePortCommandReceive;
 
-class MessagePortCommandAccept : private AsioExpress::Coroutine
+class IpcCommandAccept : private AsioExpress::Coroutine
 {
 public:
-  inline MessagePortCommandAccept(
-      MessagePortAcceptor & acceptor, 
-      MessagePort & messagePort,
+  inline IpcCommandAccept(
+      IpcMessagePortAcceptor & acceptor, 
+      IpcMessagePort & messagePort,
       AsioExpress::CompletionHandler completionHandler) :
     m_acceptor(acceptor),
     m_messagePort(messagePort),
@@ -34,7 +34,7 @@ public:
   void operator() (AsioExpress::Error e = AsioExpress::Error());
 
 private:
-  MessagePortCommandAccept & operator=(MessagePortCommandAccept const &);
+  IpcCommandAccept & operator=(IpcCommandAccept const &);
 
   void CallCompletionHandler(
     boost::system::error_code errorCode,
@@ -45,9 +45,9 @@ private:
 
   void WorkTimerExpired(boost::system::error_code errorCode);
 
-  MessagePortAcceptor&                      m_acceptor;   
-  MessagePort&                              m_messagePort;
-  AsioExpress::CompletionHandler           m_completionHandler;
+  IpcMessagePortAcceptor&                   m_acceptor;   
+  IpcMessagePort&                           m_messagePort;
+  AsioExpress::CompletionHandler            m_completionHandler;
   DataBufferPointer                         m_tempBuffer;
   boost::asio::io_service::work             m_work;
   static int                                m_instance;

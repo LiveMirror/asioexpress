@@ -8,8 +8,8 @@
 #include "AsioExpressConfig/config.hpp"
 
 #include "AsioExpress/MessagePort/Ipc/IpcErrorCodes.hpp"
-#include "AsioExpress/MessagePort/Ipc/private/MessagePortCommandReceive.hpp"
-#include "AsioExpress/MessagePort/Ipc/private/MessagePortSysMessage.hpp"
+#include "AsioExpress/MessagePort/Ipc/private/IpcCommandReceive.hpp"
+#include "AsioExpress/MessagePort/Ipc/private/IpcSysMessage.hpp"
 #include "AsioExpress/Yield.hpp" // Enable the pseudo-keywords REENTER, YIELD and FORK.
 #include "AsioExpress/Platform/DebugMessage.hpp"
 
@@ -17,7 +17,7 @@ namespace AsioExpress {
 namespace MessagePort {
 namespace Ipc {
 
-void MessagePortCommandReceive::operator() (AsioExpress::Error e)
+void IpcCommandReceive::operator() (AsioExpress::Error e)
 {
   if (e)
   {
@@ -33,7 +33,7 @@ void MessagePortCommandReceive::operator() (AsioExpress::Error e)
     //
        
 #ifdef DEBUG_IPC
-      DebugMessage("MessagePortCommandReceive: Waiting to receive message.\n");
+      DebugMessage("IpcCommandReceive: Waiting to receive message.\n");
 #endif
 
     YIELD 
@@ -47,17 +47,17 @@ void MessagePortCommandReceive::operator() (AsioExpress::Error e)
     // Step 2 - If this is a standard message port, check for a disconnect message
     //
 
-    if ( *m_priority == MessagePortSysMessage::SYS_MSG_PRIORITY )
+    if ( *m_priority == IpcSysMessage::SYS_MSG_PRIORITY )
     {
-      MessagePortSysMessage msg;
+      IpcSysMessage msg;
       msg.Decode(m_dataBuffer->Get());
 
-      if ( msg.GetMessageType() == MessagePortSysMessage::MSG_DISCONNECT )
+      if ( msg.GetMessageType() == IpcSysMessage::MSG_DISCONNECT )
       {
         // This is a disconnect message; return an error.
 
 #ifdef DEBUG_IPC
-      DebugMessage("MessagePortCommandReceive: A disconnect message was received.\n");
+      DebugMessage("IpcCommandReceive: A disconnect message was received.\n");
 #endif
 
         AsioExpress::Error err(
@@ -72,7 +72,7 @@ void MessagePortCommandReceive::operator() (AsioExpress::Error e)
     // Step 3 - Receive was successful, invoke the callback.
     //
 #ifdef DEBUG_IPC
-      DebugMessage("MessagePortCommandReceive: Message received.\n");
+      DebugMessage("IpcCommandReceive: Message received.\n");
 #endif
 
     m_ioService.post(boost::asio::detail::bind_handler(m_completionHandler, AsioExpress::Error()));

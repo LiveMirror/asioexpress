@@ -10,9 +10,9 @@
 #include <boost/random.hpp>
 
 #include "AsioExpress/MessagePort/Ipc/IpcErrorCodes.hpp"
-#include "AsioExpress/MessagePort/Ipc/private/MessagePortCommandConnect.hpp"
-#include "AsioExpress/MessagePort/Ipc/private/MessagePortSysMessage.hpp"
-#include "AsioExpress/MessagePort/Ipc/private/MessagePortCommandReceive.hpp"
+#include "AsioExpress/MessagePort/Ipc/private/IpcCommandConnect.hpp"
+#include "AsioExpress/MessagePort/Ipc/private/IpcSysMessage.hpp"
+#include "AsioExpress/MessagePort/Ipc/private/IpcCommandReceive.hpp"
 #include "AsioExpress/Yield.hpp" // Enable the pseudo-keywords REENTER, YIELD and FORK.
 #include "AsioExpress/Platform/DebugMessage.hpp"
 
@@ -25,7 +25,7 @@ namespace AsioExpress {
 namespace MessagePort {
 namespace Ipc {
 
-void MessagePortCommandConnect::operator() (AsioExpress::Error e)
+void IpcCommandConnect::operator() (AsioExpress::Error e)
 {
   if (e)
   {
@@ -39,7 +39,7 @@ void MessagePortCommandConnect::operator() (AsioExpress::Error e)
     // C2360: initialization of 'serverQueueName' is skipped by 'case' label
     {    
 #ifdef DEBUG_IPC
-      DebugMessage("MessagePortCommandConnect: Finding new message queue ID.\n");
+      DebugMessage("IpcCommandConnect: Finding new message queue ID.\n");
 #endif
 
       m_messagePort.Disconnect();
@@ -87,7 +87,7 @@ void MessagePortCommandConnect::operator() (AsioExpress::Error e)
       // Step 2 - Create the message queues for client & server
       //
 #ifdef DEBUG_IPC
-      DebugMessage("MessagePortCommandConnect: Create new message queues.\n");
+      DebugMessage("IpcCommandConnect: Create new message queues.\n");
 #endif
 
       try {
@@ -95,13 +95,13 @@ void MessagePortCommandConnect::operator() (AsioExpress::Error e)
         m_messagePort.m_sendMessageQueueName = serverQueueName;
         m_messagePort.m_recvMessageQueue.reset(new boost::interprocess::message_queue(boost::interprocess::create_only, m_messagePort.m_recvMessageQueueName.c_str(), m_endPoint.GetMaxNumMsg(), m_endPoint.GetMaxMsgSize()));
         m_messagePort.m_sendMessageQueue.reset(new boost::interprocess::message_queue(boost::interprocess::create_only, m_messagePort.m_sendMessageQueueName.c_str(), m_endPoint.GetMaxNumMsg(), m_endPoint.GetMaxMsgSize()));
-        m_messagePort.m_receiveThread.reset(new ReceiveThread(m_messagePort.m_ioService, m_messagePort.m_recvMessageQueue));
-        m_messagePort.m_sendThread.reset(new SendThread(m_messagePort.m_ioService, m_messagePort.m_sendMessageQueue));
+        m_messagePort.m_receiveThread.reset(new IpcReceiveThread(m_messagePort.m_ioService, m_messagePort.m_recvMessageQueue));
+        m_messagePort.m_sendThread.reset(new IpcSendThread(m_messagePort.m_ioService, m_messagePort.m_sendMessageQueue));
       }
       catch(boost::interprocess::interprocess_exception& ex) 
       {
 #ifdef DEBUG_IPC
-      DebugMessage("MessagePortCommandConnect: Unable to create client/server message queues!\n");
+      DebugMessage("IpcCommandConnect: Unable to create client/server message queues!\n");
 #endif
         m_messagePort.Disconnect();
         AsioExpress::Error err(
@@ -119,7 +119,7 @@ void MessagePortCommandConnect::operator() (AsioExpress::Error e)
       try {
         boost::interprocess::message_queue acceptor(boost::interprocess::open_only, m_endPoint.GetEndPoint().c_str());
 
-        MessagePortSysMessage msg(MessagePortSysMessage::MSG_CONNECT);
+        IpcSysMessage msg(IpcSysMessage::MSG_CONNECT);
         msg.AddParam(m_messagePort.m_recvMessageQueueName);
         msg.AddParam(m_messagePort.m_sendMessageQueueName);
 
@@ -127,12 +127,12 @@ void MessagePortCommandConnect::operator() (AsioExpress::Error e)
         int len = msg.Encode(buf);
 
 #ifdef DEBUG_IPC
-      DebugMessage("MessagePortCommandConnect: Sending connect message.\n");
+      DebugMessage("IpcCommandConnect: Sending connect message.\n");
 #endif
-        if ( !acceptor.try_send(buf, len, MessagePortSysMessage::SYS_MSG_PRIORITY) )
+        if ( !acceptor.try_send(buf, len, IpcSysMessage::SYS_MSG_PRIORITY) )
         {
 #ifdef DEBUG_IPC
-      DebugMessage("MessagePortCommandConnect: Error sending connect message!\n");
+      DebugMessage("IpcCommandConnect: Error sending connect message!\n");
 #endif
           m_messagePort.Disconnect();
           AsioExpress::Error err(
@@ -158,28 +158,28 @@ void MessagePortCommandConnect::operator() (AsioExpress::Error e)
     //
 
 #ifdef DEBUG_IPC
-      DebugMessage("MessagePortCommandConnect: Waiting for ACK message.\n");
+      DebugMessage("IpcCommandConnect: Waiting for ACK message.\n");
 #endif
 
     YIELD 
-      MessagePortCommandReceive(m_messagePort.m_ioService,
-                                m_messagePort.m_receiveThread,
-                                m_messagePort.m_recvMessageQueue,
-                                m_dataBuffer,
-                                *this,
-                                8000)();
+      IpcCommandReceive(m_messagePort.m_ioService,
+                        m_messagePort.m_receiveThread,
+                        m_messagePort.m_recvMessageQueue,
+                        m_dataBuffer,
+                        *this,
+                        8000)();
 
     //
     // Step 5 - Validate the connection acknowledgement
     //
 
-    MessagePortSysMessage msg2;
+    IpcSysMessage msg2;
     msg2.Decode(m_dataBuffer->Get());
     
-    if ( msg2.GetMessageType() != MessagePortSysMessage::MSG_CONNECT_ACK )
+    if ( msg2.GetMessageType() != IpcSysMessage::MSG_CONNECT_ACK )
     {
 #ifdef DEBUG_IPC
-      DebugMessage("MessagePortCommandConnect: Invalid CONNECT-ACK response from server!\n");
+      DebugMessage("IpcCommandConnect: Invalid CONNECT-ACK response from server!\n");
 #endif
       m_messagePort.Disconnect();
       AsioExpress::Error err(
@@ -191,7 +191,7 @@ void MessagePortCommandConnect::operator() (AsioExpress::Error e)
 
     // Success
 #ifdef DEBUG_IPC
-      DebugMessage("MessagePortCommandConnect: Connected.\n");
+      DebugMessage("IpcCommandConnect: Connected.\n");
 #endif
 
     m_messagePort.m_ioService.post(boost::asio::detail::bind_handler(m_completionHandler, AsioExpress::Error()));

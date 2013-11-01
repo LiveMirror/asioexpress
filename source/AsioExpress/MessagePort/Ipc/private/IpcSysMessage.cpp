@@ -9,19 +9,19 @@
 
 #include "AsioExpressConfig/config.hpp"
 
-#include "AsioExpress/MessagePort/Ipc/private/MessagePortSysMessage.hpp"
+#include "AsioExpress/MessagePort/Ipc/private/IpcSysMessage.hpp"
 
 namespace AsioExpress {
 namespace MessagePort {
 namespace Ipc {
 
 
-const char* MessagePortSysMessage::MSG_CONNECT      = "CONNECT";
-const char* MessagePortSysMessage::MSG_CONNECT_ACK  = "CONN-ACK";
-const char* MessagePortSysMessage::MSG_DISCONNECT   = "DISCONN";
+const char* IpcSysMessage::MSG_CONNECT      = "CONNECT";
+const char* IpcSysMessage::MSG_CONNECT_ACK  = "CONN-ACK";
+const char* IpcSysMessage::MSG_DISCONNECT   = "DISCONN";
 
 
-const std::string& MessagePortSysMessage::GetParam(int idx) const
+const std::string& IpcSysMessage::GetParam(int idx) const
 {
   if ( idx < 0 || idx >= GetNumParams() )
     return m_dummy;
@@ -30,7 +30,7 @@ const std::string& MessagePortSysMessage::GetParam(int idx) const
 }
 
 
-bool MessagePortSysMessage::Decode(void* data)
+bool IpcSysMessage::Decode(void* data)
 {
   ClearParams();
   std::string tmp;
@@ -60,7 +60,7 @@ bool MessagePortSysMessage::Decode(void* data)
 }
 
 
-int MessagePortSysMessage::Encode(void* buffer)
+int IpcSysMessage::Encode(void* buffer)
 {
   char* ptr = (char*) buffer;
 
@@ -90,7 +90,7 @@ int MessagePortSysMessage::Encode(void* buffer)
 }
 
 
-int MessagePortSysMessage::RequiredEncodeBufferSize()
+int IpcSysMessage::RequiredEncodeBufferSize()
 {
   int size = 8 + sizeof(uint32_t);
 
