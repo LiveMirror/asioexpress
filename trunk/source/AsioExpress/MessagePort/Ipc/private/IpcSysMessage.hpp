@@ -11,7 +11,7 @@ namespace AsioExpress {
 namespace MessagePort {
 namespace Ipc {
 
-class MessagePortSysMessage
+class IpcSysMessage
 {
 public:
   static const char* MSG_CONNECT;
@@ -21,7 +21,7 @@ public:
   static const unsigned int SYS_MSG_PRIORITY = 10;
 
 public:
-  inline MessagePortSysMessage(const std::string& messageType = "")
+  inline IpcSysMessage(const std::string& messageType = "")
     : m_messageType(messageType)
   { }
 

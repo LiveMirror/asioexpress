@@ -6,7 +6,7 @@
 #include "AsioExpress/pch.hpp"
 
 #include "AsioExpress/MessagePort/Tcp/TcpErrorCodes.hpp"
-#include "AsioExpress/MessagePort/Tcp/private/SetSocketOptions.hpp"
+#include "AsioExpress/MessagePort/Tcp/private/TcpSetSocketOptions.hpp"
 
 #ifdef _MSC_VER
 

@@ -10,30 +10,30 @@
 #include "AsioExpressError/EcToErrorAdapter.hpp"
 #include "AsioExpress/MessagePort/DataBuffer.hpp"
 #include "AsioExpress/CompletionHandler.hpp"
-#include "AsioExpress/MessagePort/Ipc/EndPoint.hpp"
+#include "AsioExpress/MessagePort/Ipc/IpcEndPoint.hpp"
 #include "AsioExpress/MessagePort/Ipc/private/MessageQueuePointer.hpp"
-#include "AsioExpress/MessagePort/Ipc/private/ReceiveThread.hpp"
-#include "AsioExpress/MessagePort/Ipc/private/SendThread.hpp"
+#include "AsioExpress/MessagePort/Ipc/private/IpcReceiveThread.hpp"
+#include "AsioExpress/MessagePort/Ipc/private/IpcSendThread.hpp"
 
 namespace AsioExpress {
 namespace MessagePort {
 namespace Ipc {
 
-class MessagePort
+class IpcMessagePort
 {
 private:
-  friend class MessagePortCommandConnect;
-  friend class MessagePortCommandAccept;
+  friend class IpcCommandConnect;
+  friend class IpcCommandAccept;
 
 public:
-  typedef EndPoint EndPointType;
+  typedef IpcEndPoint EndPointType;
 
 public:
-  MessagePort(boost::asio::io_service & ioService);
-  ~MessagePort();
+  IpcMessagePort(boost::asio::io_service & ioService);
+  ~IpcMessagePort();
 
   void AsyncConnect(
-      EndPoint endPoint, 
+      IpcEndPoint endPoint, 
       AsioExpress::CompletionHandler completionHandler);
 
   void AsyncSend(
@@ -53,7 +53,7 @@ public:
   inline const std::string& GetRemoteID() const { return m_sendMessageQueueName; }
 
 private:
-  MessagePort & operator=(MessagePort const &);
+  IpcMessagePort & operator=(IpcMessagePort const &);
   AsioExpress::Error SetupWithMessageQueues(const std::string& sendQueue, const std::string& recvQueue);
 
 private:
@@ -62,8 +62,8 @@ private:
   std::string                             m_sendMessageQueueName;
   MessageQueuePointer                     m_recvMessageQueue;
   std::string                             m_recvMessageQueueName;
-  ReceiveThreadPointer                    m_receiveThread;
-  SendThreadPointer                       m_sendThread;
+  IpcReceiveThreadPointer                 m_receiveThread;
+  IpcSendThreadPointer                    m_sendThread;
 };
 
 

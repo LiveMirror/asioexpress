@@ -7,20 +7,20 @@
 
 #include <boost/asio.hpp>
 #include "AsioExpress/Coroutine.hpp"
-#include "AsioExpress/MessagePort/Ipc/MessagePort.hpp"
+#include "AsioExpress/MessagePort/Ipc/IpcMessagePort.hpp"
 
 namespace AsioExpress {
 namespace MessagePort {
 namespace Ipc {
 
 
-class MessagePortCommandConnect : private AsioExpress::Coroutine
+class IpcCommandConnect : private AsioExpress::Coroutine
 {
 public:
   static int const LowConnectionId = 1;
   static int const HighConnectionId = 99;
 
-  inline MessagePortCommandConnect(const EndPoint& endPoint, MessagePort& messagePort, AsioExpress::CompletionHandler completionHandler)
+  inline IpcCommandConnect(const IpcEndPoint& endPoint, IpcMessagePort& messagePort, AsioExpress::CompletionHandler completionHandler)
     : m_endPoint(endPoint),
       m_messagePort(messagePort),
       m_completionHandler(completionHandler),
@@ -31,16 +31,16 @@ public:
   void operator() (AsioExpress::Error e = AsioExpress::Error());
 
 private:
-  inline static std::string IntToString(int n)   { std::stringstream ss; std::string str; ss << n; ss >> str; return str; }
+inline static std::string IntToString(int n)   { std::stringstream ss; std::string str; ss << n; ss >> str; return str; }
 
 private:
-  MessagePortCommandConnect & operator=(MessagePortCommandConnect const &);
+  IpcCommandConnect & operator=(IpcCommandConnect const &);
 
-  EndPoint                                  m_endPoint;                       
-  MessagePort&                              m_messagePort;
-  AsioExpress::CompletionHandler           m_completionHandler;
-  AsioExpress::MessagePort::DataBufferPointer    m_dataBuffer;
-  boost::asio::io_service::work             m_work;
+  IpcEndPoint                                   m_endPoint;                       
+  IpcMessagePort&                               m_messagePort;
+  AsioExpress::CompletionHandler                m_completionHandler;
+  AsioExpress::MessagePort::DataBufferPointer   m_dataBuffer;
+  boost::asio::io_service::work                 m_work;
 };
 
 

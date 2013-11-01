@@ -10,6 +10,7 @@ default:
 	$(MAKE) -C SampleTcpClient1 $(BUILD_TARGET)
 	$(MAKE) -C SampleIpcServer1 $(BUILD_TARGET)
 	$(MAKE) -C SampleIpcClient1 $(BUILD_TARGET)
+	$(MAKE) -C SampleIpcClient2 $(BUILD_TARGET)
 
 .PHONY: all
 all: 

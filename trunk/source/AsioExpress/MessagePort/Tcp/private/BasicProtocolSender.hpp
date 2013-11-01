@@ -13,7 +13,7 @@
 
 #include "AsioExpress/MessagePort/DataBuffer.hpp"
 #include "AsioExpress/MessagePort/Tcp/private/SocketPointer.hpp"
-#include "AsioExpress/MessagePort/Tcp/private/ProtocolConstants.hpp"
+#include "AsioExpress/MessagePort/Tcp/private/TcpProtocolConstants.hpp"
 #include "AsioExpress/Yield.hpp" // Enable the pseudo-keywords REENTER, YIELD and FORK.
 
 namespace AsioExpress {

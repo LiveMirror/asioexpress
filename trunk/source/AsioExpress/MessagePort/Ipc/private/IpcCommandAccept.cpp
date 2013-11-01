@@ -7,9 +7,9 @@
 
 #include "AsioExpressConfig/config.hpp"
 
-#include "AsioExpress/MessagePort/Ipc/private/MessagePortCommandAccept.hpp"
-#include "AsioExpress/MessagePort/Ipc/private/MessagePortSysMessage.hpp"
-#include "AsioExpress/MessagePort/Ipc/private/MessagePortCommandReceive.hpp"
+#include "AsioExpress/MessagePort/Ipc/private/IpcCommandAccept.hpp"
+#include "AsioExpress/MessagePort/Ipc/private/IpcSysMessage.hpp"
+#include "AsioExpress/MessagePort/Ipc/private/IpcCommandReceive.hpp"
 #include "AsioExpress/MessagePort/Ipc/IpcErrorCodes.hpp"
 #include "AsioExpress/Yield.hpp" // Enable the pseudo-keywords REENTER, YIELD and FORK.
 #include "AsioExpress/Platform/DebugMessage.hpp"
@@ -18,7 +18,7 @@ namespace AsioExpress {
 namespace MessagePort {
 namespace Ipc {
 
-void MessagePortCommandAccept::operator() (AsioExpress::Error e)
+void IpcCommandAccept::operator() (AsioExpress::Error e)
 {
   if (e)
   {
@@ -36,14 +36,14 @@ void MessagePortCommandAccept::operator() (AsioExpress::Error e)
     YIELD 
     {
 #ifdef DEBUG_IPC
-      DebugMessage("MessagePortCommandAccept: Waiting for connect message.\n");
+      DebugMessage("IpcCommandAccept: Waiting for connect message.\n");
 #endif
 
-      MessagePortCommandReceive(m_acceptor.m_ioService,
-                                m_acceptor.m_receiveThread,
-                                m_acceptor.m_messageQueue,
-                                m_tempBuffer,
-                                *this)();
+      IpcCommandReceive(m_acceptor.m_ioService,
+                        m_acceptor.m_receiveThread,
+                        m_acceptor.m_messageQueue,
+                        m_tempBuffer,
+                        *this)();
     }
 
     // Need to start a block here to avoid errors like:
@@ -53,13 +53,13 @@ void MessagePortCommandAccept::operator() (AsioExpress::Error e)
       // Step 2 - Process the message and check it's the right type
       //
 
-      MessagePortSysMessage msg;
+      IpcSysMessage msg;
       msg.Decode(m_tempBuffer->Get());
       
-      if ( msg.GetMessageType() != MessagePortSysMessage::MSG_CONNECT || msg.GetNumParams() != 2 )
+      if ( msg.GetMessageType() != IpcSysMessage::MSG_CONNECT || msg.GetNumParams() != 2 )
       {
 #ifdef DEBUG_IPC
-        DebugMessage("MessagePortCommandAccept: Invalid CONNECT command recieved!\n");
+        DebugMessage("IpcCommandAccept: Invalid CONNECT command recieved!\n");
 #endif
 
         CallCompletionHandler(
@@ -73,14 +73,14 @@ void MessagePortCommandAccept::operator() (AsioExpress::Error e)
       //
 
 #ifdef DEBUG_IPC
-      DebugMessage("MessagePortCommandAccept: Connect message received. Setting up message queues...\n");
+      DebugMessage("IpcCommandAccept: Connect message received. Setting up message queues...\n");
 #endif
 
       AsioExpress::Error err = m_messagePort.SetupWithMessageQueues(msg.GetParam(0), msg.GetParam(1));
       if ( err )
       {
 #ifdef DEBUG_IPC
-        DebugMessage("MessagePortCommandAccept: Error setting up message queues!\n");
+        DebugMessage("IpcCommandAccept: Error setting up message queues!\n");
 #endif
         CallCompletionHandler(err);
         return;
@@ -90,18 +90,18 @@ void MessagePortCommandAccept::operator() (AsioExpress::Error e)
       // Step 4 - Send a connection ACK and return success
       //
 
-      MessagePortSysMessage msgack(MessagePortSysMessage::MSG_CONNECT_ACK);
+      IpcSysMessage msgack(IpcSysMessage::MSG_CONNECT_ACK);
       int len = msgack.Encode(m_tempBuffer->Get());
       
       try 
       {
 #ifdef DEBUG_IPC
-        DebugMessage("MessagePortCommandAccept: Sending connection ACK.\n");
+        DebugMessage("IpcCommandAccept: Sending connection ACK.\n");
 #endif
-        if ( !m_messagePort.m_sendMessageQueue->try_send(m_tempBuffer->Get(), len, MessagePortSysMessage::SYS_MSG_PRIORITY) )
+        if ( !m_messagePort.m_sendMessageQueue->try_send(m_tempBuffer->Get(), len, IpcSysMessage::SYS_MSG_PRIORITY) )
         {
 #ifdef DEBUG_IPC
-        DebugMessage("MessagePortCommandAccept: Error sending connection ACK!\n");
+        DebugMessage("IpcCommandAccept: Error sending connection ACK!\n");
 #endif
           m_messagePort.Disconnect();
           CallCompletionHandler(
@@ -123,14 +123,14 @@ void MessagePortCommandAccept::operator() (AsioExpress::Error e)
   }
 }
 
-void MessagePortCommandAccept::CallCompletionHandler(
+void IpcCommandAccept::CallCompletionHandler(
     boost::system::error_code errorCode,
     std::string message)
 {
   CallCompletionHandler(AsioExpress::Error(errorCode, message));
 }
 
-void MessagePortCommandAccept::CallCompletionHandler(
+void IpcCommandAccept::CallCompletionHandler(
     AsioExpress::Error err)
 {
   m_acceptor.m_ioService.post(boost::asio::detail::bind_handler(m_completionHandler, err));

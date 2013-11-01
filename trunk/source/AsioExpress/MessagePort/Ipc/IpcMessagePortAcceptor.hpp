@@ -7,46 +7,46 @@
 
 #include <boost/asio.hpp>
 #include <boost/interprocess/ipc/message_queue.hpp>
-#include "AsioExpress/MessagePort/Ipc/MessagePort.hpp"
+#include "AsioExpress/MessagePort/Ipc/IpcMessagePort.hpp"
 #include "AsioExpress/CompletionHandler.hpp"
 #include "AsioExpress/MessagePort/Ipc/private/MessageQueuePointer.hpp"
-#include "AsioExpress/MessagePort/Ipc/private/ReceiveThread.hpp"
+#include "AsioExpress/MessagePort/Ipc/private/IpcReceiveThread.hpp"
 
 namespace AsioExpress {
 namespace MessagePort {
 namespace Ipc {
 
-class MessagePortAcceptor
+class IpcMessagePortAcceptor
 {
 private:
-  friend class MessagePortCommandAccept;
+  friend class IpcCommandAccept;
 
 public:
-  typedef MessagePort MessagePortType;
-  typedef EndPoint EndPointType;
+  typedef IpcMessagePort MessagePortType;
+  typedef IpcEndPoint EndPointType;
 
 public:
-  MessagePortAcceptor(
+  IpcMessagePortAcceptor(
     boost::asio::io_service & ioService,
-    EndPoint endPoint);
+    IpcEndPoint endPoint);
 
-  ~MessagePortAcceptor();
+  ~IpcMessagePortAcceptor();
 
   void AsyncAccept(
-      MessagePort & messagePort, 
+      IpcMessagePort & messagePort, 
       AsioExpress::CompletionHandler completionHandler);
 
   void Close();
 
 private:
-  MessagePortAcceptor & operator=(MessagePortAcceptor const &);
+  IpcMessagePortAcceptor & operator=(IpcMessagePortAcceptor const &);
   inline static std::string IntToString(int n)   { std::stringstream ss; std::string str; ss << n; ss >> str; return str; }
 
 private:
   boost::asio::io_service &               m_ioService;
-  EndPoint                                m_endPoint;
+  IpcEndPoint                             m_endPoint;
   MessageQueuePointer                     m_messageQueue;
-  ReceiveThreadPointer                    m_receiveThread;
+  IpcReceiveThreadPointer                 m_receiveThread;
 };
 
 

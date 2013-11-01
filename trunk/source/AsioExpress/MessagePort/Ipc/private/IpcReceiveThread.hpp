@@ -13,63 +13,56 @@ namespace AsioExpress {
 namespace MessagePort {
 namespace Ipc {
 
-class SendThread
+class IpcReceiveThread
 {
 public:
-  SendThread(
+  IpcReceiveThread(
       boost::asio::io_service & ioService,
       MessageQueuePointer messageQueue);
 
-  ~SendThread();
+  ~IpcReceiveThread();
 
-  void AsyncSend(
+  void AsyncReceive(
       DataBufferPointer dataBuffer, 
-      unsigned int priority,
-      AsioExpress::CompletionHandler completionHandler);
+      boost::shared_ptr<unsigned int> priority,
+      AsioExpress::CompletionHandler completionHandler, 
+      int maxMilliseconds = 0);
+
+  void CancelReceive();
 
   void Close();
 
 private:
-  SendThread(SendThread const & );
-  SendThread & operator=(SendThread const &);
+  IpcReceiveThread(IpcReceiveThread const & );
+  IpcReceiveThread & operator=(IpcReceiveThread const &);
 
-  struct SendParameters
+  struct ReceiveParameters
   {
     DataBufferPointer                 dataBuffer;
-    unsigned int                      priority;
+    boost::shared_ptr<unsigned int>   priority;
     AsioExpress::CompletionHandler   completionHandler;
+    int                               maxMilliseconds;
   };
 
-  typedef std::vector<SendParameters> SendQueue;
+  void ReceiveFunction();
 
-  void SendFunction();
-
-  void Send();
-
-  void Send(SendParameters const & parameters);
-
-  void CallCompletionHandlers(
-    SendQueue::iterator parameters,
-    SendQueue::iterator end,
-    AsioExpress::Error error);
+  void Receive();
 
   void CallCompletionHandler(
-    AsioExpress::CompletionHandler completionHandler,
     boost::system::error_code errorCode,
     std::string message);
 
   void CallCompletionHandler(
-    AsioExpress::CompletionHandler completionHandler,
-    AsioExpress::Error error);
+    AsioExpress::Error err);
 
   boost::asio::io_service &   m_ioService;
   MessageQueuePointer         m_messageQueue;
 
+  bool                        m_isReceiving; // only set by thread function
+  bool                        m_isCanceled;  // only read by thread function
   bool                        m_isClosing;   // only read by thread function
-  bool                        m_sendFailed;
 
-  SendQueue                   m_sendQueue;
-  boost::mutex                m_sendQueueMutex;
+  ReceiveParameters           m_parameters;
 
   boost::mutex                m_alertMutex;
   boost::condition_variable   m_alert;
@@ -78,7 +71,7 @@ private:
   boost::thread               m_thread;
 };
 
-typedef boost::shared_ptr<SendThread> SendThreadPointer;
+typedef boost::shared_ptr<IpcReceiveThread> IpcReceiveThreadPointer;
 
 } // namespace Ipc
 } // namespace MessagePort

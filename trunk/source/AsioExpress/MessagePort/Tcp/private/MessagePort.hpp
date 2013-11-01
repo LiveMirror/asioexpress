@@ -12,7 +12,7 @@
 #include "AsioExpress/MessagePort/Tcp/TcpErrorCodes.hpp"
 #include "AsioExpress/MessagePort/Tcp/EndPoint.hpp"
 #include "AsioExpress/MessagePort/Tcp/private/SocketPointer.hpp"
-#include "AsioExpress/MessagePort/Tcp/private/SetSocketOptions.hpp"
+#include "AsioExpress/MessagePort/Tcp/private/TcpSetSocketOptions.hpp"
 
 namespace AsioExpress {
 namespace MessagePort {
