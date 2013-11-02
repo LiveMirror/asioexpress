@@ -7,16 +7,16 @@
 #include <boost/asio.hpp>
 #include <csignal>
 
-#include "AsioExpress/MessagePort/SyncIpc/SyncIpcEndPoint.hpp"
-#include "AsioExpress/MessagePort/SyncIpc/SyncIpcMessagePort.hpp"
+#include "AsioExpress/MessagePort/SyncIpc/EndPoint.hpp"
+#include "AsioExpress/MessagePort/SyncIpc/MessagePort.hpp"
 
 void SendMessages()
 {
     using namespace AsioExpress::MessagePort::SyncIpc;
 
-    SyncIpcMessagePort messagePort;
+    MessagePort messagePort;
 
-    messagePort.Connect(SyncIpcEndPoint("nowhere"));
+    messagePort.Connect(EndPoint("nowhere"));
     
     for (int i = 0; i < 10; ++i)
     {

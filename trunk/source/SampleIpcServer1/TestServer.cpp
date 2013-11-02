@@ -8,9 +8,9 @@
 #include <iostream>
 #include <csignal>
 
-#include "AsioExpress/MessagePort/Ipc/IpcEndPoint.hpp"
-#include "AsioExpress/MessagePort/Ipc/IpcMessagePort.hpp"
-#include "AsioExpress/MessagePort/Ipc/IpcMessagePortAcceptor.hpp"
+#include "AsioExpress/MessagePort/Ipc/EndPoint.hpp"
+#include "AsioExpress/MessagePort/Ipc/MessagePort.hpp"
+#include "AsioExpress/MessagePort/Ipc/MessagePortAcceptor.hpp"
 #include "AsioExpress/Error.hpp"
 #include "AsioExpress/ClientServer/MessagePortServer.hpp"
 #include "AsioExpress/ClientServer/MessagePortId.hpp"
@@ -42,7 +42,7 @@ void int_handler(int)
   ioService.post(shutdown_function); 
 }
 
-typedef AsioExpress::MessagePort::MessagePortServer<AsioExpress::MessagePort::Ipc::IpcMessagePortAcceptor> ServerType;
+typedef AsioExpress::MessagePort::MessagePortServer<AsioExpress::MessagePort::Ipc::MessagePortAcceptor> ServerType;
 
 class MyEventHandler : public AsioExpress::MessagePort::ServerEventHandler
 {
@@ -128,7 +128,7 @@ int main(int argc, char* argv[])
   {
     ServerType server(
       ioService, 
-      AsioExpress::MessagePort::Ipc::IpcEndPoint("nowhere"),
+      AsioExpress::MessagePort::Ipc::EndPoint("nowhere"),
       new MyEventHandler);
 
     // Set console control handler to allow server to be stopped.
