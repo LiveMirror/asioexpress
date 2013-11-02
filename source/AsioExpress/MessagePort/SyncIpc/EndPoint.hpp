@@ -5,13 +5,13 @@
 
 #pragma once
 
-#include "AsioExpress/MessagePort/Ipc/IpcEndPoint.hpp"
+#include "AsioExpress/MessagePort/Ipc/EndPoint.hpp"
 
 namespace AsioExpress {
 namespace MessagePort {
 namespace SyncIpc {
 
-typedef AsioExpress::MessagePort::Ipc::IpcEndPoint SyncIpcEndPoint;
+typedef AsioExpress::MessagePort::Ipc::EndPoint EndPoint;
 
 } // namespace Ipc
 } // namespace MessagePort

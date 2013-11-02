@@ -9,21 +9,21 @@
 
 #include "AsioExpressError/CommonException.hpp"
 #include "AsioExpress/Platform/DebugMessage.hpp"
-#include "AsioExpress/MessagePort/Ipc/IpcErrorCodes.hpp"
+#include "AsioExpress/MessagePort/Ipc/ErrorCodes.hpp"
 #include "AsioExpress/MessagePort/Ipc/private/IpcSysMessage.hpp"
-#include "AsioExpress/MessagePort/SyncIpc/SyncIpcMessagePort.hpp"
+#include "AsioExpress/MessagePort/SyncIpc/MessagePort.hpp"
 #include "AsioExpress/MessagePort/SyncIpc/private/SyncIpcCommandReceive.hpp"
 
 namespace AsioExpress {
 namespace MessagePort {
 namespace SyncIpc {
 
-SyncIpcMessagePort::~SyncIpcMessagePort()
+MessagePort::~MessagePort()
 {
   Disconnect();
 }
 
-void SyncIpcMessagePort::Disconnect()
+void MessagePort::Disconnect()
 {
   using namespace AsioExpress::MessagePort::Ipc;
   
@@ -74,31 +74,31 @@ void SyncIpcMessagePort::Disconnect()
   }
 }
 
-void SyncIpcMessagePort::Connect(
-    SyncIpcEndPoint endPoint)
+void MessagePort::Connect(
+    EndPoint endPoint)
 {
   SyncIpcCommandConnect(endPoint, *this);
 }
 
-void SyncIpcMessagePort::Send(
+void MessagePort::Send(
     AsioExpress::MessagePort::DataBufferPointer buffer)
 {
   using namespace AsioExpress;
     
   // Check that we're connected
 #ifdef DEBUG_IPC
-  DebugMessage("IPC::SyncIpcMessagePort::AsyncSend: Sending message.\n");
+  DebugMessage("IPC::MessagePort::AsyncSend: Sending message.\n");
 #endif
 
   if ( !m_sendMessageQueue )
   {
 #ifdef DEBUG_IPC
-    DebugMessage("IPC::SyncIpcMessagePort::AsyncSend: No connection has been established!\n");
+    DebugMessage("IPC::MessagePort::AsyncSend: No connection has been established!\n");
 #endif
 
     throw CommonException(Error(
           AsioExpress::MessagePort::Ipc::ErrorCode::Disconnected,
-          "SyncIpcMessagePort::Send(): No connection has been established."));
+          "MessagePort::Send(): No connection has been established."));
   }
 
   // Send the message or fail if queue is full
@@ -112,12 +112,12 @@ void SyncIpcMessagePort::Send(
     if (!successful)
     {
   #ifdef DEBUG_IPC
-      DebugMessage("IPC::SyncIpcMessagePort::AsyncSend: Send error!\n");
+      DebugMessage("IPC::MessagePort::AsyncSend: Send error!\n");
   #endif
 
       throw CommonException(Error(
         AsioExpress::MessagePort::Ipc::ErrorCode::MessageQueueFull,
-        "SyncIpcMessagePort::Send(): Recipient's message queue is full."));
+        "MessagePort::Send(): Recipient's message queue is full."));
       return;
     } 
     
@@ -129,13 +129,13 @@ void SyncIpcMessagePort::Send(
   }
 }
     
-void SyncIpcMessagePort::Receive(
+void MessagePort::Receive(
     AsioExpress::MessagePort::DataBufferPointer buffer)
 {
     (void) Receive(buffer, 0);
 }
 
-bool SyncIpcMessagePort::Receive(
+bool MessagePort::Receive(
     AsioExpress::MessagePort::DataBufferPointer buffer,
     int maxMilliseconds)
 {
@@ -147,7 +147,7 @@ bool SyncIpcMessagePort::Receive(
   {
     throw CommonException(Error(
       AsioExpress::MessagePort::Ipc::ErrorCode::Disconnected,
-      "SyncIpcMessagePort::Receive(): No connection has been established."));
+      "MessagePort::Receive(): No connection has been established."));
   }
 
   // Receive the next message & copy to the buffer
@@ -159,7 +159,7 @@ bool SyncIpcMessagePort::Receive(
 }
 
 
-AsioExpress::Error SyncIpcMessagePort::SetupWithMessageQueues(const std::string& sendQueue, const std::string& recvQueue)
+AsioExpress::Error MessagePort::SetupWithMessageQueues(const std::string& sendQueue, const std::string& recvQueue)
 {
   Disconnect();
 
@@ -177,14 +177,14 @@ AsioExpress::Error SyncIpcMessagePort::SetupWithMessageQueues(const std::string&
         boost::system::error_code(
             ex.get_native_error(),
             boost::system::get_system_category()),
-        "SyncIpcMessagePort::SetupWithMessageQueues(): Unable to open client/server message queues.");    
+        "MessagePort::SetupWithMessageQueues(): Unable to open client/server message queues.");    
     return err;
   }
 
   return AsioExpress::Error();
 }
 
-void SyncIpcMessagePort::SetMessagePortOptions()
+void MessagePort::SetMessagePortOptions()
 {
 }
 

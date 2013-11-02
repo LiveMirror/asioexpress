@@ -11,7 +11,7 @@
 #include "AsioExpress/Coroutine.hpp"
 #include "AsioExpress/CompletionHandler.hpp"
 
-#include "AsioExpress/MessagePort/Tcp/TcpErrorCodes.hpp"
+#include "AsioExpress/MessagePort/Tcp/ErrorCodes.hpp"
 #include "AsioExpress/MessagePort/DataBuffer.hpp"
 #include "AsioExpress/MessagePort/Tcp/private/SocketPointer.hpp"
 #include "AsioExpress/MessagePort/Tcp/private/TcpProtocolConstants.hpp"

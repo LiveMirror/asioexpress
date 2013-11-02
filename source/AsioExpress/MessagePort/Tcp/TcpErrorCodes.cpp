@@ -5,7 +5,7 @@
 
 #include "AsioExpress/pch.hpp"
 
-#include "AsioExpress/MessagePort/Tcp/TcpErrorCodes.hpp"
+#include "AsioExpress/MessagePort/Tcp/ErrorCodes.hpp"
 
 namespace AsioExpress {
 namespace MessagePort {

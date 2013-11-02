@@ -8,8 +8,8 @@
 #include "AsioExpressConfig/config.hpp"
 
 #include "AsioExpress/Platform/DebugMessage.hpp"
-#include "AsioExpress/MessagePort/Ipc/IpcErrorCodes.hpp"
-#include "AsioExpress/MessagePort/Ipc/IpcMessagePort.hpp"
+#include "AsioExpress/MessagePort/Ipc/ErrorCodes.hpp"
+#include "AsioExpress/MessagePort/Ipc/MessagePort.hpp"
 #include "AsioExpress/MessagePort/Ipc/private/IpcCommandConnect.hpp"
 #include "AsioExpress/MessagePort/Ipc/private/IpcCommandReceive.hpp"
 
@@ -18,19 +18,19 @@ namespace MessagePort {
 namespace Ipc {
 
 
-IpcMessagePort::IpcMessagePort(boost::asio::io_service & ioService) :
+MessagePort::MessagePort(boost::asio::io_service & ioService) :
   m_ioService(ioService)
 {
 }
 
 
-IpcMessagePort::~IpcMessagePort()
+MessagePort::~MessagePort()
 {
   Disconnect();
 }
 
 
-void IpcMessagePort::Disconnect()
+void MessagePort::Disconnect()
 {
   // Before allowing a disconnect, make sure any threads are completed.
   //
@@ -68,8 +68,8 @@ void IpcMessagePort::Disconnect()
 }
 
 
-void IpcMessagePort::AsyncConnect(
-    IpcEndPoint endPoint, 
+void MessagePort::AsyncConnect(
+    EndPoint endPoint, 
     AsioExpress::CompletionHandler completionHandler)
 {
   IpcCommandConnect(endPoint, 
@@ -78,24 +78,24 @@ void IpcMessagePort::AsyncConnect(
 }
 
 
-void IpcMessagePort::AsyncSend(
+void MessagePort::AsyncSend(
     AsioExpress::MessagePort::DataBufferPointer buffer,
     AsioExpress::CompletionHandler completionHandler)
 {
   // Check that we're connected
 #ifdef DEBUG_IPC
-  DebugMessage("IpcMessagePort::AsyncSend: Sending message.\n");
+  DebugMessage("MessagePort::AsyncSend: Sending message.\n");
 #endif
 
   if ( !m_sendMessageQueue )
   {
 #ifdef DEBUG_IPC
-    DebugMessage("IpcMessagePort::AsyncSend: No connection has been established!\n");
+    DebugMessage("MessagePort::AsyncSend: No connection has been established!\n");
 #endif
 
     AsioExpress::Error err(
       ErrorCode::Disconnected,
-      "IpcMessagePort::AsyncSend(): No connection has been established.");
+      "MessagePort::AsyncSend(): No connection has been established.");
     m_ioService.post(boost::asio::detail::bind_handler(completionHandler, err));
     return;
   }
@@ -115,7 +115,7 @@ void IpcMessagePort::AsyncSend(
   }
 }
 
-void IpcMessagePort::AsyncReceive(
+void MessagePort::AsyncReceive(
     AsioExpress::MessagePort::DataBufferPointer buffer,
     AsioExpress::CompletionHandler completionHandler)
 {
@@ -125,7 +125,7 @@ void IpcMessagePort::AsyncReceive(
   {
     AsioExpress::Error err(
       ErrorCode::Disconnected,
-      "IpcMessagePort::AsyncReceive(): No connection has been established.");
+      "MessagePort::AsyncReceive(): No connection has been established.");
     m_ioService.post(boost::asio::detail::bind_handler(completionHandler, err));
     return;
   }
@@ -141,7 +141,7 @@ void IpcMessagePort::AsyncReceive(
 }
 
 
-AsioExpress::Error IpcMessagePort::SetupWithMessageQueues(const std::string& sendQueue, const std::string& recvQueue)
+AsioExpress::Error MessagePort::SetupWithMessageQueues(const std::string& sendQueue, const std::string& recvQueue)
 {
   Disconnect();
 
@@ -159,14 +159,14 @@ AsioExpress::Error IpcMessagePort::SetupWithMessageQueues(const std::string& sen
     Disconnect();
     AsioExpress::Error err(boost::system::error_code(
       ex.get_native_error(), boost::system::get_system_category()),
-      "IpcMessagePort::SetupWithMessageQueues(): Unable to open client/server message queues.");    
+      "MessagePort::SetupWithMessageQueues(): Unable to open client/server message queues.");    
     return err;
   }
 
   return AsioExpress::Error();
 }
 
-void IpcMessagePort::SetMessagePortOptions()
+void MessagePort::SetMessagePortOptions()
 {
 }
 

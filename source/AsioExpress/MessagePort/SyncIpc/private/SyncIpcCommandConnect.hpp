@@ -6,15 +6,15 @@
 #pragma once
 
 #include <boost/asio.hpp>
-#include "AsioExpress/MessagePort/SyncIpc/SyncIpcMessagePort.hpp"
+#include "AsioExpress/MessagePort/SyncIpc/MessagePort.hpp"
 
 namespace AsioExpress {
 namespace MessagePort {
 namespace SyncIpc {
 
 void MessagePortCommandConnect(
-        SyncIpcEndPoint const & endPoint, 
-        SyncIpcMessagePort & messagePort);
+        EndPoint const & endPoint, 
+        MessagePort & messagePort);
 
 } // namespace SyncIpc
 } // namespace MessagePort

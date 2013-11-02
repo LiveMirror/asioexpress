@@ -146,9 +146,6 @@
     <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\IpcSysMessage.cpp">
       <Filter>Source Files\MessagePort\Ipc\private</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\Ipc\IpcErrorCodes.cpp">
-      <Filter>Source Files\MessagePort\Ipc</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\Ipc\IpcMessagePort.cpp">
       <Filter>Source Files\MessagePort\Ipc</Filter>
     </ClCompile>
@@ -172,6 +169,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\Tcp\private\TcpSetSocketOptions.cpp">
       <Filter>Source Files\MessagePort\Tcp\private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\Ipc\IpcErrorCodes.cpp">
+      <Filter>Source Files\MessagePort\Ipc</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -460,24 +460,6 @@
     <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\MessageQueuePointer.hpp">
       <Filter>Source Files\MessagePort\Ipc\private</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\IpcEndPoint.hpp">
-      <Filter>Source Files\MessagePort\Ipc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\IpcErrorCodes.hpp">
-      <Filter>Source Files\MessagePort\Ipc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\IpcMessagePort.hpp">
-      <Filter>Source Files\MessagePort\Ipc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\IpcMessagePortAcceptor.hpp">
-      <Filter>Source Files\MessagePort\Ipc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\SyncIpc\SyncIpcEndPoint.hpp">
-      <Filter>Source Files\MessagePort\SyncIpc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\SyncIpc\SyncIpcMessagePort.hpp">
-      <Filter>Source Files\MessagePort\SyncIpc</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\SyncIpc\private\MessageQueuePointer.hpp">
       <Filter>Source Files\MessagePort\SyncIpc\private</Filter>
     </ClInclude>
@@ -494,9 +476,6 @@
       <Filter>Source Files\MessagePort\Tcp</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Tcp\EndPoint.hpp">
-      <Filter>Source Files\MessagePort\Tcp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Tcp\TcpErrorCodes.hpp">
       <Filter>Source Files\MessagePort\Tcp</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Tcp\private\BasicProtocolReceiver.hpp">
@@ -519,6 +498,27 @@
     </ClInclude>
     <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Tcp\private\TcpSetSocketOptions.hpp">
       <Filter>Source Files\MessagePort\Tcp\private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\EndPoint.hpp">
+      <Filter>Source Files\MessagePort\Ipc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\ErrorCodes.hpp">
+      <Filter>Source Files\MessagePort\Ipc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\MessagePort.hpp">
+      <Filter>Source Files\MessagePort\Ipc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\MessagePortAcceptor.hpp">
+      <Filter>Source Files\MessagePort\Ipc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\SyncIpc\EndPoint.hpp">
+      <Filter>Source Files\MessagePort\SyncIpc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\SyncIpc\MessagePort.hpp">
+      <Filter>Source Files\MessagePort\SyncIpc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Tcp\ErrorCodes.hpp">
+      <Filter>Source Files\MessagePort\Tcp</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -13,7 +13,7 @@
 #include "AsioExpress/ErrorCodes.hpp"
 #include "AsioExpress/ClientServer/ServerMessage.hpp"
 #include "AsioExpress/ClientServer/ServerEventHandler.hpp"
-#include "AsioExpress/MessagePort/Ipc/IpcErrorCodes.hpp"
+#include "AsioExpress/MessagePort/Ipc/ErrorCodes.hpp"
 #include "AsioExpress/Yield.hpp" // Enable the pseudo-keywords REENTER, YIELD and FORK.
 
 namespace AsioExpress {

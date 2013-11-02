@@ -7,8 +7,8 @@
 
 #include <boost/asio.hpp>
 #include "AsioExpress/Coroutine.hpp"
-#include "AsioExpress/MessagePort/Ipc/IpcMessagePort.hpp"
-#include "AsioExpress/MessagePort/Ipc/IpcMessagePortAcceptor.hpp"
+#include "AsioExpress/MessagePort/Ipc/MessagePort.hpp"
+#include "AsioExpress/MessagePort/Ipc/MessagePortAcceptor.hpp"
 
 namespace AsioExpress {
 namespace MessagePort {

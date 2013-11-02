@@ -7,7 +7,7 @@
 
 #include "AsioExpressConfig/config.hpp"
 
-#include "AsioExpress/MessagePort/Ipc/IpcErrorCodes.hpp"
+#include "AsioExpress/MessagePort/Ipc/ErrorCodes.hpp"
 #include "AsioExpress/MessagePort/Ipc/private/IpcCommandReceive.hpp"
 #include "AsioExpress/MessagePort/Ipc/private/IpcSysMessage.hpp"
 #include "AsioExpress/Yield.hpp" // Enable the pseudo-keywords REENTER, YIELD and FORK.

@@ -9,7 +9,7 @@
 
 #include <boost/random.hpp>
 
-#include "AsioExpress/MessagePort/Ipc/IpcErrorCodes.hpp"
+#include "AsioExpress/MessagePort/Ipc/ErrorCodes.hpp"
 #include "AsioExpress/MessagePort/Ipc/private/IpcCommandConnect.hpp"
 #include "AsioExpress/MessagePort/Ipc/private/IpcSysMessage.hpp"
 #include "AsioExpress/MessagePort/Ipc/private/IpcCommandReceive.hpp"

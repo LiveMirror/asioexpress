@@ -9,7 +9,7 @@
 
 #include "AsioExpressError/CommonException.hpp"
 #include "AsioExpress/Platform/DebugMessage.hpp"
-#include "AsioExpress/MessagePort/Ipc/IpcErrorCodes.hpp"
+#include "AsioExpress/MessagePort/Ipc/ErrorCodes.hpp"
 #include "AsioExpress/MessagePort/Ipc/private/IpcSysMessage.hpp"
 #include "AsioExpress/MessagePort/SyncIpc/private/SyncIpcCommandReceive.hpp"
 
