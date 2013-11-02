@@ -9,7 +9,7 @@
 #include "AsioExpressError/EcToErrorAdapter.hpp"
 #include "AsioExpress/MessagePort/DataBuffer.hpp"
 #include "AsioExpress/MessagePort/SendQueue.hpp"
-#include "AsioExpress/MessagePort/Tcp/TcpErrorCodes.hpp"
+#include "AsioExpress/MessagePort/Tcp/ErrorCodes.hpp"
 #include "AsioExpress/MessagePort/Tcp/EndPoint.hpp"
 #include "AsioExpress/MessagePort/Tcp/private/SocketPointer.hpp"
 #include "AsioExpress/MessagePort/Tcp/private/TcpSetSocketOptions.hpp"

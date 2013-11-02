@@ -9,7 +9,7 @@
 
 #include "AsioExpressError/CatchMacros.hpp"
 #include "AsioExpress/MessagePort/Ipc/private/IpcReceiveThread.hpp"
-#include "AsioExpress/MessagePort/Ipc/IpcErrorCodes.hpp"
+#include "AsioExpress/MessagePort/Ipc/ErrorCodes.hpp"
 
 namespace AsioExpress {
 namespace MessagePort {

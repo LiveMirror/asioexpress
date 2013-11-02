@@ -11,24 +11,24 @@
 #include "AsioExpress/MessagePort/DataBuffer.hpp"
 
 #include "AsioExpress/MessagePort/SyncIpc/private/MessageQueuePointer.hpp"
-#include "AsioExpress/MessagePort/SyncIpc/SyncIpcEndPoint.hpp"
+#include "AsioExpress/MessagePort/SyncIpc/EndPoint.hpp"
 
 namespace AsioExpress {
 namespace MessagePort {
 namespace SyncIpc {
 
-class SyncIpcMessagePort
+class MessagePort
 {
-  friend void SyncIpcCommandConnect(SyncIpcEndPoint const & endPoint, SyncIpcMessagePort & messagePort);
+  friend void SyncIpcCommandConnect(EndPoint const & endPoint, MessagePort & messagePort);
 
 public:
-  typedef SyncIpcEndPoint EndPointType;
+  typedef EndPoint EndPointType;
 
 public:
-  ~SyncIpcMessagePort();
+  ~MessagePort();
 
   void Connect(
-      SyncIpcEndPoint endPoint);
+      EndPoint endPoint);
 
   void Send(
       AsioExpress::MessagePort::DataBufferPointer buffer);
@@ -49,7 +49,7 @@ public:
   inline const std::string& GetRemoteID() const { return m_sendMessageQueueName; }
 
 private:
-  SyncIpcMessagePort & operator=(SyncIpcMessagePort const &);
+  MessagePort & operator=(MessagePort const &);
   AsioExpress::Error SetupWithMessageQueues(const std::string& sendQueue, const std::string& recvQueue);
 
 private:

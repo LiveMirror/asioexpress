@@ -11,17 +11,17 @@ namespace AsioExpress {
 namespace MessagePort {
 namespace Ipc {
 
-class IpcEndPoint
+class EndPoint
 {
 public:
-  IpcEndPoint(std::string messagePortName, std::size_t maxNumMsg = 100, std::size_t maxMsgSize = 1024) :
+  EndPoint(std::string messagePortName, std::size_t maxNumMsg = 100, std::size_t maxMsgSize = 1024) :
     m_messagePortName(messagePortName),
     m_maxNumMsg(maxNumMsg),
     m_maxMsgSize(maxMsgSize)
   {
   }
 
-  IpcEndPoint(const IpcEndPoint& ep)  :
+  EndPoint(const EndPoint& ep)  :
     m_messagePortName(ep.m_messagePortName),
     m_maxNumMsg(ep.m_maxNumMsg),
     m_maxMsgSize(ep.m_maxMsgSize)

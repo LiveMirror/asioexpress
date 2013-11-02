@@ -8,7 +8,7 @@
 #include "AsioExpressConfig/config.hpp"
 #include "AsioExpressError/CatchMacros.hpp"
 #include "AsioExpress/Platform/DebugMessage.hpp"
-#include "AsioExpress/MessagePort/Ipc/IpcErrorCodes.hpp"
+#include "AsioExpress/MessagePort/Ipc/ErrorCodes.hpp"
 #include "AsioExpress/MessagePort/Ipc/private/IpcSendThread.hpp"
 #include "AsioExpress/MessagePort/Ipc/private/IpcSysMessage.hpp"
 
@@ -174,12 +174,12 @@ void IpcSendThread::Send(SendParameters const & parameters)
   if (!successful)
   {
 #ifdef DEBUG_IPC
-    DebugMessage("IpcMessagePort::AsyncSend: Send error!\n");
+    DebugMessage("MessagePort::AsyncSend: Send error!\n");
 #endif
     CallCompletionHandler(
       parameters.completionHandler,
       ErrorCode::MessageQueueFull,
-      "IpcMessagePort::AsyncSend(): Recipient's message queue is full.");
+      "MessagePort::AsyncSend(): Recipient's message queue is full.");
     return;
   }
 

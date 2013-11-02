@@ -7,7 +7,7 @@
 
 #include <boost/asio.hpp>
 #include "AsioExpress/Coroutine.hpp"
-#include "AsioExpress/MessagePort/Ipc/IpcMessagePort.hpp"
+#include "AsioExpress/MessagePort/Ipc/MessagePort.hpp"
 
 namespace AsioExpress {
 namespace MessagePort {
@@ -20,7 +20,7 @@ public:
   static int const LowConnectionId = 1;
   static int const HighConnectionId = 99;
 
-  inline IpcCommandConnect(const IpcEndPoint& endPoint, IpcMessagePort& messagePort, AsioExpress::CompletionHandler completionHandler)
+  inline IpcCommandConnect(const EndPoint& endPoint, MessagePort& messagePort, AsioExpress::CompletionHandler completionHandler)
     : m_endPoint(endPoint),
       m_messagePort(messagePort),
       m_completionHandler(completionHandler),
@@ -36,8 +36,8 @@ inline static std::string IntToString(int n)   { std::stringstream ss; std::stri
 private:
   IpcCommandConnect & operator=(IpcCommandConnect const &);
 
-  IpcEndPoint                                   m_endPoint;                       
-  IpcMessagePort&                               m_messagePort;
+  EndPoint                                      m_endPoint;                       
+  MessagePort&                                  m_messagePort;
   AsioExpress::CompletionHandler                m_completionHandler;
   AsioExpress::MessagePort::DataBufferPointer   m_dataBuffer;
   boost::asio::io_service::work                 m_work;

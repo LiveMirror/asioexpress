@@ -7,8 +7,8 @@
 
 #include <boost/asio.hpp>
 #include "AsioExpress/Coroutine.hpp"
-#include "AsioExpress/MessagePort/Ipc/IpcMessagePort.hpp"
-#include "AsioExpress/MessagePort/Ipc/IpcMessagePortAcceptor.hpp"
+#include "AsioExpress/MessagePort/Ipc/MessagePort.hpp"
+#include "AsioExpress/MessagePort/Ipc/MessagePortAcceptor.hpp"
 
 namespace AsioExpress {
 namespace MessagePort {
@@ -20,8 +20,8 @@ class IpcCommandAccept : private AsioExpress::Coroutine
 {
 public:
   inline IpcCommandAccept(
-      IpcMessagePortAcceptor & acceptor, 
-      IpcMessagePort & messagePort,
+      MessagePortAcceptor & acceptor, 
+      MessagePort & messagePort,
       AsioExpress::CompletionHandler completionHandler) :
     m_acceptor(acceptor),
     m_messagePort(messagePort),
@@ -45,8 +45,8 @@ private:
 
   void WorkTimerExpired(boost::system::error_code errorCode);
 
-  IpcMessagePortAcceptor&                   m_acceptor;   
-  IpcMessagePort&                           m_messagePort;
+  MessagePortAcceptor&                      m_acceptor;   
+  MessagePort&                              m_messagePort;
   AsioExpress::CompletionHandler            m_completionHandler;
   DataBufferPointer                         m_tempBuffer;
   boost::asio::io_service::work             m_work;

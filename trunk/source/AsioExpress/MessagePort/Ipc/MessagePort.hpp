@@ -10,7 +10,7 @@
 #include "AsioExpressError/EcToErrorAdapter.hpp"
 #include "AsioExpress/MessagePort/DataBuffer.hpp"
 #include "AsioExpress/CompletionHandler.hpp"
-#include "AsioExpress/MessagePort/Ipc/IpcEndPoint.hpp"
+#include "AsioExpress/MessagePort/Ipc/EndPoint.hpp"
 #include "AsioExpress/MessagePort/Ipc/private/MessageQueuePointer.hpp"
 #include "AsioExpress/MessagePort/Ipc/private/IpcReceiveThread.hpp"
 #include "AsioExpress/MessagePort/Ipc/private/IpcSendThread.hpp"
@@ -19,21 +19,21 @@ namespace AsioExpress {
 namespace MessagePort {
 namespace Ipc {
 
-class IpcMessagePort
+class MessagePort
 {
 private:
   friend class IpcCommandConnect;
   friend class IpcCommandAccept;
 
 public:
-  typedef IpcEndPoint EndPointType;
+  typedef EndPoint EndPointType;
 
 public:
-  IpcMessagePort(boost::asio::io_service & ioService);
-  ~IpcMessagePort();
+  MessagePort(boost::asio::io_service & ioService);
+  ~MessagePort();
 
   void AsyncConnect(
-      IpcEndPoint endPoint, 
+      EndPoint endPoint, 
       AsioExpress::CompletionHandler completionHandler);
 
   void AsyncSend(
@@ -53,7 +53,7 @@ public:
   inline const std::string& GetRemoteID() const { return m_sendMessageQueueName; }
 
 private:
-  IpcMessagePort & operator=(IpcMessagePort const &);
+  MessagePort & operator=(MessagePort const &);
   AsioExpress::Error SetupWithMessageQueues(const std::string& sendQueue, const std::string& recvQueue);
 
 private:

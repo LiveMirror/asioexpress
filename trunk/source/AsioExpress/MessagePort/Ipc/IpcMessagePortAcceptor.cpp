@@ -6,7 +6,7 @@
 #include "AsioExpress/pch.hpp"
 
 #include "AsioExpressConfig/config.hpp"
-#include "AsioExpress/MessagePort/Ipc/IpcMessagePortAcceptor.hpp"
+#include "AsioExpress/MessagePort/Ipc/MessagePortAcceptor.hpp"
 #include "AsioExpress/MessagePort/Ipc/private/IpcCommandAccept.hpp"
 #include "AsioExpress/MessagePort/Ipc/private/IpcCommandConnect.hpp"
 
@@ -15,9 +15,9 @@ namespace MessagePort {
 namespace Ipc {
 
 
-IpcMessagePortAcceptor::IpcMessagePortAcceptor(
+MessagePortAcceptor::MessagePortAcceptor(
     boost::asio::io_service & ioService,
-    IpcEndPoint endPoint) :
+    EndPoint endPoint) :
   m_ioService(ioService),
   m_endPoint(endPoint)
 {
@@ -46,12 +46,12 @@ IpcMessagePortAcceptor::IpcMessagePortAcceptor(
 }
 
 
-IpcMessagePortAcceptor::~IpcMessagePortAcceptor()
+MessagePortAcceptor::~MessagePortAcceptor()
 {
   Close();
 }
 
-void IpcMessagePortAcceptor::Close()
+void MessagePortAcceptor::Close()
 {
   // Before destroying the acceptor, make sure any receive thread is not running
   if (m_receiveThread)
@@ -63,8 +63,8 @@ void IpcMessagePortAcceptor::Close()
 }
 
 
-void IpcMessagePortAcceptor::AsyncAccept(
-    IpcMessagePort & messagePort, 
+void MessagePortAcceptor::AsyncAccept(
+    MessagePort & messagePort, 
     AsioExpress::CompletionHandler completionHandler)
 {
   IpcCommandAccept(*this, messagePort, completionHandler)();
