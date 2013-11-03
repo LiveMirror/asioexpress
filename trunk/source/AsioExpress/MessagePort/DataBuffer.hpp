@@ -49,6 +49,12 @@ public:
     m_size = newSize;
     m_data = new char [newSize];
   }
+  
+  void Assign(char const *newData, SizeType newSize)
+  {
+      Resize(newSize);
+      memcpy(m_data, newData, newSize);
+  }
 
   bool operator==(DataBuffer const &other) const
   {
