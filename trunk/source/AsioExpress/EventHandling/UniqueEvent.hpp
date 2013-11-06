@@ -26,22 +26,22 @@ namespace AsioExpress {
 ///     individual listener.
 ///   - Events are raised by call to Add.
 ///   - If there is no listener for a raised event then it is not queued for 
-///     reuse. This protects the consumer from conuming stale events.
+///     reuse. This protects the consumer from consuming stale events.
 ///  
 /// This event primitive is typically used in the following way:
 ///    - The process creates a listener for the event.
-///    - The process starts an asynchromous operation (typically a service 
+///    - The process starts an asynchronous operation (typically a service 
 ///      request).
 ///    - The process calls AsyncWait to wait for the response/result from the
 ///      asynchronous operation.
 ///    - When the response/result is available the Add method is called to 
 ///      raise the event.
 ///
-///  The creation of the listener defines the lifecycle for the event consumer. 
+///  The creation of the listener defines the life-cycle for the event consumer. 
 ///  It is important that the listener is created before initiating the 
 ///  asynchronous operation because the operation may complete before the 
 ///  process reaches the call to AsyncWait. The creation of the listener 
-///  guarentees any events raised during its lifetime are captured.
+///  guarantees any events raised during its lifetime are captured.
 ///
 template<typename E, typename K = int>
 class UniqueEvent
