@@ -11,6 +11,6 @@
 
 AsioExpress::BasicException::BasicException(
     std::string description) :
-  CommonException(Error(CommonErrorCode::BasicException, AppendCallStack(description)))
+  CommonException(Error(Common::ErrorCode::BasicException, AppendCallStack(description)))
 {
 }

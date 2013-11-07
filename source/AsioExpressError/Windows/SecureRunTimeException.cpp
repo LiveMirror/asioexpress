@@ -11,6 +11,6 @@
 
 AsioExpress::SecureRunTimeException::SecureRunTimeException(
     std::string description) :
-  CommonException(Error(CommonErrorCode::SecureRunTimeException, AppendCallStack(description)))
+  CommonException(Error(Common::ErrorCode::SecureRunTimeException, AppendCallStack(description)))
 {
 }

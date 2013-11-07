@@ -163,7 +163,7 @@ AsioExpress::Win32Exception::Win32Exception(
     unsigned int exceptionCode,
     Address address, 
     std::string description) :
-  CommonException(Error(CommonErrorCode::Win32Exception, description)),
+  CommonException(Error(Common::ErrorCode::Win32Exception, description)),
   exceptionCode(exceptionCode),
   address(address)
 {
