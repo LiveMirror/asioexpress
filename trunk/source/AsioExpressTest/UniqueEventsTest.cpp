@@ -50,10 +50,9 @@ BOOST_AUTO_TEST_CASE(TestUeWait)
                 boost::asio::error::operation_aborted);
 }
 
-/*
 BOOST_AUTO_TEST_CASE(TestUeNoListener)
 {
-  typedef UniqueEvent<std::string> TestEvents;
+  typedef UniqueEvents<std::string> TestEvents;
 
   TestEvents testEvents;
 
@@ -63,28 +62,27 @@ BOOST_AUTO_TEST_CASE(TestUeNoListener)
 
 BOOST_AUTO_TEST_CASE(TestUeEarlyAdd)
 {
-  typedef UniqueEvent<std::string> TestEvents;
+  typedef UniqueEvents<std::string> TestEvents;
 
   TestEvents testEvents;
-  TestEvents::EventPointer eventData(new std::string);
   TimerMockPointer timerMock(new TimerMock);
   AutoCompletionHandler waitHandler(__FILE__, __LINE__);
 
-  TestEvents::ListenerPointer l = testEvents.NewListener(eventData);
+  TestEvents::Listener listener(testEvents);
 
+  listener.New();
+  
   testEvents.Add(std::string("hello"));
 
-  testEvents.AsyncWait(
-    l,
+  listener.AsyncWait(
     timerMock,
     waitHandler);
 
   timerMock->AssertNoAsyncWait(__FILE__, __LINE__);
 
   BOOST_CHECK_EQUAL(waitHandler.Calls(), 1);
-  BOOST_CHECK_EQUAL(*eventData, "hello");
+  BOOST_CHECK_EQUAL(listener.GetEventValue(), "hello");
 }
-*/
 
 BOOST_AUTO_TEST_CASE(TestUeAdd)
 {
@@ -111,20 +109,19 @@ BOOST_AUTO_TEST_CASE(TestUeAdd)
   BOOST_CHECK_EQUAL(listener.GetEventValue(), "hello");
 }
 
-/*
 BOOST_AUTO_TEST_CASE(TestUeTimeout)
 {
-  typedef UniqueEvent<std::string> TestEvents;
+  typedef UniqueEvents<std::string> TestEvents;
 
   TestEvents testEvents;
-  TestEvents::EventPointer eventData(new std::string);
   TimerMockPointer timerMock(new TimerMock);
   TestCompletionHandler waitHandler;
 
-  TestEvents::ListenerPointer l = testEvents.NewListener(eventData);
+  TestEvents::Listener listener(testEvents);
 
-  testEvents.AsyncWait(
-    l,
+  listener.New();
+  
+  listener.AsyncWait(
     timerMock,
     waitHandler);
 
@@ -134,22 +131,22 @@ BOOST_AUTO_TEST_CASE(TestUeTimeout)
 
   BOOST_CHECK_EQUAL(waitHandler.Calls(), 1);
   BOOST_CHECK(waitHandler.LastError().GetErrorCode() == 
-            AsioExpress::ErrorCode::UniqueEventTimeout);
+              AsioExpress::ErrorCode::UniqueEventTimeout);
 }
 
 BOOST_AUTO_TEST_CASE(TestUeWaitWithKey)
 {
-  typedef UniqueEvent<std::string, int> TestEvents;
+  typedef UniqueEvents<std::string, int> TestEvents;
 
   TestEvents testEvents;
-  TestEvents::EventPointer eventData(new std::string);
   TimerMockPointer timerMock(new TimerMock);
   TestCompletionHandler completionHandler;
 
-  TestEvents::ListenerPointer l = testEvents.NewListener(1, eventData);
+  TestEvents::Listener listener(testEvents);
 
-  testEvents.AsyncWait(
-    l,
+  listener.New();
+  
+  listener.AsyncWait(
     timerMock,
     completionHandler);
 
@@ -157,7 +154,7 @@ BOOST_AUTO_TEST_CASE(TestUeWaitWithKey)
 
   BOOST_CHECK_EQUAL(completionHandler.Calls(), 0);
 
-  l.reset();
+  listener.Cancel();
 
   timerMock->Cancel(__FILE__,__LINE__);
 
@@ -165,7 +162,6 @@ BOOST_AUTO_TEST_CASE(TestUeWaitWithKey)
   BOOST_CHECK(completionHandler.LastError().GetErrorCode() == 
                 boost::asio::error::operation_aborted);
 }
-*/
 
 BOOST_AUTO_TEST_CASE(TestUeAddsWithKey)
 {
@@ -176,22 +172,22 @@ BOOST_AUTO_TEST_CASE(TestUeAddsWithKey)
   TimerMockPointer timerMock1(new TimerMock);
   AutoCompletionHandler waitHandler1(__FILE__, __LINE__);
 
-  TestEvents::Listener l1(testEvents);
+  TestEvents::Listener listener1(testEvents);
   
-  l1.New(1);
+  listener1.New(1);
 
-  l1.AsyncWait(
+  listener1.AsyncWait(
     timerMock1,
     waitHandler1);
 
   TimerMockPointer timerMock2(new TimerMock);
   AutoCompletionHandler waitHandler2(__FILE__, __LINE__);
 
-  TestEvents::Listener l2(testEvents);
+  TestEvents::Listener listener2(testEvents);
   
-  l2.New(2);
+  listener2.New(2);
 
-  l2.AsyncWait(
+  listener2.AsyncWait(
     timerMock2,
     waitHandler2);
 
@@ -208,24 +204,23 @@ BOOST_AUTO_TEST_CASE(TestUeAddsWithKey)
 
   BOOST_CHECK_EQUAL(waitHandler1.Calls(), 1);
   BOOST_CHECK_EQUAL(waitHandler2.Calls(), 1);
-  BOOST_CHECK_EQUAL(l1.GetEventValue(), "hello");
-  BOOST_CHECK_EQUAL(l2.GetEventValue(), "there");
+  BOOST_CHECK_EQUAL(listener1.GetEventValue(), "hello");
+  BOOST_CHECK_EQUAL(listener2.GetEventValue(), "there");
 }
 
-/*
 BOOST_AUTO_TEST_CASE(TestUeTimeoutWithKey)
 {
-  typedef UniqueEvent<std::string, int> TestEvents;
+  typedef UniqueEvents<std::string, int> TestEvents;
 
   TestEvents testEvents;
-  TestEvents::EventPointer eventData(new std::string);
   TimerMockPointer timerMock(new TimerMock);
   TestCompletionHandler waitHandler;
 
-  TestEvents::ListenerPointer l = testEvents.NewListener(1, eventData);
+  TestEvents::Listener listener(testEvents);
+  
+  listener.New(1);
 
-  testEvents.AsyncWait(
-    l,
+  listener.AsyncWait(
     timerMock,
     waitHandler);
 
@@ -240,17 +235,17 @@ BOOST_AUTO_TEST_CASE(TestUeTimeoutWithKey)
 
 BOOST_AUTO_TEST_CASE(TestUeTimeoutWithLateAdd)
 {
-  typedef UniqueEvent<std::string> TestEvents;
+  typedef UniqueEvents<std::string> TestEvents;
 
   TestEvents testEvents;
-  TestEvents::EventPointer eventData(new std::string);
   TimerMockPointer timerMock(new TimerMock);
   TestCompletionHandler waitHandler;
 
-  TestEvents::ListenerPointer l = testEvents.NewListener(eventData);
+  TestEvents::Listener listener(testEvents);
 
-  testEvents.AsyncWait(
-    l,
+  listener.New();
+
+  listener.AsyncWait(
     timerMock,
     waitHandler);
 
@@ -265,50 +260,51 @@ BOOST_AUTO_TEST_CASE(TestUeTimeoutWithLateAdd)
   testEvents.Add(std::string("hello"));
 
   BOOST_CHECK_EQUAL(waitHandler.Calls(), 1);
-  BOOST_CHECK_EQUAL(*eventData, "");
+  BOOST_CHECK_EQUAL(listener.GetEventValue(), "");
 }
 
 BOOST_AUTO_TEST_CASE(TestUeWithMultipleListeners)
 {
-  typedef UniqueEvent<std::string, int> TestEvents;
+  typedef UniqueEvents<std::string, int> TestEvents;
 
   TestEvents testEvents;
 
-  TestEvents::EventPointer eventData1(new std::string);
   TimerMockPointer timerMock1(new TimerMock);
   TestCompletionHandler waitHandler1;
 
-  TestEvents::ListenerPointer l1 = testEvents.NewListener(77, eventData1);
+  TestEvents::Listener listener1(testEvents);
+  
+  listener1.New(77);
 
-  testEvents.AsyncWait(
-    l1,
+  listener1.AsyncWait(
     timerMock1,
     waitHandler1);
 
-  TestEvents::EventPointer eventData2(new std::string);
   TimerMockPointer timerMock2(new TimerMock);
   TestCompletionHandler waitHandler2;
 
+  TestEvents::Listener listener2(testEvents);
+  
   BOOST_CHECK_THROW(
-    TestEvents::ListenerPointer l2 = testEvents.NewListener(77,eventData2),
-    AsioExpress::ContractViolationException);
+        listener2.New(77),
+        AsioExpress::ContractViolationException);
 
   timerMock1->Cancel(__FILE__,__LINE__);
 }
 
 BOOST_AUTO_TEST_CASE(TestUeStopTimer)
 {
-  typedef UniqueEvent<std::string> TestEvents;
+  typedef UniqueEvents<std::string> TestEvents;
 
   TestEvents testEvents;
-  TestEvents::EventPointer eventData(new std::string);
   TimerMockPointer timerMock(new TimerMock);
   TestCompletionHandler waitHandler;
 
-  TestEvents::ListenerPointer l = testEvents.NewListener(eventData);
+  TestEvents::Listener listener(testEvents);
 
-  testEvents.AsyncWait(
-    l,
+  listener.New();
+  
+  listener.AsyncWait(
     timerMock,
     waitHandler);
 
@@ -324,22 +320,22 @@ BOOST_AUTO_TEST_CASE(TestUeStopTimer)
 
 BOOST_AUTO_TEST_CASE(TestUeConcurrentWaits)
 {
-  typedef UniqueEvent<std::string> TestEvents;
+  typedef UniqueEvents<std::string> TestEvents;
 
   TestEvents testEvents;
-  TestEvents::EventPointer eventData(new std::string);
   TimerMockPointer timerMock(new TimerMock);
   TestCompletionHandler waitHandler;
 
-  TestEvents::ListenerPointer l = testEvents.NewListener(eventData);
+  TestEvents::Listener listener(testEvents);
 
-  testEvents.AsyncWait(
-    l,
+  listener.New();
+
+  listener.AsyncWait(
     timerMock,
     waitHandler);
 
   BOOST_CHECK_THROW(
-    testEvents.AsyncWait(l, timerMock, waitHandler), 
+    listener.AsyncWait(timerMock, waitHandler), 
     AsioExpress::ContractViolationException);
 
   timerMock->Cancel(__FILE__,__LINE__);
@@ -347,17 +343,17 @@ BOOST_AUTO_TEST_CASE(TestUeConcurrentWaits)
 
 BOOST_AUTO_TEST_CASE(TestUeShutDown)
 {
-  typedef UniqueEvent<std::string> TestEvents;
+  typedef UniqueEvents<std::string> TestEvents;
 
   TestEvents testEvents;
-  TestEvents::EventPointer eventData(new std::string);
   TimerMockPointer timerMock(new TimerMock);
   TestCompletionHandler waitHandler;
 
-  TestEvents::ListenerPointer l = testEvents.NewListener(eventData);
+  TestEvents::Listener listener(testEvents);
 
-  testEvents.AsyncWait(
-    l,
+  listener.New();
+
+  listener.AsyncWait(
     timerMock,
     waitHandler);
 
@@ -375,19 +371,19 @@ BOOST_AUTO_TEST_CASE(TestUeShutDown)
 
 BOOST_AUTO_TEST_CASE(TestUeShutDownAndWait)
 {
-  typedef UniqueEvent<std::string> TestEvents;
+  typedef UniqueEvents<std::string> TestEvents;
 
   TestEvents testEvents;
-  TestEvents::EventPointer eventData(new std::string);
   TimerMockPointer timerMock(new TimerMock);
   TestCompletionHandler waitHandler;
 
   testEvents.ShutDown(); 
 
-  TestEvents::ListenerPointer l = testEvents.NewListener(eventData);
+  TestEvents::Listener listener(testEvents);
 
-  testEvents.AsyncWait(
-    l,
+  listener.New();
+  
+  listener.AsyncWait(
     timerMock,
     waitHandler);
 
@@ -401,23 +397,23 @@ BOOST_AUTO_TEST_CASE(TestUeShutDownAndWait)
 
 BOOST_AUTO_TEST_CASE(TestUeListenerScope)
 {
-  typedef UniqueEvent<std::string> TestEvents;
+  typedef UniqueEvents<std::string> TestEvents;
 
   TestEvents testEvents;
-  TestEvents::EventPointer eventData(new std::string);
   TimerMockPointer timerMock(new TimerMock);
   TestCompletionHandler waitHandler;
 
   // limited scope of listener
   {
-    TestEvents::ListenerPointer l = testEvents.NewListener(eventData);
+    TestEvents::Listener listener(testEvents);
   
-    testEvents.AsyncWait(
-      l,
+    listener.New();
+    
+    listener.AsyncWait(
       timerMock,
       waitHandler);
 
-    l.reset();
+    listener.Cancel();
   }
 
   timerMock->AssertAsyncWaitCalled(__FILE__, __LINE__);
@@ -427,9 +423,9 @@ BOOST_AUTO_TEST_CASE(TestUeListenerScope)
 
   BOOST_CHECK_EQUAL(waitHandler.Calls(), 1);
   BOOST_CHECK(waitHandler.LastError().GetErrorCode() == 
-            boost::asio::error::operation_aborted);
+              boost::asio::error::operation_aborted);
 
   timerMock->Cancel(__FILE__,__LINE__);
 }
-*/
+
 BOOST_AUTO_TEST_SUITE_END()
