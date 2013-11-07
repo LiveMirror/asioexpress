@@ -31,7 +31,7 @@ WIN_DISABLE_WARNINGS_END
 #include "AsioExpress/Timer/StandardDateTimer.hpp"
 #include "AsioExpress/Timer/StandardRepeatingTimer.hpp"
 
-#include "AsioExpress/EventHandling/UniqueEvent.hpp"
+#include "AsioExpress/EventHandling/UniqueEventHub.hpp"
 #include "AsioExpress/EventHandling/EventQueue.hpp"
 #include "AsioExpress/Testing/TimerMock.hpp"
 #include "AsioExpress/EventHandling/ResourceCache.hpp"
@@ -240,7 +240,7 @@ void func()
   StandardDateTimer timer2(ioService);
   StandardRepeatingTimer timer3(ioService);
 
-  typedef UniqueEvent<std::string> TestQueue;
+  typedef UniqueEventHub<std::string> TestQueue;
 
   TestQueue testQueue;
   TestQueue::EventPointer eventData(new std::string);

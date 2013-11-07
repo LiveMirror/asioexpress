@@ -49,7 +49,7 @@ public:
         ioService.post(boost::asio::detail::bind_handler(
           handler, 
           AsioExpress::Error(
-            AsioExpress::CommonErrorCode::StandardException, e.what()))); 
+            AsioExpress::Common::ErrorCode::StandardException, e.what()))); 
       }
       catch (...)
       {
@@ -57,7 +57,7 @@ public:
         ioService.post(boost::asio::detail::bind_handler(
           handler, 
           AsioExpress::Error(
-            AsioExpress::CommonErrorCode::UnknownException))); 
+            AsioExpress::Common::ErrorCode::UnknownException))); 
       }
     } 
 

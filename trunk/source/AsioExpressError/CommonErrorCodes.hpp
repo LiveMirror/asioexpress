@@ -8,10 +8,11 @@
 #include "boost/system/error_code.hpp"
 
 namespace AsioExpress {
+namespace Common {
 
 extern boost::system::error_category const & GetErrorCategory();
 
-namespace CommonErrorCode
+namespace ErrorCode
 {
   enum Enum
   {
@@ -28,23 +29,24 @@ namespace CommonErrorCode
   {
     return boost::system::error_code(
       static_cast<int>(e), 
-      AsioExpress::GetErrorCategory());
+      AsioExpress::Common::GetErrorCategory());
   }
   // implicit conversion helper function
   inline boost::system::error_condition make_error_condition(Enum e)
   {
     return boost::system::error_condition(
       static_cast<int>(e), 
-      AsioExpress::GetErrorCategory());
+      AsioExpress::Common::GetErrorCategory());
   }
-} // namespace ComomonErrorCode
+} // namespace ErrorCode
 
+} // namespace Common
 } // namespace AsioExpress
 
 namespace boost {
   namespace system {
 
-template<> struct is_error_code_enum<AsioExpress::CommonErrorCode::Enum>
+template<> struct is_error_code_enum<AsioExpress::Common::ErrorCode::Enum>
 {
   static const bool value = true;
 };

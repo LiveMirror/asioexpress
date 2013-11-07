@@ -11,7 +11,7 @@
 
 AsioExpress::ContractViolationException::ContractViolationException(
     std::string const & description) :
-  CommonException(Error(CommonErrorCode::ContractViolation, AppendCallStack(description)))
+  CommonException(Error(Common::ErrorCode::ContractViolation, AppendCallStack(description)))
 {
 }
 

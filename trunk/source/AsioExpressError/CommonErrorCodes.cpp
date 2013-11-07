@@ -8,6 +8,8 @@
 #include "AsioExpressError/CommonErrorCodes.hpp"
 
 namespace AsioExpress {
+namespace Common {
+
 
 class ErrorCategoryImpl : public boost::system::error_category
 {
@@ -25,22 +27,22 @@ std::string ErrorCategoryImpl::message(int ev) const
 {
   switch (ev)
   {
-    case CommonErrorCode::BasicException:
+    case ErrorCode::BasicException:
       return "Exception";
 
-    case CommonErrorCode::ContractViolation:
+    case ErrorCode::ContractViolation:
       return "Software Contract Violation";
 
-    case CommonErrorCode::StandardException:
+    case ErrorCode::StandardException:
       return "Caught a standard C++ exception";
 
-    case CommonErrorCode::UnknownException:
+    case ErrorCode::UnknownException:
       return "Caught a non-standard exception";
 
-    case CommonErrorCode::Win32Exception:
+    case ErrorCode::Win32Exception:
       return "Win32 Exception";
 
-    case CommonErrorCode::SecureRunTimeException:
+    case ErrorCode::SecureRunTimeException:
       return "Secure Run Time Exception";
   }
 
@@ -53,4 +55,5 @@ boost::system::error_category const & GetErrorCategory()
   return instance;
 }
 
+} //namespace Common
 } // namespace AsioExpress
