@@ -19,15 +19,27 @@ struct ServerConnection
       boost::asio::io_service & ioService,
       MessagePortId id, 
       ServerInterfacePointer server) :
-    ioService(ioService),
+    ioService(&ioService),
     messagePortId(id),
     server(server)
   {
   }
 
+  ServerConnection & operator=(ServerConnection const &that)
+  {
+      if (this != &that)
+      {
+          this->ioService = that.ioService;
+          this->messagePortId = that.messagePortId;
+          this->server = that.server;
+      }
+          
+      return *this;
+  }
+
   boost::asio::io_service & GetIoService() const
   {
-    return ioService;
+    return *ioService;
   }
 
   MessagePortId GetMessagePortId() const
@@ -41,9 +53,7 @@ struct ServerConnection
   }
 
 private:
-  ServerConnection & operator=(ServerConnection const &);
-
-  boost::asio::io_service &   ioService;
+  boost::asio::io_service *   ioService;
   MessagePortId               messagePortId;
   ServerInterfacePointer      server;
 };
