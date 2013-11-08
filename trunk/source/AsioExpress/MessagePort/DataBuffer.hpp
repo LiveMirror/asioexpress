@@ -5,6 +5,8 @@
 
 #pragma once
 
+#include <cstring>
+
 #include <boost/shared_ptr.hpp>
 
 namespace AsioExpress {

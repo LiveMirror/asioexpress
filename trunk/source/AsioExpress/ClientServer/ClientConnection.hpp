@@ -19,15 +19,27 @@ struct ClientConnection
       boost::asio::io_service & ioService,
       MessagePortId id, 
       ClientInterfacePointer client) :
-    ioService(ioService),
+    ioService(&ioService),
     messagePortId(id),
     client(client)
   {
   }
 
+  ClientConnection & operator=(ClientConnection const &that)
+  {
+      if (this != &that)
+      {
+          this->ioService = that.ioService;
+          this->messagePortId = that.messagePortId;
+          this->client = that.client;
+      }
+          
+      return *this;
+  }
+
   boost::asio::io_service & GetIoService() const
   {
-    return ioService;
+    return *ioService;
   }
 
   MessagePortId GetMessagePortId() const
@@ -41,11 +53,9 @@ struct ClientConnection
   }
 
 private:
-  ClientConnection & operator=(ClientConnection const &);
-
-  boost::asio::io_service &   ioService;
+  boost::asio::io_service *   ioService;
   MessagePortId               messagePortId;
-  ClientInterfacePointer   client;
+  ClientInterfacePointer      client;
 };
 
 } // namespace MessagePort
