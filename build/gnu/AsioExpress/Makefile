@@ -14,6 +14,7 @@ OUT_DIR         := ../../../lib/$(CONFIGURATION)
 BASE_CFLAGS     := -D_GNU_SOURCE -Wall -Werror -std=c++03 -pthread -I$(SPATH) -I$(BOOST_INCLUDE) -c
 DBG_CFLAGS      := -g -O0 -D _DEBUG
 REL_CFLAGS      := -O3 -D NDEBUG -Wno-unused-variable
+SHARED_CFLAGS   := -fPIC
 
 PROJECT_LC      := $(shell echo $(PROJECT) | tr A-Z a-z)
 TARGET          := $(OUT_DIR)/lib$(PROJECT_LC).a
@@ -45,11 +46,13 @@ PCH_SOURCE      := $(SOURCE_DIR)/pch.cpp
 .PHONY: debug
 debug:
 	$(MAKE) EXTRA_CFLAGS="$(DBG_CFLAGS)" CONFIGURATION=debug build
+	$(MAKE) EXTRA_CFLAGS="$(DBG_CFLAGS) $(SHARED_CFLAGS)" CONFIGURATION=debug_shared build
 
 .PHONY: release
 release:
 	$(MAKE) EXTRA_CFLAGS="$(REL_CFLAGS)" CONFIGURATION=release build
-	
+	$(MAKE) EXTRA_CFLAGS="$(REL_CFLAGS) $(SHARED_CFLAGS)" CONFIGURATION=release_shared build
+
 .PHONY: all
 all: debug release
 
