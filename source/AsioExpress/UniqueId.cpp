@@ -8,7 +8,7 @@
 #include <sstream>
 
 #include "AsioExpress/UniqueId.hpp"
-#include "AsioExpress/private/InstanceManager.hpp"
+#include "AsioExpress/InstanceManager.hpp"
 
 using namespace std;
 
