@@ -35,11 +35,11 @@ EXTERN_INCLUDES  := $(shell find $(INCLUDE_DIRS) -type f -name '*.h*')
 LOCAL_INCLUDES   := $(shell find $(SOURCE_DIR) -type f -name '*.h*')
 INCLUDES         := $(LOCAL_INCLUDES) $(EXTERN_INCLUDES)
 
-OBJECTS := $(addprefix $(OBJ_DIR)/, $(notdir $(SOURCES:.cpp=.o)))
-CFLAGS  := $(BASE_CFLAGS)  $(addprefix -I, $(INCLUDE_DIRS))
+OBJECTS          := $(addprefix $(OBJ_DIR)/, $(notdir $(SOURCES:.cpp=.o)))
+CFLAGS           := $(BASE_CFLAGS)  $(addprefix -I, $(INCLUDE_DIRS))
 
-PCH_TARGET      := $(OBJ_DIR)/pch.hpp.gch
-PCH_SOURCE      := $(SOURCE_DIR)/pch.cpp
+PCH_TARGET       := $(OBJ_DIR)/pch.hpp.gch
+PCH_SOURCE       := $(SOURCE_DIR)/pch.cpp
 
 .SECONDARY: # do not delete intermediate files 
 

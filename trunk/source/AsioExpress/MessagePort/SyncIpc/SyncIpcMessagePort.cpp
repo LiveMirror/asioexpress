@@ -56,7 +56,7 @@ void MessagePort::Disconnect()
 
   if ( m_sendMessageQueue )
   {
-    m_recvMessageQueue.reset();
+    m_sendMessageQueue.reset();
   }
 
   // Delete the queues from the system
