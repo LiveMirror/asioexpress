@@ -85,6 +85,7 @@ int main(int argc, char* argv[])
 
   app.Start();
 
+  ioService.reset();
   ioService.run();
 
   return 0;

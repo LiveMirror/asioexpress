@@ -139,6 +139,7 @@ int main(int argc, char* argv[])
 
     server.Start();
 
+    ioService.reset();
     ioService.run();
   }
 
