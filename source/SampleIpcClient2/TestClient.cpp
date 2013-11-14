@@ -7,16 +7,38 @@
 #include <boost/asio.hpp>
 #include <csignal>
 
+#include "AsioExpressError/BasicException.hpp"
 #include "AsioExpress/MessagePort/SyncIpc/EndPoint.hpp"
 #include "AsioExpress/MessagePort/SyncIpc/MessagePort.hpp"
 
+using namespace AsioExpress::MessagePort::SyncIpc;
+
+bool Connect(MessagePort & messagePort)
+{
+    try
+    {
+        messagePort.Connect(EndPoint("nowhere"));
+    }
+    catch(std::exception const &e)
+    {
+        std::cout << e.what() << std::endl;
+        return false;
+    }
+    
+    return true;
+}
+
 void SendMessages()
 {
-    using namespace AsioExpress::MessagePort::SyncIpc;
-
     MessagePort messagePort;
-
-    messagePort.Connect(EndPoint("nowhere"));
+    
+    while (! Connect(messagePort) )
+    {
+        static int connectAttempt;
+        if (++connectAttempt == 5)
+            throw AsioExpress::BasicException("Cannot connect to server.");
+        sleep(5);
+    }
     
     for (int i = 0; i < 10; ++i)
     {

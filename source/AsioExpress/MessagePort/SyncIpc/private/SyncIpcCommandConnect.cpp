@@ -156,8 +156,9 @@ void SyncIpcCommandConnect(
     catch (boost::interprocess::interprocess_exception &ex)
     {
         messagePort.Disconnect();
+        
         throw CommonException(Error(
-                boost::system::error_code(ex.get_native_error(), boost::system::get_system_category()),
+                ErrorCode::Disconnected,
                 "MessagePort::AsyncConnect(): Unable to open server acceptor queue."));
     }
 

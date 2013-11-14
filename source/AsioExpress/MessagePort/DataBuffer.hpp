@@ -47,6 +47,8 @@ public:
 
   void Resize(SizeType newSize)
   {
+    if (newSize == m_size)
+        return;    
     delete [] m_data;
     m_size = newSize;
     m_data = new char [newSize];
