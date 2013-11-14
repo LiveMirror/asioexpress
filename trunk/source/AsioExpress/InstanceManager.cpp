@@ -5,7 +5,7 @@
 
 #include "AsioExpress/pch.hpp"
 
-#include "AsioExpress/private/InstanceManager.hpp"
+#include "AsioExpress/InstanceManager.hpp"
 
 namespace AsioExpress {
 
