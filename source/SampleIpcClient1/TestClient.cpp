@@ -163,6 +163,7 @@ int main(int argc, char* argv[])
   //SetConsoleCtrlHandler(console_ctrl_handler, TRUE);
   signal(SIGINT, int_handler);
 
+  ioService.reset();
   ioService.run();
 
 	return 0;
