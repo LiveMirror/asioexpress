@@ -173,6 +173,9 @@
     <ClCompile Include="..\..\..\source\AsioExpress\MessagePort\Ipc\IpcErrorCodes.cpp">
       <Filter>Source Files\MessagePort\Ipc</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\AsioExpress\Platform\SleepWin.cpp">
+      <Filter>Source Files\Platform</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\source\AsioExpress\CompletionHandler.hpp">
@@ -335,9 +338,6 @@
       <Filter>Source Files\EventHandling</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\AsioExpress\EventHandling\ResourceCache.hpp">
-      <Filter>Source Files\EventHandling</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\AsioExpress\EventHandling\UniqueEvent.hpp">
       <Filter>Source Files\EventHandling</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\AsioExpress\EventHandling\UniqueEventPrivate\UniqueEventListener.hpp">
@@ -519,6 +519,15 @@
     </ClInclude>
     <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Tcp\ErrorCodes.hpp">
       <Filter>Source Files\MessagePort\Tcp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\EventHandling\UniqueEventHub.hpp">
+      <Filter>Source Files\EventHandling</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\EventHandling\UniqueEvents.hpp">
+      <Filter>Source Files\EventHandling</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\Platform\Sleep.hpp">
+      <Filter>Source Files\Platform</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -3,10 +3,13 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#include "AsioExpressConfig/config.hpp"
+
 #include <iostream>
 #include <boost/asio.hpp>
 #include <csignal>
 
+#include "AsioExpress/Platform/Sleep.hpp"
 #include "AsioExpressError/BasicException.hpp"
 #include "AsioExpress/MessagePort/SyncIpc/EndPoint.hpp"
 #include "AsioExpress/MessagePort/SyncIpc/MessagePort.hpp"
@@ -37,7 +40,8 @@ void SendMessages()
         static int connectAttempt;
         if (++connectAttempt == 5)
             throw AsioExpress::BasicException("Cannot connect to server.");
-        sleep(5);
+
+        AsioExpress::Sleep(5000);
     }
     
     for (int i = 0; i < 10; ++i)
@@ -64,7 +68,7 @@ void SendMessages()
         
         std::cout << "Delay...\n";
         
-        sleep(1);
+        AsioExpress::Sleep(1000);
     }    
 }
 

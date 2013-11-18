@@ -3,11 +3,14 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#include "AsioExpressConfig/config.hpp"
+
 #include <set>
 #include <boost/asio.hpp>
 #include <iostream>
 #include <csignal>
 
+#include "AsioExpress/Platform/Sleep.hpp"
 #include "AsioExpress/MessagePort/Ipc/EndPoint.hpp"
 #include "AsioExpress/MessagePort/Ipc/MessagePort.hpp"
 #include "AsioExpress/MessagePort/Ipc/MessagePortAcceptor.hpp"

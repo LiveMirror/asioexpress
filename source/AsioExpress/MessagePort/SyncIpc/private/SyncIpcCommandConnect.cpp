@@ -153,7 +153,7 @@ void SyncIpcCommandConnect(
                     "MessagePort::AsyncConnect(): Server's acceptor queue is full."));
         }
     }
-    catch (boost::interprocess::interprocess_exception &ex)
+    catch (boost::interprocess::interprocess_exception &)
     {
         messagePort.Disconnect();
         
