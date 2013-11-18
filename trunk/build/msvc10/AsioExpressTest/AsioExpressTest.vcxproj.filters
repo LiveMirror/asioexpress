@@ -37,7 +37,10 @@
     <ClCompile Include="..\..\..\source\AsioExpressTest\HippoMockExtensionsTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\AsioExpressTest\UniqueEventTest.cpp">
+    <ClCompile Include="..\..\..\source\AsioExpressTest\UniqueEventHubTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\AsioExpressTest\UniqueEventsTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
