@@ -5,9 +5,17 @@
 
 #pragma once
 
+#include <map>
 #include <boost/shared_ptr.hpp>
+#include <boost/foreach.hpp>
 
-#include "AsioExpress/EventHandling/UniqueEventHub.hpp"
+#include "AsioExpressError/CallStack.hpp"
+#include "AsioExpressError/Check.hpp"
+
+#include "AsioExpress/CompletionHandler.hpp"
+#include "AsioExpress/ErrorCodes.hpp"
+#include "AsioExpress/Timer/Timer.hpp"
+#include "AsioExpress/EventHandling/UniqueEventPrivate/UniqueEventListener.hpp"
 
 namespace AsioExpress {
 
@@ -41,20 +49,30 @@ class UniqueEvents
 public:  
     typedef E Event;
     typedef K Key;
+    typedef boost::shared_ptr<Event> EventPointer;
 
 private:
-    typedef AsioExpress::UniqueEventHub<E, K> EventHubType;
-    typedef boost::shared_ptr<EventHubType> EventHubTypePointer;
+  typedef UniqueEventPrivate::UniqueEventListener<E> UniqueEventListener; 
+  typedef boost::shared_ptr<UniqueEventListener> UniqueEventListenerPointer;
+
+  typedef std::map<Key,UniqueEventListenerPointer> Listeners;
+  typedef boost::shared_ptr<Listeners> ListenersPointer;
     
 public:
     class Listener
     {
         friend class UniqueEvents;
     public:
-        Listener(UniqueEvents const & events) :
-            eventHub(events.eventHub),
-            eventValue(new typename EventHubType::Event)
+        Listener(UniqueEvents & events) :
+            listeners(events.eventListeners),
+            isShutDown(events.isShutDown),
+            eventValue(new typename Event)
         {
+        }
+
+        ~Listener()
+        {
+            Cancel();
         }
             
         ///
@@ -63,8 +81,14 @@ public:
         ///                       specific key.
         ///
         void New(Key key)
-        {            
-            listener = eventHub->NewListener(key, eventValue);
+        {      
+            CHECK_MSG(
+                listeners->count(key) == 0, 
+                "A UniqueEventHub listener with this key already exists.");
+
+            listener.reset(new UniqueEventListener(eventValue));
+
+            (*listeners)[key] = listener;
         }
 
         ///
@@ -74,7 +98,7 @@ public:
         ///
         void New()
         {
-            listener = eventHub->NewListener(eventValue);
+            New(Key());
         }
         
         ///
@@ -89,12 +113,29 @@ public:
             TimerPointer const & waitTimer, 
             CompletionHandler completionHandler)
         {
-            eventHub->AsyncWait(listener, waitTimer, completionHandler);
+            CHECK(listener);
+            CHECK(waitTimer);
+            CHECK(!completionHandler.empty());
+
+            // If the event has been canceled return operation aborted immediately.
+            if ( isShutDown )
+            {
+                listener->Cancel();
+                completionHandler(Error(boost::asio::error::operation_aborted));
+                return;
+            }
+
+            listener->AsyncWait(waitTimer, completionHandler);
         }
         
         void Cancel()
         {
-            listener.reset();
+            if (listener)
+            {
+                listener->Cancel();
+                listener.reset();
+                listeners->erase(key);
+            }
         }
         
         Event GetEventValue() const
@@ -103,14 +144,17 @@ public:
         }
         
     private:
-        EventHubTypePointer                       eventHub;
-        typename EventHubType::ListenerPointer    listener;
-        typename EventHubType::EventPointer       eventValue;
+        Key                                 key;
+        UniqueEventListenerPointer          listener;
+        ListenersPointer                    listeners;
+        bool &                              isShutDown;
+        typename EventPointer               eventValue;
     };
 
 public:
     UniqueEvents() :
-        eventHub(new EventHubType)
+        eventListeners(new Listeners),
+        isShutDown(false)
     {
     }
     
@@ -125,7 +169,12 @@ public:
         Key key,
         Event eventValue)
     {
-        eventHub->Add(key, eventValue);
+        typename Listeners::iterator eventListener = eventListeners->find(key);
+
+        // If the listener has timed-out it will not be found and is not an error.
+        // It just means this event was delivered too late.
+        if (eventListener != eventListeners->end())
+            eventListener->second->AddEvent(eventValue);
     }
 
     ///
@@ -136,7 +185,7 @@ public:
     void Add(
         Event eventValue)
     {
-        eventHub->Add(eventValue);
+        Add(Key(), eventValue);
     }
 
     ///
@@ -145,11 +194,20 @@ public:
     ///
     void ShutDown()
     {
-        eventHub->ShutDown();
+        // Indicate that this event is canceled.
+        isShutDown = true;
+
+        // Cancel all waiting listeners.
+        BOOST_FOREACH( typename Listeners::value_type &it, *eventListeners )
+        {
+            UniqueEventListenerPointer eventListener(it.second);
+            eventListener->Cancel();
+        }
     }
 
 private:
-    EventHubTypePointer  eventHub;
+  ListenersPointer   eventListeners;
+  bool               isShutDown;
 };
 
 } // namespace AsioExpress
