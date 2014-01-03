@@ -35,6 +35,12 @@ public:
       CHECK_FAILED("Method not implemented.");
   }
 
+  virtual void SetWaitTime(
+      unsigned int)
+  {
+      CHECK_FAILED("Method not implemented.");
+  }
+
   virtual void Stop()
   {
       if (m_completionHandler)

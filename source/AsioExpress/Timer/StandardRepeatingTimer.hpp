@@ -32,6 +32,12 @@ public:
   {
   }
 
+  virtual void SetWaitTime(
+      unsigned int milliseconds)
+  {
+      m_milliseconds = milliseconds;
+  }
+
   virtual void AsyncWait(
       CompletionHandler completionHandler)
   {
@@ -56,7 +62,7 @@ public:
 
 private:
   RepeatingTickCountTimer   m_timer;
-  unsigned int             m_milliseconds;
+  unsigned int              m_milliseconds;
 };
 
 } // namespace AsioExpress

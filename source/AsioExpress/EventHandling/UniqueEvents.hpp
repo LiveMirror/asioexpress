@@ -66,7 +66,7 @@ public:
         Listener(UniqueEvents & events) :
             listeners(events.eventListeners),
             isShutDown(events.isShutDown),
-            eventValue(new typename Event)
+            eventValue(new typename UniqueEvents::Event)
         {
         }
 
@@ -150,7 +150,7 @@ public:
         UniqueEventListenerPointer          listener;
         ListenersPointer                    listeners;
         bool &                              isShutDown;
-        typename EventPointer               eventValue;
+        typename UniqueEvents::EventPointer eventValue;
     };
 
 public:
