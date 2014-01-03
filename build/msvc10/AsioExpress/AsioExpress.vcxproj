@@ -134,6 +134,7 @@
     <ClInclude Include="..\..\..\source\AsioExpress\CompletionHandler.hpp" />
     <ClInclude Include="..\..\..\source\AsioExpress\Coroutine.hpp" />
     <ClInclude Include="..\..\..\source\AsioExpress\CoroutineMacros.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\Counter.hpp" />
     <ClInclude Include="..\..\..\source\AsioExpress\DebugTimer\DebugTimerMacros.hpp" />
     <ClInclude Include="..\..\..\source\AsioExpress\DebugTimer\DebugTimerManager.hpp" />
     <ClInclude Include="..\..\..\source\AsioExpress\DebugTimer\DebugTimers.hpp" />
@@ -141,11 +142,13 @@
     <ClInclude Include="..\..\..\source\AsioExpress\DurationTimer.hpp" />
     <ClInclude Include="..\..\..\source\AsioExpress\Error.hpp" />
     <ClInclude Include="..\..\..\source\AsioExpress\ErrorCodes.hpp" />
-    <ClInclude Include="..\..\..\source\AsioExpress\EventHandling\UniqueEventHub.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\EventHandling\TaskPool.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\EventHandling\TaskPoolPrivate\TaskPoolReader.hpp" />
     <ClInclude Include="..\..\..\source\AsioExpress\EventHandling\UniqueEvents.hpp" />
     <ClInclude Include="..\..\..\source\AsioExpress\Handles\PointerHandle.h" />
     <ClInclude Include="..\..\..\source\AsioExpress\Handles\SharedHandle.h" />
     <ClInclude Include="..\..\..\source\AsioExpress\InstanceManager.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\MaxCounter.hpp" />
     <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\EndPoint.hpp" />
     <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\ErrorCodes.hpp" />
     <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\MessagePort.hpp" />
@@ -182,6 +185,7 @@
     <ClInclude Include="..\..\..\source\AsioExpress\SimpleStateMachine.hpp" />
     <ClInclude Include="..\..\..\source\AsioExpress\StatisticsTimer.hpp" />
     <ClInclude Include="..\..\..\source\AsioExpress\Testing\hippomocks.h" />
+    <ClInclude Include="..\..\..\source\AsioExpress\Timer\NoExpiryTimer.hpp" />
     <ClInclude Include="..\..\..\source\AsioExpress\UniqueId.hpp" />
     <ClInclude Include="..\..\..\source\AsioExpress\Unyield.hpp" />
     <ClInclude Include="..\..\..\source\AsioExpress\Yield.hpp" />
