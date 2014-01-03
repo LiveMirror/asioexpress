@@ -91,8 +91,7 @@ void Server<MessagePortAcceptor>::operator()(
       // then control resumes at the following line.
       YIELD m_acceptor->AsyncAccept(*m_messagePort, *this);
       if (error.GetErrorCode() == boost::asio::error::operation_aborted ||
-          error.GetErrorCode() == boost::asio::error::bad_descriptor ||
-          error.GetErrorCode() == boost::asio::error::operation_aborted)
+          error.GetErrorCode() == boost::asio::error::bad_descriptor)
       {
         return;
       }

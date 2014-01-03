@@ -7,6 +7,7 @@
 
 #include <vector>
 #include <set>
+#include <limits>
 #include <boost/shared_ptr.hpp>
 #include <boost/function.hpp>
 #include <boost/bind.hpp>
@@ -17,22 +18,38 @@
 #include "AsioExpress/ErrorCodes.hpp"
 #include "AsioExpress/Timer/Timer.hpp"
 
+#undef max 
+
 namespace AsioExpress {
 
 ///
-/// This is a basic event synchronization primitive for ASIO
-/// applications.
-/// 
-template<typename E, typename Key = int>
+/// This is a basic event synchronization primitive for ASIO applications.
+/// The EventQueue allows you to decouple the event processor from the async
+/// processes generating the events. The queue accepts a maximum size parameter
+/// that will block the completion of AsyncAdd to prevent the event queue from
+/// getting unreasonably large and providing feedback to the rest of the 
+/// system.
+///
+
+template<typename E>
 class EventQueue
 {
 public:
   typedef E Event;
   typedef boost::shared_ptr<Event> EventPointer;
+  typedef size_t SizeType;
 
   EventQueue() :
-    m_isShutDown(false)
+    m_isShutDown(false),
+    m_maxSize(std::numeric_limits<SizeType>::max())
   {
+  }
+
+  EventQueue(SizeType size) :
+    m_isShutDown(false),
+    m_maxSize(size)
+  {
+      CHECK(size > 0);
   }
 
   ~EventQueue()
@@ -43,8 +60,6 @@ public:
   /// Get the next event from the event queue. If no events are queued the 
   /// async call waits for a new event to be added to the queue.
   ///
-  /// @param key                The caller will receive events for this 
-  ///                           specific key.
   /// @param event              The event data that will be received by the 
   ///                           caller.
   /// @param waitTimer          A timer to indicate how long to wait to receive 
@@ -53,44 +68,12 @@ public:
   ///                           is received, the wait time expires, or an error
   ///                           occurs.
   void AsyncWait(
-      Key key,
-      EventPointer event, 
+      EventPointer const & event, 
       TimerPointer const & waitTimer, 
       CompletionHandler completionHandler);
 
   ///
-  /// Get the next event from the event queue. If no events are queued the 
-  /// async call waits for a new event to be added to the queue.
-  ///
-  /// @param event              The event data that will be received by the 
-  ///                           caller.
-  /// @param waitTimer          A timer to indicate how long to wait to receive 
-  ///                           the event.
-  /// @param completionHandler  The completion hander is called when the event 
-  ///                           is received, the wait time expires, or an error
-  ///                           occurs.
-  void AsyncWait(
-      EventPointer event, 
-      TimerPointer const & waitTimer, 
-      CompletionHandler completionHandler);
-
-  ///
-  /// This method adds an event to the event queue for a specific event key.
-  ///
-  /// @param key                The event is added to the event queue for this 
-  ///                           specific key.
-  /// @param event              The event data that will be received by the 
-  ///                           caller.
-  /// @param completionHandler  The completion hander is called when the event 
-  ///                           is queued or the queue has been canceled.
-  ///
-  void AsyncAdd(
-      Key key,
-      Event event,
-      CompletionHandler completionHandler);
-
-  ///
-  /// This method adds an event to the event queue for a specific event key.
+  /// This method adds an event to the event queue.
   ///
   /// @param event              The event data that will be received by the 
   ///                           caller.
@@ -98,7 +81,7 @@ public:
   ///                           is queued or the queue has been canceled.
   ///
   void AsyncAdd(
-      Event event,
+      Event const & event,
       CompletionHandler completionHandler);
 
   ///
@@ -109,10 +92,6 @@ public:
   void ShutDown();
 
 private:
-  Error Add(
-      Key key,
-      Event event);
-
   void Timeout(
       Error error, 
       TimerPointer const & timer);
@@ -120,48 +99,46 @@ private:
   struct EventHandler
   {
     EventHandler(
-        Key key,
-        EventPointer event, 
-        CompletionHandler completionHandler,
+        EventPointer const & event, 
+        CompletionHandler const & completionHandler,
         TimerPointer const & waitTimer) :
-      key(key),
       event(event),
       completionHandler(completionHandler),
       timer(waitTimer)
     {
     }
-    Key                 key;
     EventPointer        event;
     CompletionHandler   completionHandler;
     TimerPointer        timer;
   };
 
-  struct RegisteredEvent
+  struct WaitingEvent
   {
-    RegisteredEvent(
-        Key key,
-        Event event) :
-      key(key),
-      event(event)
+    WaitingEvent(
+        Event const & event, 
+        CompletionHandler const & completionHandler) :
+      waitingEvent(event),
+      completionHandler(completionHandler)
     {
     }
-    Key     key;
-    Event   event;
+    Event               waitingEvent;
+    CompletionHandler   completionHandler;
   };
 
   typedef std::vector<EventHandler> EventHandlerList;
-  typedef std::vector<RegisteredEvent> RegisteredEvents;
-  typedef std::set<Key> KeySet;
+  typedef std::vector<Event> RegisteredEvents;
+  typedef std::vector<WaitingEvent> WaitingEvents;
 
   EventHandlerList      m_waitingEventHandlers;
   RegisteredEvents      m_registeredEvents;
+  WaitingEvents         m_waitingEvents;
   bool                  m_isShutDown;
+  SizeType              m_maxSize;
 };
 
-template<typename Event, typename Key>
-void EventQueue<Event, Key>::AsyncWait(
-      Key key,
-      EventPointer event, 
+template<typename Event>
+void EventQueue<Event>::AsyncWait(
+      EventPointer const & event, 
       TimerPointer const & waitTimer, 
       CompletionHandler completionHandler)
 {
@@ -184,42 +161,36 @@ void EventQueue<Event, Key>::AsyncWait(
   }
 
   // Look up waiting event.
+  if (! m_registeredEvents.empty())
   {
     typename RegisteredEvents::iterator  it = m_registeredEvents.begin();
-    typename RegisteredEvents::iterator end = m_registeredEvents.end();
-    for (; it != end; ++it)
-    {
-      if (it->key == key)
-      {
-        *event = it->event;
-        m_registeredEvents.erase(it);
-        completionHandler(Error());
-        return;
-      }
+    *event = *it;
+    m_registeredEvents.erase(it);
+    completionHandler(Error());
+
+    // move waiting event to registered event
+    if (! m_waitingEvents.empty())
+    {      
+      typename WaitingEvents::iterator it = m_waitingEvents.begin();
+      m_registeredEvents.push_back(it->waitingEvent);
+      CompletionHandler handler(it->completionHandler);
+      m_waitingEvents.erase(it);
+      handler(Error());
     }
-  }
+    return;
+  } 
 
   // Queue this event to be handled. 
   //
   waitTimer->AsyncWait(boost::bind(&EventQueue::Timeout, this, _1, waitTimer));
 
   m_waitingEventHandlers.push_back(
-    EventHandler(key, event, completionHandler, waitTimer));
+    EventHandler(event, completionHandler, waitTimer));
 }
 
-template<typename Event, typename Key>
-void EventQueue<Event, Key>::AsyncWait(
-      EventPointer event, 
-      TimerPointer const & waitTimer, 
-      CompletionHandler completionHandler)
-{
-  AsyncWait(Key(), event, waitTimer, completionHandler);
-}
-
-template<typename Event, typename Key>
-void EventQueue<Event, Key>::AsyncAdd(
-      Key key,
-      Event event,
+template<typename Event>
+void EventQueue<Event>::AsyncAdd(
+      Event const & event,
       CompletionHandler completionHandler)
 {
   // If the queue has been canceled return operation aborted immediately.
@@ -229,46 +200,33 @@ void EventQueue<Event, Key>::AsyncAdd(
     return;
   }
 
-  completionHandler(Add(key,event));
-}
-
-template<typename Event, typename Key>
-Error EventQueue<Event, Key>::Add(
-      Key key,
-      Event event)
-{
-  // Look up waiting handler.
-  typename EventHandlerList::iterator  it = m_waitingEventHandlers.begin();
-  typename EventHandlerList::iterator end = m_waitingEventHandlers.end();
-  for (; it != end; ++it)
+  if(! m_waitingEventHandlers.empty())
   {
-    if (it->key == key)
-    {
-      it->timer->Stop();
-      *(it->event) = event;
-      CompletionHandler handler(it->completionHandler);
-      m_waitingEventHandlers.erase(it);
-      handler(Error());
-      return Error();
-    }
+    // Look up waiting handler.
+    typename EventHandlerList::iterator  it = m_waitingEventHandlers.begin();
+    it->timer->Stop();
+    *(it->event) = event;
+    CompletionHandler handler(it->completionHandler);
+    m_waitingEventHandlers.erase(it);
+    handler(Error());
+    completionHandler(Error());
+    return;
   }
 
-  // No handler found so we put it in event queue.
-  m_registeredEvents.push_back(RegisteredEvent(key, event));
+  if (m_registeredEvents.size() >= m_maxSize)
+  {
+      // Add event and this completion hander to the following queue.
+      m_waitingEvents.push_back(WaitingEvent(event,completionHandler));
+      return;
+  }
 
-  return Error();
+  // No handler found so we put it in the event queue.
+  m_registeredEvents.push_back(event);
+  completionHandler(Error());
 }
 
-template<typename Event, typename Key>
-void EventQueue<Event, Key>::AsyncAdd(
-      Event event,
-      CompletionHandler completionHandler)
-{
-  AsyncAdd(Key(), event, completionHandler);
-}
-
-template<typename Event, typename Key>
-void EventQueue<Event, Key>::ShutDown()
+template<typename Event>
+void EventQueue<Event>::ShutDown()
 {
   // Indicate that this queue is canceled.
   m_isShutDown = true;
@@ -282,8 +240,8 @@ void EventQueue<Event, Key>::ShutDown()
   }
 }
 
-template<typename Event, typename Key>
-void EventQueue<Event, Key>::Timeout(
+template<typename Event>
+void EventQueue<Event>::Timeout(
     Error error, 
     TimerPointer const & timer)
 {
