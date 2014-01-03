@@ -75,6 +75,9 @@
     <Filter Include="Source Files\MessagePort\Tcp\private">
       <UniqueIdentifier>{695fc53c-2829-478f-a4a2-10a75f18d136}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\EventHandling\TaskPoolPrivate">
+      <UniqueIdentifier>{d201335b-51f6-44b7-b700-025716698cb3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\AsioExpress\CompletionHandler.cpp">
@@ -520,14 +523,26 @@
     <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Tcp\ErrorCodes.hpp">
       <Filter>Source Files\MessagePort\Tcp</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\AsioExpress\EventHandling\UniqueEventHub.hpp">
-      <Filter>Source Files\EventHandling</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\AsioExpress\EventHandling\UniqueEvents.hpp">
       <Filter>Source Files\EventHandling</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\AsioExpress\Platform\Sleep.hpp">
       <Filter>Source Files\Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\EventHandling\TaskPool.hpp">
+      <Filter>Source Files\EventHandling</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\Counter.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\Timer\NoExpiryTimer.hpp">
+      <Filter>Source Files\Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\EventHandling\TaskPoolPrivate\TaskPoolReader.hpp">
+      <Filter>Source Files\EventHandling\TaskPoolPrivate</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MaxCounter.hpp">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
