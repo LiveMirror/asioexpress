@@ -31,11 +31,11 @@ template<typename E, typename H>
 class TaskPoolReader : private AsioExpress::Coroutine
 {
 public:
-    typedef EventQueue<E> EventQueue;
-    typedef boost::shared_ptr<EventQueue> EventQueuePointer;
+    typedef EventQueue<E> Queue;
+    typedef boost::shared_ptr<Queue> QueuePointer;
 
     TaskPoolReader(
-            EventQueuePointer const & eventQueue,
+            QueuePointer const & eventQueue,
             TimerPointer const & waitTimer,
             H eventHandler) :
         eventQueue(eventQueue),
@@ -85,9 +85,9 @@ public:
     }
 
 private:
-    EventQueuePointer                   eventQueue;
+    QueuePointer                        eventQueue;
     TimerPointer                        waitTimer;
-    typename EventQueue::EventPointer   eventPointer;
+    typename Queue::EventPointer        eventPointer;
     H                                   eventHandler;
 };
 

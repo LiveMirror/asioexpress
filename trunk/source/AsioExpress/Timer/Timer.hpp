@@ -16,6 +16,9 @@ class Timer
 public:
   virtual ~Timer() {};
 
+  virtual void SetWaitTime(
+      unsigned int milliseconds) = 0;
+
   virtual void AsyncWait(
       CompletionHandler completionHandler) = 0;
 

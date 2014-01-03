@@ -42,7 +42,7 @@ public:
             SizeType poolSize,
             H eventHandler) :
         ioService(ioService),
-        eventQueue(new EventQueue),
+        eventQueue(new Queue),
         poolSize(poolSize),
         eventHandler(eventHandler)
     {
@@ -55,7 +55,7 @@ public:
             SizeType queueSize,
             H eventHandler) :
         ioService(ioService),
-        eventQueue(new EventQueue(queueSize)),
+        eventQueue(new Queue(queueSize)),
         poolSize(poolSize),
         eventHandler(eventHandler)
     {
@@ -67,10 +67,10 @@ public:
     ///
     void Start()
     {
-        for (i=0; i<poolSize; ++i)
+        for (int i=0; i<poolSize; ++i)
         {
             ioService.post(boost::asio::detail::bind_handler(
-                TaskPoolPrivate::TaskPoolReader(EventQueue, TimerPointer(new NoExpiryTimer), eventHandler), 
+                TaskPoolPrivate::TaskPoolReader<E,H>(eventQueue, TimerPointer(new NoExpiryTimer), eventHandler), 
                 AsioExpress::Error()));
         }
     }
@@ -95,11 +95,11 @@ public:
     void ShutDown();
 
 private:
-    typedef EventQueue<E> EventQueue;
-    typedef boost::shared_ptr<EventQueue> EventQueuePointer;
+    typedef EventQueue<E> Queue;
+    typedef boost::shared_ptr<Queue> QueuePointer;
 
     boost::asio::io_service &   ioService;
-    EventQueuePointer           eventQueue;
+    QueuePointer                eventQueue;
     SizeType                    poolSize;
     H                           eventHandler;
 };

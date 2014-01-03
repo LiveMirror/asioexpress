@@ -29,6 +29,12 @@ public:
   {
   }
 
+  virtual void SetWaitTime(
+      unsigned int milliseconds)
+  {
+      m_milliseconds = milliseconds;
+  }
+
   virtual void AsyncWait(
       CompletionHandler completionHandler)
   {
