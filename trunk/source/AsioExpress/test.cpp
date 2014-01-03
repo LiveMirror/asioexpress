@@ -19,6 +19,9 @@ WIN_DISABLE_WARNINGS_END
 #include "AsioExpress/MessagePort/Tcp/BasicMessagePort.hpp"
 #include "AsioExpress/MessagePort/Tcp/BasicMessagePortAcceptor.hpp"
 
+#include "AsioExpress/Testing/AutoCompletionHandler.hpp"
+#include "AsioExpress/Testing/TestCompletionHandler.hpp"
+
 #include "AsioExpress/ClientServer/ClientConnection.hpp"
 #include "AsioExpress/ClientServer/ClientMessage.hpp"
 #include "AsioExpress/ClientServer/MessagePortClient.hpp"
@@ -31,8 +34,9 @@ WIN_DISABLE_WARNINGS_END
 #include "AsioExpress/Timer/StandardDateTimer.hpp"
 #include "AsioExpress/Timer/StandardRepeatingTimer.hpp"
 
-#include "AsioExpress/EventHandling/UniqueEventHub.hpp"
 #include "AsioExpress/EventHandling/EventQueue.hpp"
+#include "AsioExpress/EventHandling/UniqueEvents.hpp"
+#include "AsioExpress/EventHandling/TaskPool.hpp"
 #include "AsioExpress/Testing/TimerMock.hpp"
 #include "AsioExpress/EventHandling/ResourceCache.hpp"
 
@@ -240,22 +244,17 @@ void func()
   StandardDateTimer timer2(ioService);
   StandardRepeatingTimer timer3(ioService);
 
-  typedef UniqueEventHub<std::string> TestQueue;
-
-  TestQueue testQueue;
-  TestQueue::EventPointer eventData(new std::string);
+  typedef UniqueEvents<std::string> TestEvents;
+  TestEvents testEvents;
   TimerMockPointer timerMock(new TimerMock);
-
-  TestQueue::ListenerPointer l = testQueue.NewListener(eventData);
-
-  testQueue.AsyncWait(
-    l,
+  Testing::AutoCompletionHandler waitHandler(__FILE__, __LINE__);
+  TestEvents::Listener listener(testEvents);
+  listener.New();
+  listener.AsyncWait(
     timerMock,
-    NullCompletionHandler);
-
-  testQueue.Add(TestQueue::Event(std::string("hello")));
-
-  timerMock->Expire(__FILE__, __LINE__);
+    waitHandler);
+  testEvents.Add(std::string("hello"));
+  timerMock->Cancel(__FILE__,__LINE__);
 
   MyResourceCache resourceCache;
   resourceCache.AsyncUpdate(NullCompletionHandler);

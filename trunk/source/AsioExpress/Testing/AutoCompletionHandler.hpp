@@ -45,7 +45,7 @@ public:
 
 private:
   char const *            m_file;
-  int const               m_line;
+  int                     m_line;
   boost::shared_ptr<int>  m_callCount;
 };
 

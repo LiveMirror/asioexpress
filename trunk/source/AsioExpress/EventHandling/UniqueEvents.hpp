@@ -144,6 +144,8 @@ public:
         }
         
     private:
+        Listener & operator=(Listener const &);
+
         Key                                 key;
         UniqueEventListenerPointer          listener;
         ListenersPointer                    listeners;
