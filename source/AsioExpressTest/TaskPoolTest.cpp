@@ -24,18 +24,16 @@ BOOST_AUTO_TEST_SUITE(TaskPoolTest)
 class MyEventHandler
 {
 public:
-    typedef boost::shared_ptr<std::string> EventPointer;
-
     MyEventHandler() :
         m_callCount(new int()),
         m_event(new string)
     {
     }
 
-    void operator()(EventPointer ev, CompletionHandler completionHandler)
+    void operator()(std::string const & ev, CompletionHandler completionHandler)
     {
         ++(*m_callCount);
-        *m_event = *ev;
+        *m_event = ev;
         completionHandler(AsioExpress::Error());
     }
 

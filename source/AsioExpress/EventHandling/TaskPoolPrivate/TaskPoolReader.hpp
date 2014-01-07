@@ -72,7 +72,7 @@ public:
                     H handler(eventHandler);
                     try
                     {
-                        handler(eventPointer, *this);
+                        handler(*eventPointer, *this);
                     }
                     catch(...)
                     {
