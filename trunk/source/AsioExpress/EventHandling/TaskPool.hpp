@@ -67,7 +67,7 @@ public:
     ///
     void Start()
     {
-        for (int i=0; i<poolSize; ++i)
+        for (size_t i=0; i<poolSize; ++i)
         {
             ioService.post(boost::asio::detail::bind_handler(
                 TaskPoolPrivate::TaskPoolReader<E,H>(eventQueue, TimerPointer(new NoExpiryTimer), eventHandler), 
@@ -90,7 +90,7 @@ public:
     ///
     /// This method cancels all pending operations on the task pool. If
     /// AsyncWait or AsyncAdd is called on a canceled queue an operation
-    /// aborted error is retured immediately.
+    /// aborted error is returned immediately.
     ///
     void ShutDown();
 
@@ -109,13 +109,13 @@ void TaskPool<E,H>::AsyncAdd(
     Event const & event,
     CompletionHandler completionHandler)
 {
-    eventQueue.AsyncAdd(event, completionHandler);
+    eventQueue->AsyncAdd(event, completionHandler);
 }
 
 template<typename E, typename H>
 void TaskPool<E,H>::ShutDown()
 {
-    eventQueue.ShutDown();
+    eventQueue->ShutDown();
 }
 
 } // namespace AsioExpress

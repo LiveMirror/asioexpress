@@ -98,7 +98,7 @@ public:
   ///
   /// This method cancels any pending operations on all caches. If
   /// AsyncGet is called on a canceled cache an operation aborted error 
-  /// is retured immediately.
+  /// is returned immediately.
   ///
   void ShutDown();
 

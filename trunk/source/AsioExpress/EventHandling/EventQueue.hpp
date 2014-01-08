@@ -87,7 +87,7 @@ public:
   ///
   /// This method cancels all pending operations on the event queue. If
   /// AsyncWait or AsyncAdd is called on a canceled queue an operation
-  /// aborted error is retured immediately.
+  /// aborted error is returned immediately.
   ///
   void ShutDown();
 

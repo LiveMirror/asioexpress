@@ -64,6 +64,7 @@ public:
         friend class UniqueEvents;
     public:
         Listener(UniqueEvents & events) :
+            key(Key()),
             listeners(events.eventListeners),
             isShutDown(events.isShutDown),
             eventValue(new typename UniqueEvents::Event)
@@ -80,8 +81,12 @@ public:
         /// @param key            The listener will receive events for this 
         ///                       specific key.
         ///
-        void New(Key key)
+        void New(Key newKey)
         {      
+            Cancel();
+            
+            key = newKey;
+            
             CHECK_MSG(
                 listeners->count(key) == 0, 
                 "A UniqueEventHub listener with this key already exists.");
