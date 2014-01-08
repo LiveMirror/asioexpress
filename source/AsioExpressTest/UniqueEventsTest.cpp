@@ -20,7 +20,7 @@ using namespace std;
 
 BOOST_AUTO_TEST_SUITE(UniqueEventsTest)
 
-BOOST_AUTO_TEST_CASE(TestUeWait)
+BOOST_AUTO_TEST_CASE(TestWait)
 {
   typedef UniqueEvents<std::string> TestEvents;
 
@@ -50,7 +50,7 @@ BOOST_AUTO_TEST_CASE(TestUeWait)
                 boost::asio::error::operation_aborted);
 }
 
-BOOST_AUTO_TEST_CASE(TestUeNoListener)
+BOOST_AUTO_TEST_CASE(TestNoListener)
 {
   typedef UniqueEvents<std::string> TestEvents;
 
@@ -60,7 +60,7 @@ BOOST_AUTO_TEST_CASE(TestUeNoListener)
     testEvents.Add(std::string("hello")));
 }
 
-BOOST_AUTO_TEST_CASE(TestUeEarlyAdd)
+BOOST_AUTO_TEST_CASE(TestEarlyAdd)
 {
   typedef UniqueEvents<std::string> TestEvents;
 
@@ -84,7 +84,7 @@ BOOST_AUTO_TEST_CASE(TestUeEarlyAdd)
   BOOST_CHECK_EQUAL(listener.GetEventValue(), "hello");
 }
 
-BOOST_AUTO_TEST_CASE(TestUeAdd)
+BOOST_AUTO_TEST_CASE(TestAdd)
 {
   typedef UniqueEvents<std::string> TestEvents;
 
@@ -109,7 +109,7 @@ BOOST_AUTO_TEST_CASE(TestUeAdd)
   BOOST_CHECK_EQUAL(listener.GetEventValue(), "hello");
 }
 
-BOOST_AUTO_TEST_CASE(TestUeTimeout)
+BOOST_AUTO_TEST_CASE(TestTimeout)
 {
   typedef UniqueEvents<std::string> TestEvents;
 
@@ -134,7 +134,33 @@ BOOST_AUTO_TEST_CASE(TestUeTimeout)
               AsioExpress::ErrorCode::UniqueEventTimeout);
 }
 
-BOOST_AUTO_TEST_CASE(TestUeWaitWithKey)
+BOOST_AUTO_TEST_CASE(TestCancel)
+{
+  typedef UniqueEvents<std::string> TestEvents;
+
+  TestEvents testEvents;
+  TimerMockPointer timerMock(new TimerMock);
+  TestCompletionHandler waitHandler;
+
+  TestEvents::Listener listener(testEvents);
+
+  listener.New(1);
+  
+  listener.AsyncWait(
+    timerMock,
+    waitHandler);
+  
+  listener.Cancel();
+  
+  timerMock->AssertAsyncWaitCalled(__FILE__, __LINE__);
+  timerMock->AssertStopCalled(__FILE__, __LINE__);
+
+  BOOST_CHECK_EQUAL(waitHandler.Calls(), 1);
+  BOOST_CHECK(waitHandler.LastError().GetErrorCode() == 
+              boost::asio::error::operation_aborted);
+}
+
+BOOST_AUTO_TEST_CASE(TestWaitWithKey)
 {
   typedef UniqueEvents<std::string, int> TestEvents;
 
@@ -163,7 +189,7 @@ BOOST_AUTO_TEST_CASE(TestUeWaitWithKey)
                 boost::asio::error::operation_aborted);
 }
 
-BOOST_AUTO_TEST_CASE(TestUeAddsWithKey)
+BOOST_AUTO_TEST_CASE(TestAddsWithKey)
 {
   typedef UniqueEvents<std::string, int> TestEvents;
 
@@ -208,7 +234,7 @@ BOOST_AUTO_TEST_CASE(TestUeAddsWithKey)
   BOOST_CHECK_EQUAL(listener2.GetEventValue(), "there");
 }
 
-BOOST_AUTO_TEST_CASE(TestUeTimeoutWithKey)
+BOOST_AUTO_TEST_CASE(TestTimeoutWithKey)
 {
   typedef UniqueEvents<std::string, int> TestEvents;
 
@@ -233,7 +259,7 @@ BOOST_AUTO_TEST_CASE(TestUeTimeoutWithKey)
             AsioExpress::ErrorCode::UniqueEventTimeout);
 }
 
-BOOST_AUTO_TEST_CASE(TestUeTimeoutWithLateAdd)
+BOOST_AUTO_TEST_CASE(TestTimeoutWithLateAdd)
 {
   typedef UniqueEvents<std::string> TestEvents;
 
@@ -263,7 +289,7 @@ BOOST_AUTO_TEST_CASE(TestUeTimeoutWithLateAdd)
   BOOST_CHECK_EQUAL(listener.GetEventValue(), "");
 }
 
-BOOST_AUTO_TEST_CASE(TestUeWithMultipleListeners)
+BOOST_AUTO_TEST_CASE(TestWithMultipleListeners)
 {
   typedef UniqueEvents<std::string, int> TestEvents;
 
@@ -292,7 +318,7 @@ BOOST_AUTO_TEST_CASE(TestUeWithMultipleListeners)
   timerMock1->Cancel(__FILE__,__LINE__);
 }
 
-BOOST_AUTO_TEST_CASE(TestUeStopTimer)
+BOOST_AUTO_TEST_CASE(TestStopTimer)
 {
   typedef UniqueEvents<std::string> TestEvents;
 
@@ -318,7 +344,7 @@ BOOST_AUTO_TEST_CASE(TestUeStopTimer)
             boost::asio::error::operation_aborted);
 }
 
-BOOST_AUTO_TEST_CASE(TestUeConcurrentWaits)
+BOOST_AUTO_TEST_CASE(TestConcurrentWaits)
 {
   typedef UniqueEvents<std::string> TestEvents;
 
@@ -341,7 +367,7 @@ BOOST_AUTO_TEST_CASE(TestUeConcurrentWaits)
   timerMock->Cancel(__FILE__,__LINE__);
 }
 
-BOOST_AUTO_TEST_CASE(TestUeShutDown)
+BOOST_AUTO_TEST_CASE(TestShutDown)
 {
   typedef UniqueEvents<std::string> TestEvents;
 
@@ -369,7 +395,7 @@ BOOST_AUTO_TEST_CASE(TestUeShutDown)
             boost::asio::error::operation_aborted);
 }
 
-BOOST_AUTO_TEST_CASE(TestUeShutDownAndWait)
+BOOST_AUTO_TEST_CASE(TestShutDownAndWait)
 {
   typedef UniqueEvents<std::string> TestEvents;
 
@@ -395,7 +421,7 @@ BOOST_AUTO_TEST_CASE(TestUeShutDownAndWait)
             boost::asio::error::operation_aborted);
 }
 
-BOOST_AUTO_TEST_CASE(TestUeListenerScope)
+BOOST_AUTO_TEST_CASE(TestListenerScope)
 {
   typedef UniqueEvents<std::string> TestEvents;
 
