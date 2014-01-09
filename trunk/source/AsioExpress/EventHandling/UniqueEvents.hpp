@@ -12,6 +12,7 @@
 #include "AsioExpressError/CallStack.hpp"
 #include "AsioExpressError/Check.hpp"
 
+#include "AsioExpress/PointerTypes.hpp"
 #include "AsioExpress/CompletionHandler.hpp"
 #include "AsioExpress/ErrorCodes.hpp"
 #include "AsioExpress/Timer/Timer.hpp"
@@ -66,9 +67,23 @@ public:
         Listener(UniqueEvents & events) :
             key(Key()),
             listeners(events.eventListeners),
+            listenerInstances(new int(0)),
             isShutDown(events.isShutDown),
             eventValue(new typename UniqueEvents::Event)
         {
+        }
+
+        Listener(Listener const &that)
+        {
+            key = that.key;
+            listener = that.listener;
+            listenerInstances = that.listenerInstances;
+            listeners = that.listeners;
+            isShutDown = that.isShutDown;            
+            eventValue = that.eventValue;
+            
+            if (listener)
+                ++(*listenerInstances);
         }
 
         ~Listener()
@@ -92,6 +107,7 @@ public:
                 "A UniqueEventHub listener with this key already exists.");
 
             listener.reset(new UniqueEventListener(eventValue));
+            ++(*listenerInstances);
 
             (*listeners)[key] = listener;
         }
@@ -123,7 +139,7 @@ public:
             CHECK(!completionHandler.empty());
 
             // If the event has been canceled return operation aborted immediately.
-            if ( isShutDown )
+            if ( *isShutDown )
             {
                 listener->Cancel();
                 completionHandler(Error(boost::asio::error::operation_aborted));
@@ -135,12 +151,18 @@ public:
         
         void Cancel()
         {
-            if (listener)
+            if (!listener)
+                return;
+            
+            if (*listenerInstances == 1)
             {
                 listener->Cancel();
-                listener.reset();
                 listeners->erase(key);
+                *listenerInstances = 0;
             }
+            
+            // delete local reference
+            listener.reset();
         }
         
         Event GetEventValue() const
@@ -149,19 +171,22 @@ public:
         }
         
     private:
+        typedef boost::shared_ptr<int> IntPointer;
+        
         Listener & operator=(Listener const &);
 
         Key                                 key;
         UniqueEventListenerPointer          listener;
         ListenersPointer                    listeners;
-        bool &                              isShutDown;
+        IntPointer                          listenerInstances;
+        BoolPointer                         isShutDown;
         typename UniqueEvents::EventPointer eventValue;
     };
 
 public:
     UniqueEvents() :
         eventListeners(new Listeners),
-        isShutDown(false)
+        isShutDown(new bool(false))
     {
     }
     
@@ -202,7 +227,7 @@ public:
     void ShutDown()
     {
         // Indicate that this event is canceled.
-        isShutDown = true;
+        *isShutDown = true;
 
         // Cancel all waiting listeners.
         BOOST_FOREACH( typename Listeners::value_type &it, *eventListeners )
@@ -214,7 +239,7 @@ public:
 
 private:
   ListenersPointer   eventListeners;
-  bool               isShutDown;
+  BoolPointer        isShutDown;
 };
 
 } // namespace AsioExpress
