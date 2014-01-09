@@ -109,6 +109,33 @@ BOOST_AUTO_TEST_CASE(TestAdd)
   BOOST_CHECK_EQUAL(listener.GetEventValue(), "hello");
 }
 
+BOOST_AUTO_TEST_CASE(TestAddListenerCopy)
+{
+  typedef UniqueEvents<std::string> TestEvents;
+
+  TestEvents testEvents;
+  TimerMockPointer timerMock(new TimerMock);
+  AutoCompletionHandler waitHandler(__FILE__, __LINE__);
+
+  TestEvents::Listener* listener1(new TestEvents::Listener(testEvents));
+  listener1->New();
+
+  TestEvents::Listener* listener2(new TestEvents::Listener(*listener1));  
+  delete listener1;
+  
+  listener2->AsyncWait(
+    timerMock,
+    waitHandler);
+
+  testEvents.Add(std::string("hello"));
+
+  timerMock->AssertStopCalled(__FILE__, __LINE__);
+  timerMock->Cancel(__FILE__,__LINE__);
+
+  BOOST_CHECK_EQUAL(waitHandler.Calls(), 1);
+  BOOST_CHECK_EQUAL(listener2->GetEventValue(), "hello");
+}
+
 BOOST_AUTO_TEST_CASE(TestTimeout)
 {
   typedef UniqueEvents<std::string> TestEvents;
