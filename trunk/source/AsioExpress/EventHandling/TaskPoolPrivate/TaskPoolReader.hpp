@@ -37,11 +37,13 @@ public:
     TaskPoolReader(
             QueuePointer const & eventQueue,
             TimerPointer const & waitTimer,
-            H eventHandler) :
+            H eventHandler,
+            AsioExpress::CompletionHandler errorHandler) :
         eventQueue(eventQueue),
         waitTimer(waitTimer),
         eventPointer(new E),
-        eventHandler(eventHandler)
+        eventHandler(eventHandler),
+        errorHandler(errorHandler)
     {
     }
 
@@ -63,7 +65,7 @@ public:
                 {
                     // should never happen
                     assert(false);
-                    abort();
+                    errorHandler(error);
                 }
 
                 YIELD
@@ -74,12 +76,11 @@ public:
                     {
                         handler(*eventPointer, *this);
                     }
-                    catch(...)
-                    {
-                        // Do nothing; the task pool does not handle errors with
-                        // the user handler.
-                    }
+                    ASIOEXPRESS_CATCH_ERROR_AND_DO(errorHandler(error))
                 }
+                
+                if (error)
+                    errorHandler(error);
             }
         }
     }
@@ -89,6 +90,7 @@ private:
     TimerPointer                        waitTimer;
     typename Queue::EventPointer        eventPointer;
     H                                   eventHandler;
+    AsioExpress::CompletionHandler      errorHandler;
 };
 
 } // namespace TaskPoolPrivate

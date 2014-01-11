@@ -13,6 +13,7 @@
 #include "AsioExpressError/CallStack.hpp"
 
 #include "AsioExpress/CompletionHandler.hpp"
+#include "AsioExpress/NullCompletionHandler.hpp"
 #include "AsioExpress/ErrorCodes.hpp"
 
 #include "AsioExpress/Proc/Context.hpp"
@@ -57,11 +58,21 @@ public:
         ioService(ioService),
         eventQueue(new Queue(queueSize)),
         poolSize(poolSize),
-        eventHandler(eventHandler)
+        eventHandler(eventHandler),
+        errorHandler(NullCompletionHandler)
     {
         CHECK(poolSize > 0);
     }
-
+    
+    ///
+    /// Call this method to set an error hander for the task pool. Any errors
+    /// generated from the event handler will passed to the error handler.
+    ///
+    void SetErrorHandler(AsioExpress::CompletionHandler newErrorHandler)
+    {
+        errorHandler = newErrorHandler;
+    }
+    
     ///
     /// Call this method to start the task pool.
     ///
@@ -70,7 +81,7 @@ public:
         for (size_t i=0; i<poolSize; ++i)
         {
             ioService.post(boost::asio::detail::bind_handler(
-                TaskPoolPrivate::TaskPoolReader<E,H>(eventQueue, TimerPointer(new NoExpiryTimer), eventHandler), 
+                TaskPoolPrivate::TaskPoolReader<E,H>(eventQueue, TimerPointer(new NoExpiryTimer), eventHandler, errorHandler),
                 AsioExpress::Error()));
         }
     }
@@ -98,10 +109,11 @@ private:
     typedef EventQueue<E> Queue;
     typedef boost::shared_ptr<Queue> QueuePointer;
 
-    boost::asio::io_service &   ioService;
-    QueuePointer                eventQueue;
-    SizeType                    poolSize;
-    H                           eventHandler;
+    boost::asio::io_service &           ioService;
+    QueuePointer                        eventQueue;
+    SizeType                            poolSize;
+    H                                   eventHandler;
+    AsioExpress::CompletionHandler      errorHandler;
 };
 
 template<typename E, typename H>
