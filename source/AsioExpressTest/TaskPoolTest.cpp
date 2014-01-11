@@ -52,6 +52,24 @@ private:
     boost::shared_ptr<std::string>          m_event;
 };
 
+class MyBadEventHandler1
+{
+public:
+    void operator()(std::string const & ev, CompletionHandler completionHandler)
+    {
+        completionHandler(AsioExpress::Error(AsioExpress::ErrorCode::UniqueEventTimeout));
+    }
+};
+
+class MyBadEventHandler2
+{
+public:
+    void operator()(std::string const & ev, CompletionHandler completionHandler)
+    {
+        throw AsioExpress::ContractViolationException("Programmer error!");
+    }
+};
+
 BOOST_AUTO_TEST_CASE(TestTaskPoolReaderWait)
 {
   typedef EventQueue<std::string> TestQueue;
@@ -59,9 +77,10 @@ BOOST_AUTO_TEST_CASE(TestTaskPoolReaderWait)
   
   TestQueuePointer testQueue(new TestQueue);
   TimerMockPointer timerMock(new TimerMock);
+  AutoCompletionHandler errorHandler(__FILE__,__LINE__);
 
   MyEventHandler eventHandler;
-  TaskPoolReader<std::string,MyEventHandler> reader(testQueue, timerMock, eventHandler);
+  TaskPoolReader<std::string,MyEventHandler> reader(testQueue, timerMock, eventHandler, errorHandler);
 
   reader();
 
@@ -69,7 +88,7 @@ BOOST_AUTO_TEST_CASE(TestTaskPoolReaderWait)
 
   BOOST_CHECK_EQUAL(eventHandler.GetCallCount(), 0);
 
-  // clean up to prevent memory link
+  // clean up to prevent memory leak
   timerMock->Cancel(__FILE__,__LINE__);
   BOOST_CHECK_EQUAL(eventHandler.GetCallCount(), 0);
 }
@@ -81,9 +100,10 @@ BOOST_AUTO_TEST_CASE(TestTaskPoolReaderAdd)
   
     TestQueuePointer testQueue(new TestQueue);
     TimerMockPointer timerMock(new TimerMock);
+    AutoCompletionHandler errorHandler(__FILE__,__LINE__);
 
     MyEventHandler eventHandler;
-    TaskPoolReader<std::string,MyEventHandler> reader(testQueue, timerMock, eventHandler);
+    TaskPoolReader<std::string,MyEventHandler> reader(testQueue, timerMock, eventHandler, errorHandler);
 
     reader();
 
@@ -96,14 +116,13 @@ BOOST_AUTO_TEST_CASE(TestTaskPoolReaderAdd)
     BOOST_CHECK_EQUAL(eventHandler.GetCallCount(), 1);
     BOOST_CHECK_EQUAL(eventHandler.GetEvent(), "hello");
 
-    // clean up to prevent memory link
+    // clean up to prevent memory leak
     timerMock->AssertAsyncWaitCalled(__FILE__, __LINE__);
     timerMock->Cancel(__FILE__,__LINE__);
 
     testQueue.reset();
     timerMock.reset();
 }
-
 
 BOOST_AUTO_TEST_CASE(TestTaskPoolReaderLoop)
 {
@@ -112,9 +131,10 @@ BOOST_AUTO_TEST_CASE(TestTaskPoolReaderLoop)
   
     TestQueuePointer testQueue(new TestQueue);
     TimerMockPointer timerMock(new TimerMock);
+    AutoCompletionHandler errorHandler(__FILE__,__LINE__);
 
     MyEventHandler eventHandler;
-    TaskPoolReader<std::string,MyEventHandler> reader(testQueue, timerMock, eventHandler);
+    TaskPoolReader<std::string,MyEventHandler> reader(testQueue, timerMock, eventHandler, errorHandler);
 
     reader();
 
@@ -123,7 +143,7 @@ BOOST_AUTO_TEST_CASE(TestTaskPoolReaderLoop)
     AutoCompletionHandler addHandler(__FILE__, __LINE__);
     testQueue->AsyncAdd(std::string("hello"), addHandler);
 
-    // clean up to prevent memory link
+    // clean up to prevent memory leak
     timerMock->AssertAsyncWaitCalled(__FILE__, __LINE__);
     timerMock->Cancel(__FILE__,__LINE__);
 
@@ -131,6 +151,54 @@ BOOST_AUTO_TEST_CASE(TestTaskPoolReaderLoop)
 
     testQueue.reset();
     timerMock.reset();
+}
+
+BOOST_AUTO_TEST_CASE(TestBadEventHandler1)
+{
+    typedef EventQueue<std::string> TestQueue;
+    typedef boost::shared_ptr<TestQueue> TestQueuePointer;
+  
+    TestQueuePointer testQueue(new TestQueue);
+    TimerMockPointer timerMock(new TimerMock);
+    TestCompletionHandler errorHandler;
+
+    MyBadEventHandler1 eventHandler;
+    TaskPoolReader<std::string,MyBadEventHandler1> reader(testQueue, timerMock, eventHandler, errorHandler);
+
+    reader();
+
+    AutoCompletionHandler addHandler(__FILE__, __LINE__);
+    testQueue->AsyncAdd(std::string("hello"), addHandler);
+    
+    BOOST_CHECK(errorHandler.LastError().GetErrorCode() == 
+                AsioExpress::ErrorCode::UniqueEventTimeout);  
+
+    // clean up to prevent memory leak
+    timerMock->Cancel(__FILE__,__LINE__);
+}
+
+BOOST_AUTO_TEST_CASE(TestBadEventHandler2)
+{
+    typedef EventQueue<std::string> TestQueue;
+    typedef boost::shared_ptr<TestQueue> TestQueuePointer;
+  
+    TestQueuePointer testQueue(new TestQueue);
+    TimerMockPointer timerMock(new TimerMock);
+    TestCompletionHandler errorHandler;
+
+    MyBadEventHandler2 eventHandler;
+    TaskPoolReader<std::string,MyBadEventHandler2> reader(testQueue, timerMock, eventHandler, errorHandler);
+
+    reader();
+
+    AutoCompletionHandler addHandler(__FILE__, __LINE__);
+    testQueue->AsyncAdd(std::string("hello"), addHandler);
+    
+    BOOST_CHECK(errorHandler.LastError().GetErrorCode() == 
+                AsioExpress::Common::ErrorCode::ContractViolation);  
+
+    // clean up to prevent memory leak
+    timerMock->Cancel(__FILE__,__LINE__);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
