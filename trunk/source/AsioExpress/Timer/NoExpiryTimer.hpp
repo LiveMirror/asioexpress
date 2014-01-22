@@ -17,6 +17,12 @@ namespace AsioExpress {
 class NoExpiryTimer : public AsioExpress::Timer
 {
 public:
+  NoExpiryTimer(
+      boost::asio::io_service & ioService) :
+    m_ioService(ioService)
+  {      
+  }
+    
   virtual ~NoExpiryTimer() 
   {
       Stop();
@@ -49,13 +55,17 @@ public:
 
           // we need to reset the completion handler so it does not linger.
           m_completionHandler = 0;
-
-          handler(Error(boost::asio::error::operation_aborted));          
+          
+          AsioExpress::CallCompletionHandler(
+              m_ioService, 
+              handler, 
+              Error(boost::asio::error::operation_aborted));
       }
   }
 
 private:
-    CompletionHandler m_completionHandler;
+    boost::asio::io_service &   m_ioService;
+    CompletionHandler           m_completionHandler;
 };
 
 } // namespace AsioExpress

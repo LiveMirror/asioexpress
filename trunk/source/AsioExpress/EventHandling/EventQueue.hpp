@@ -94,7 +94,7 @@ public:
 private:
   void Timeout(
       Error error, 
-      TimerPointer const & timer);
+      TimerPointer timer);
 
   struct EventHandler
   {
@@ -204,10 +204,11 @@ void EventQueue<Event>::AsyncAdd(
   {
     // Look up waiting handler.
     typename EventHandlerList::iterator  it = m_waitingEventHandlers.begin();
-    it->timer->Stop();
     *(it->event) = event;
+    TimerPointer timer = it->timer;
     CompletionHandler handler(it->completionHandler);
     m_waitingEventHandlers.erase(it);
+    timer->Stop();
     handler(Error());
     completionHandler(Error());
     return;
@@ -243,12 +244,12 @@ void EventQueue<Event>::ShutDown()
 template<typename Event>
 void EventQueue<Event>::Timeout(
     Error error, 
-    TimerPointer const & timer)
+    TimerPointer timer)
 {
   // Convert to timeout error if timer has expired.
   if (!error)
     error = Error(ErrorCode::EventQueueTimeout);
-
+  
   typename EventHandlerList::iterator  it = m_waitingEventHandlers.begin();
   typename EventHandlerList::iterator end = m_waitingEventHandlers.end();
   for (; it != end; ++it)
