@@ -85,9 +85,14 @@ public:
       CompletionHandler completionHandler);
 
   ///
+  /// This method cancels all pending operations on the event queue. 
+  ///
+  void Cancel();
+
+  ///
   /// This method cancels all pending operations on the event queue. If
-  /// AsyncWait or AsyncAdd is called on a canceled queue an operation
-  /// aborted error is returned immediately.
+  /// AsyncWait or AsyncAdd is called on a queue that has been shut down,
+  /// an operation-aborted error is returned immediately.
   ///
   void ShutDown();
 
@@ -227,11 +232,8 @@ void EventQueue<Event>::AsyncAdd(
 }
 
 template<typename Event>
-void EventQueue<Event>::ShutDown()
+void EventQueue<Event>::Cancel()
 {
-  // Indicate that this queue is canceled.
-  m_isShutDown = true;
-
   // Look up waiting handler.
   typename EventHandlerList::iterator  it = m_waitingEventHandlers.begin();
   typename EventHandlerList::iterator end = m_waitingEventHandlers.end();
@@ -239,6 +241,15 @@ void EventQueue<Event>::ShutDown()
   {
     it->timer->Stop();
   }
+}
+
+template<typename Event>
+void EventQueue<Event>::ShutDown()
+{
+  // Indicate that this queue is canceled.
+  m_isShutDown = true;
+  
+  Cancel();
 }
 
 template<typename Event>
