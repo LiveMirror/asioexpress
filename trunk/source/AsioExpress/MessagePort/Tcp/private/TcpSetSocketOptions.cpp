@@ -60,9 +60,39 @@ void AsioExpress::MessagePort::Tcp::SetSocketOptions(SocketPointer const & socke
 
 #else // _MSC_VER
 
+static void set_socket_option(
+        boost::asio::ip::tcp::socket::native_handle_type s,
+        int type, 
+        int option, 
+        int value)
+{
+    if(setsockopt(s, type, option, &value, sizeof value) < 0) 
+    {
+         std::ostringstream message;
+         message << "setsockopt failed; errno=" << errno << "; " << strerror(errno);
+         AsioExpress::Error error(
+             AsioExpress::MessagePort::Tcp::ErrorCode::SocketInitializationFailed,
+             message.str());        
+         throw AsioExpress::CommonException(error);
+    }    
+}
+
 void AsioExpress::MessagePort::Tcp::SetSocketOptions(SocketPointer const & socket)
 {
     //TODO: add keep alive code
+    boost::asio::ip::tcp::socket::native_handle_type s = socket->native();
+    
+    // Active keep alive
+    set_socket_option(s, SOL_SOCKET, SO_KEEPALIVE, 1);
+    
+    // 10 sec before starting probes
+    set_socket_option(s, SOL_TCP, TCP_KEEPIDLE, 10);
+    
+    // 5 probes max
+    set_socket_option(s, SOL_TCP, TCP_KEEPCNT, 5);
+    
+    // 10 seconds between each probe
+    set_socket_option(s, SOL_TCP, TCP_KEEPINTVL, 10);
 }
 
 #endif // _MSC_VER
