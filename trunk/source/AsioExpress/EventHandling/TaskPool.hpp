@@ -45,7 +45,8 @@ public:
         ioService(ioService),
         eventQueue(new Queue),
         poolSize(poolSize),
-        eventHandler(eventHandler)
+        eventHandler(eventHandler),
+        started(false)
     {
         CHECK(poolSize > 0);
     }
@@ -78,12 +79,28 @@ public:
     ///
     void Start()
     {
+        CHECK(!started);
+        
         for (size_t i=0; i<poolSize; ++i)
         {
             ioService.post(boost::asio::detail::bind_handler(
                 TaskPoolPrivate::TaskPoolReader<E,H>(eventQueue, TimerPointer(new NoExpiryTimer(ioService)), eventHandler, errorHandler),
                 AsioExpress::Error()));
         }
+        
+        started = true;
+    }
+
+    ///
+    /// Call this method to stop the task pool.
+    ///
+    void Stop()
+    {
+        CHECK(started);
+        
+        eventQueue->Cancel();
+        
+        started = false;
     }
 
     ///
@@ -114,6 +131,7 @@ private:
     SizeType                            poolSize;
     H                                   eventHandler;
     AsioExpress::CompletionHandler      errorHandler;
+    bool                                started;
 };
 
 template<typename E, typename H>
