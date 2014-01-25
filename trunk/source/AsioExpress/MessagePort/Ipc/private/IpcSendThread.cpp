@@ -5,12 +5,15 @@
 
 #include "AsioExpress/pch.hpp"
 
+#include <boost/chrono.hpp>
+
 #include "AsioExpressConfig/config.hpp"
 #include "AsioExpressError/CatchMacros.hpp"
 #include "AsioExpress/Platform/DebugMessage.hpp"
 #include "AsioExpress/MessagePort/Ipc/ErrorCodes.hpp"
 #include "AsioExpress/MessagePort/Ipc/private/IpcSendThread.hpp"
 #include "AsioExpress/MessagePort/Ipc/private/IpcSysMessage.hpp"
+#include "AsioExpress/MessagePort/Ipc/private/IpcConstants.hpp"
 
 namespace AsioExpress {
 namespace MessagePort {
@@ -19,12 +22,14 @@ namespace Ipc {
 WIN_DISABLE_WARNINGS_BEGIN(4355)
 IpcSendThread::IpcSendThread(
     boost::asio::io_service & ioService,
-    MessageQueuePointer messageQueue) :
+    MessageQueuePointer messageQueue,
+    PingMode pingMode) :
   m_ioService(ioService),
   m_messageQueue(messageQueue),
   m_isClosing(false),
   m_sendFailed(false),
   m_alertThrown(false),
+  m_pingMode(pingMode),
   m_thread(boost::bind(&IpcSendThread::SendFunction, this))
 {
 }
@@ -93,17 +98,35 @@ void IpcSendThread::Close()
 void IpcSendThread::SendFunction()
 {
   boost::unique_lock<boost::mutex> alertLock(m_alertMutex);
-
+  
+  ResetPingTime();
+ 
   while(! m_isClosing)
   {
     if (m_alertThrown)
     {
+      ResetPingTime();
+      
       Send();          
 
       m_alertThrown = false;
     }
+    else if (IsPingTime())
+    {      
+#ifdef DEBUG_IPC
+      DebugMessage("IpcSendThread: Sending ping on idle connection.\n");
+#endif
+      ResetPingTime();      
 
-    m_alert.wait(alertLock);
+      SendSystemMessage(IpcSysMessage::MSG_PING);      
+    }
+
+    boost::chrono::system_clock::time_point now(
+        boost::chrono::system_clock::now());
+
+    m_alert.wait_until(
+            alertLock, 
+            now + (m_pingTime - now));
   }
 
   Send();
@@ -113,20 +136,7 @@ void IpcSendThread::SendFunction()
 
   // Send disconnect message.
   //
-  IpcSysMessage msg(IpcSysMessage::MSG_DISCONNECT);
-  DataBuffer dataBuffer(msg.RequiredEncodeBufferSize());
-  (void)msg.Encode(dataBuffer.Get());
-  try
-  {
-    (void)m_messageQueue->try_send(
-      dataBuffer.Get(), 
-      dataBuffer.Size(), 
-      IpcSysMessage::SYS_MSG_PRIORITY);
-  }
-  catch(boost::interprocess::interprocess_exception &) 
-  {    
-    // ignore any error
-  }
+  SendSystemMessage(IpcSysMessage::MSG_DISCONNECT);
 }
 
 void IpcSendThread::Send()
@@ -212,6 +222,40 @@ void IpcSendThread::CallCompletionHandler(
     AsioExpress::Error error)
 {
   m_ioService.post(boost::asio::detail::bind_handler(completionHandler, error));
+}
+
+void IpcSendThread::SendSystemMessage(char const * systemMessage)
+{
+  IpcSysMessage msg(systemMessage);
+  DataBuffer dataBuffer(msg.RequiredEncodeBufferSize());
+  (void)msg.Encode(dataBuffer.Get());
+  try
+  {
+    (void)m_messageQueue->try_send(
+      dataBuffer.Get(), 
+      dataBuffer.Size(), 
+      IpcSysMessage::SYS_MSG_PRIORITY);
+  }
+  catch(boost::interprocess::interprocess_exception &) 
+  {    
+    // ignore any error
+  }    
+}
+
+void IpcSendThread::ResetPingTime()
+{
+  if (m_pingMode == DisablePing)
+    return;
+  
+  m_pingTime = boost::chrono::system_clock::now() + boost::chrono::seconds(PingRateSeconds);
+}
+
+bool IpcSendThread::IsPingTime()
+{
+  if (m_pingMode == DisablePing)
+    return false; 
+  
+  return boost::chrono::system_clock::now() >= m_pingTime;
 }
 
 } // namespace Ipc

@@ -16,9 +16,16 @@ namespace Ipc {
 class IpcSendThread
 {
 public:
+  enum PingMode
+  {
+    DisablePing,
+    EnablePing
+  };
+  
   IpcSendThread(
       boost::asio::io_service & ioService,
-      MessageQueuePointer messageQueue);
+      MessageQueuePointer messageQueue,
+      PingMode pingMode);
 
   ~IpcSendThread();
 
@@ -32,7 +39,7 @@ public:
 private:
   IpcSendThread(IpcSendThread const & );
   IpcSendThread & operator=(IpcSendThread const &);
-
+  
   struct SendParameters
   {
     DataBufferPointer                 dataBuffer;
@@ -61,21 +68,29 @@ private:
   void CallCompletionHandler(
     AsioExpress::CompletionHandler completionHandler,
     AsioExpress::Error error);
+  
+  void SendSystemMessage(char const * systemMessage);
+  
+  void ResetPingTime();
+  
+  bool IsPingTime();
 
-  boost::asio::io_service &   m_ioService;
-  MessageQueuePointer         m_messageQueue;
+  boost::asio::io_service &                 m_ioService;
+  MessageQueuePointer                       m_messageQueue;
 
-  bool                        m_isClosing;   // only read by thread function
-  bool                        m_sendFailed;
+  bool                                      m_isClosing;   // only read by thread function
+  bool                                      m_sendFailed;
 
-  SendQueue                   m_sendQueue;
-  boost::mutex                m_sendQueueMutex;
+  SendQueue                                 m_sendQueue;
+  boost::mutex                              m_sendQueueMutex;
 
-  boost::mutex                m_alertMutex;
-  boost::condition_variable   m_alert;
-  bool                        m_alertThrown;
+  boost::mutex                              m_alertMutex;
+  boost::condition_variable                 m_alert;
+  bool                                      m_alertThrown;
+  boost::chrono::system_clock::time_point   m_pingTime;
+  PingMode                                  m_pingMode;
 
-  boost::thread               m_thread;
+  boost::thread                             m_thread;
 };
 
 typedef boost::shared_ptr<IpcSendThread> IpcSendThreadPointer;

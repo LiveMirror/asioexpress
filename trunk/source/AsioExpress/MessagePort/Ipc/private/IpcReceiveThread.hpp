@@ -16,9 +16,16 @@ namespace Ipc {
 class IpcReceiveThread
 {
 public:
+  enum PingMode
+  {
+    DisablePing,
+    EnablePing
+  };
+  
   IpcReceiveThread(
       boost::asio::io_service & ioService,
-      MessageQueuePointer messageQueue);
+      MessageQueuePointer messageQueue,
+      PingMode pingMode);
 
   ~IpcReceiveThread();
 
@@ -54,6 +61,10 @@ private:
 
   void CallCompletionHandler(
     AsioExpress::Error err);
+  
+  void ResetPingTimeout();
+  
+  bool PingTimeout();
 
   boost::asio::io_service &   m_ioService;
   MessageQueuePointer         m_messageQueue;
@@ -67,6 +78,8 @@ private:
   boost::mutex                m_alertMutex;
   boost::condition_variable   m_alert;
   bool                        m_alertThrown;
+  boost::posix_time::ptime    m_pingTimeout;
+  PingMode                    m_pingMode;
 
   boost::thread               m_thread;
 };

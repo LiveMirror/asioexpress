@@ -151,8 +151,8 @@ AsioExpress::Error MessagePort::SetupWithMessageQueues(const std::string& sendQu
     m_recvMessageQueueName = recvQueue;    
     m_sendMessageQueue.reset(new boost::interprocess::message_queue(boost::interprocess::open_only, m_sendMessageQueueName.c_str()));
     m_recvMessageQueue.reset(new boost::interprocess::message_queue(boost::interprocess::open_only, m_recvMessageQueueName.c_str()));
-    m_receiveThread.reset(new IpcReceiveThread(m_ioService, m_recvMessageQueue));
-    m_sendThread.reset(new IpcSendThread(m_ioService, m_sendMessageQueue));
+    m_receiveThread.reset(new IpcReceiveThread(m_ioService, m_recvMessageQueue, IpcReceiveThread::EnablePing));
+    m_sendThread.reset(new IpcSendThread(m_ioService, m_sendMessageQueue, IpcSendThread::EnablePing));
   }
   catch(boost::interprocess::interprocess_exception& ex) 
   {
