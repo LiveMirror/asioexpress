@@ -42,7 +42,7 @@ MessagePortAcceptor::MessagePortAcceptor(
   // Create our acceptor message queue
   m_messageQueue.reset(new boost::interprocess::message_queue(boost::interprocess::create_only, endPoint.GetEndPoint().c_str(), endPoint.GetMaxNumMsg(), endPoint.GetMaxMsgSize()));
 
-  m_receiveThread.reset(new IpcReceiveThread(ioService, m_messageQueue));
+  m_receiveThread.reset(new IpcReceiveThread(ioService, m_messageQueue, IpcReceiveThread::DisablePing));
 }
 
 

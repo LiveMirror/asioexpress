@@ -3,12 +3,17 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#include <boost/date_time/posix_time/posix_time_duration.hpp>
+#include <boost/date_time/posix_time/posix_time_types.hpp>
+
 #include "AsioExpress/pch.hpp"
 
 #include "AsioExpressConfig/config.hpp"
 
 #include "AsioExpressError/CatchMacros.hpp"
 #include "AsioExpress/MessagePort/Ipc/private/IpcReceiveThread.hpp"
+#include "AsioExpress/MessagePort/Ipc/private/IpcSysMessage.hpp"
+#include "AsioExpress/MessagePort/Ipc/private/IpcConstants.hpp"
 #include "AsioExpress/MessagePort/Ipc/ErrorCodes.hpp"
 
 namespace AsioExpress {
@@ -18,13 +23,15 @@ namespace Ipc {
 WIN_DISABLE_WARNINGS_BEGIN(4355)
 IpcReceiveThread::IpcReceiveThread(
     boost::asio::io_service & ioService,
-    MessageQueuePointer messageQueue) :
+    MessageQueuePointer messageQueue,
+    PingMode pingMode) :
   m_ioService(ioService),
   m_messageQueue(messageQueue),
   m_isReceiving(false),
   m_isCanceled(false),
   m_isClosing(false),
   m_alertThrown(false),
+  m_pingMode(pingMode),
   m_thread(boost::bind(&IpcReceiveThread::ReceiveFunction, this))
 {
 }
@@ -54,7 +61,7 @@ void IpcReceiveThread::AsyncReceive(
   {
     AsioExpress::Error err(
       boost::asio::error::operation_aborted,
-      "IpcReceiveThread(): Receive was canceled.");
+      "IpcReceiveThread: Receive was canceled.");
     m_ioService.post(boost::asio::detail::bind_handler(completionHandler, err));
     return;
   }
@@ -128,7 +135,9 @@ void IpcReceiveThread::Receive()
       = boost::posix_time::microsec_clock::universal_time() 
         + boost::posix_time::milliseconds(m_parameters.maxMilliseconds);
   }
-    
+  
+  ResetPingTimeout();
+  
   // Now continuously call the timed receive
 
   unsigned int priority;
@@ -143,7 +152,7 @@ void IpcReceiveThread::Receive()
     {
       CallCompletionHandler(
         boost::asio::error::operation_aborted,
-        "IpcReceiveThread(): Receive was canceled.");
+        "IpcReceiveThread: Receive was canceled.");
       break;
     }
 
@@ -163,8 +172,25 @@ void IpcReceiveThread::Receive()
         priority, 
         nextTimeout);
 
-      if (successful)
+      if ( successful && priority == IpcSysMessage::SYS_MSG_PRIORITY )
       {
+        IpcSysMessage msg;
+        msg.Decode(tempBuffer.Get());
+
+        if ( msg.GetMessageType() == IpcSysMessage::MSG_PING )
+        {
+  #ifdef DEBUG_IPC
+          DebugMessage("IpcReceiveThread: Ping message received.\n");
+  #endif
+          ResetPingTimeout();          
+          continue;
+        }
+      }
+      
+      if ( successful )
+      {
+        ResetPingTimeout();
+        
         // Successful receive, copy to buffer and post callback with no error
 
         *(m_parameters.priority) = priority;
@@ -174,22 +200,34 @@ void IpcReceiveThread::Receive()
         CallCompletionHandler(AsioExpress::Error());
         break;
       }
-      else if ( hasTimeout && expiryTime <= nextTimeout )
+      
+      if ( !successful && hasTimeout && expiryTime <= nextTimeout )
       {
         // Our overall timeout period elapsed
 
         CallCompletionHandler(
           ErrorCode::TimeOutExpired,
-          "IpcReceiveThread(): Connect/receive request timed out.");
+          "IpcReceiveThread: Connect/receive request timed out.");
         break;
       }
+      
+      if ( !successful && PingTimeout() )
+      {
+        // Our overall timeout period elapsed
+
+        CallCompletionHandler(
+          ErrorCode::LostConnection,
+          "IpcReceiveThread: No ping message received.");
+        break;
+      }
+      
     }
     catch(boost::interprocess::interprocess_exception &ex) 
     {    
       // Some kind of error      
       CallCompletionHandler(
         boost::system::error_code(ex.get_native_error(), boost::system::get_system_category()),
-        "IpcReceiveThread(): Message queue receive call failed.");
+        "IpcReceiveThread: Message queue receive call failed.");
       break;
     }
   }    
@@ -213,6 +251,24 @@ void IpcReceiveThread::CallCompletionHandler(
   m_parameters.completionHandler = 0;
 
   m_ioService.post(boost::asio::detail::bind_handler(handler, err));
+}
+
+void IpcReceiveThread::ResetPingTimeout()
+{
+  if (m_pingMode == DisablePing)
+    return;
+    
+  m_pingTimeout 
+      = boost::posix_time::microsec_clock::universal_time() 
+        + boost::posix_time::seconds(PingTimeoutSeconds);
+}
+
+bool IpcReceiveThread::PingTimeout()
+{
+  if (m_pingMode == DisablePing)
+    return false; 
+  
+  return boost::posix_time::microsec_clock::universal_time() > m_pingTimeout;
 }
 
 } // namespace Ipc

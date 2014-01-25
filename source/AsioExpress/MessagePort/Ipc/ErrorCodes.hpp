@@ -23,6 +23,7 @@ namespace ErrorCode
     Disconnected,
     TimeOutExpired,
     MessageQueueSendFailed,
+    LostConnection,
  };
 
   // implicit conversion helper function

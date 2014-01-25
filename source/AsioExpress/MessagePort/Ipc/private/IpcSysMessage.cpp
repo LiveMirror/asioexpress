@@ -15,10 +15,10 @@ namespace AsioExpress {
 namespace MessagePort {
 namespace Ipc {
 
-
-const char* IpcSysMessage::MSG_CONNECT      = "CONNECT";
-const char* IpcSysMessage::MSG_CONNECT_ACK  = "CONN-ACK";
-const char* IpcSysMessage::MSG_DISCONNECT   = "DISCONN";
+char const * const IpcSysMessage::MSG_CONNECT      = "CONNECT";
+char const * const IpcSysMessage::MSG_CONNECT_ACK  = "CONN-ACK";
+char const * const IpcSysMessage::MSG_DISCONNECT   = "DISCONN";
+char const * const IpcSysMessage::MSG_PING         = "PING";
 
 
 const std::string& IpcSysMessage::GetParam(int idx) const

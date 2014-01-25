@@ -14,9 +14,10 @@ namespace Ipc {
 class IpcSysMessage
 {
 public:
-  static const char* MSG_CONNECT;
-  static const char* MSG_CONNECT_ACK;
-  static const char* MSG_DISCONNECT;
+  static char const * const MSG_CONNECT;
+  static char const * const MSG_CONNECT_ACK;
+  static char const * const MSG_DISCONNECT;
+  static char const * const MSG_PING;
 
   static const unsigned int SYS_MSG_PRIORITY = 10;
 

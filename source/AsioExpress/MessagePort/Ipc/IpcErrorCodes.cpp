@@ -43,7 +43,10 @@ std::string ErrorCategoryImpl::message(int ev) const
       return "Time Out Expired";
 
     case ErrorCode::MessageQueueSendFailed:
-      return "Message queue call failed.";             
+      return "Message queue send call failed.";
+
+    case ErrorCode::LostConnection:
+      return "Lost connection with peer.";
   }
 
   return "Unknown Error";
