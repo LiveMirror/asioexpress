@@ -49,7 +49,7 @@ class MyEventHandler : public AsioExpress::MessagePort::ClientEventHandler
 {
 public:
   MyEventHandler(boost::asio::io_service & ioService) :
-    m_timer(ioService, 2000),
+    m_timer(ioService, 120000),
     m_sendCount(0)
   {
   }
