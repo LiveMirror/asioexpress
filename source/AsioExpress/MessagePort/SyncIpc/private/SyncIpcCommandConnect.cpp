@@ -17,6 +17,7 @@
 #include "AsioExpress/MessagePort/SyncIpc/EndPoint.hpp"
 #include "AsioExpress/MessagePort/SyncIpc/private/SyncIpcCommandConnect.hpp"
 #include "AsioExpress/MessagePort/SyncIpc/private/SyncIpcCommandReceive.hpp"
+#include "AsioExpress/MessagePort/SyncIpc/private/MessageQueuePointer.hpp"
 
 namespace
 {
@@ -173,6 +174,7 @@ void SyncIpcCommandConnect(
 
     SyncIpcCommandReceive(
             messagePort.m_recvMessageQueue,
+            MessageQueuePointer(),
             dataBuffer,
             8000);
 

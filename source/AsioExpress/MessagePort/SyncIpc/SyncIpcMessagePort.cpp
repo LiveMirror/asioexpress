@@ -154,6 +154,7 @@ bool MessagePort::Receive(
 
   return SyncIpcCommandReceive(
                 m_recvMessageQueue,
+                m_sendMessageQueue,
                 buffer,
                 maxMilliseconds);
 }

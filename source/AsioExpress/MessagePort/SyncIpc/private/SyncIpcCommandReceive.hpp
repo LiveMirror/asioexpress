@@ -15,6 +15,7 @@ namespace SyncIpc {
 
 bool SyncIpcCommandReceive(
     MessageQueuePointer messageQueue,
+    MessageQueuePointer sendMessageQueue,    
     DataBufferPointer dataBuffer,
     int maxMilliseconds);
 
