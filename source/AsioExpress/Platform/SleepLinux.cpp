@@ -9,7 +9,7 @@ namespace AsioExpress {
 
 void Sleep(int milliseconds)
 {
-  ::usleep(milliseconds);
+  ::usleep(milliseconds * 1000);
 }
 
 } // namespace AsioExpress
