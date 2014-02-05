@@ -102,31 +102,22 @@ void MessagePort::Send(
   }
 
   // Send the message or fail if queue is full
-  try
-  {
-    bool successful = m_sendMessageQueue->try_send(
-      buffer->Get(), 
-      buffer->Size(),
-      0);
+  bool successful = m_sendMessageQueue->try_send(
+    buffer->Get(), 
+    buffer->Size(),
+    0);
 
-    if (!successful)
-    {
+  if (!successful)
+  {
   #ifdef DEBUG_IPC
-      DebugMessage("IPC::MessagePort::AsyncSend: Send error!\n");
+    DebugMessage("IPC::MessagePort::AsyncSend: Send error!\n");
   #endif
 
-      throw CommonException(Error(
-        AsioExpress::MessagePort::Ipc::ErrorCode::MessageQueueFull,
-        "MessagePort::Send(): Recipient's message queue is full."));
-      return;
-    } 
-    
-  }
-  catch(...)
-  {
-    Disconnect();
-    throw;
-  }
+    throw CommonException(Error(
+      AsioExpress::MessagePort::Ipc::ErrorCode::MessageQueueFull,
+      "MessagePort::Send(): Recipient's message queue is full."));
+    return;
+  } 
 }
     
 void MessagePort::Receive(

@@ -87,10 +87,12 @@ clean: clean-debug clean-release
 .PHONY: clean-debug
 clean-debug:
 	$(MAKE) CONFIGURATION=debug clean-target
+	$(MAKE) CONFIGURATION=debug_shared clean-target
 
 .PHONY: clean-release
 clean-release:
 	$(MAKE) CONFIGURATION=release clean-target
+	$(MAKE) CONFIGURATION=release_shared clean-target
 
 .PHONY: clean-target
 clean-target:
