@@ -20,6 +20,9 @@
 
 #include "AsioExpress/EventHandling/EventQueue.hpp"
 #include "AsioExpress/EventHandling/TaskPoolPrivate/TaskPoolReader.hpp"
+#include "AsioExpress/EventHandling/TaskPoolPrivate/TaskPoolMock.hpp"
+
+#include "AsioExpress/Testing/SetUnitTestMode.hpp"
 
 namespace AsioExpress {
 
@@ -27,9 +30,9 @@ namespace AsioExpress {
 /// This is a basic event synchronization primitive for ASIO applications.
 /// TaskPool is an extension of the EventQueue primitive. As well as providing
 /// a basic queue for processing events, it allows a fixed number of events to
-/// be processed simultaneously. It works similar to the concept of a thread 
+/// be processed simultaneously. It works similar to the concept of a thread
 /// pool but it is using asynchronous tasks rather than threads.
-/// 
+///
 template<typename E, typename H>
 class TaskPool
 {
@@ -46,7 +49,8 @@ public:
         eventQueue(new Queue),
         poolSize(poolSize),
         eventHandler(eventHandler),
-        started(false)
+        started(false),
+        mock(eventHandler, errorHandler)
     {
         CHECK(poolSize > 0);
     }
@@ -60,11 +64,12 @@ public:
         eventQueue(new Queue(queueSize)),
         poolSize(poolSize),
         eventHandler(eventHandler),
-        errorHandler(NullCompletionHandler)
+        errorHandler(NullCompletionHandler),
+        mock(eventHandler, errorHandler)
     {
         CHECK(poolSize > 0);
     }
-    
+
     ///
     /// Call this method to set an error hander for the task pool. Any errors
     /// generated from the event handler will passed to the error handler.
@@ -72,23 +77,28 @@ public:
     void SetErrorHandler(AsioExpress::CompletionHandler newErrorHandler)
     {
         errorHandler = newErrorHandler;
+        mock.SetErrorHandler(newErrorHandler);
     }
-    
+
     ///
+
     /// Call this method to start the task pool.
     ///
     void Start()
     {
         CHECK(!started);
-        
+
+        started = true;
+
+        if (g_isUnitTestMode)
+            return;
+
         for (size_t i=0; i<poolSize; ++i)
         {
             ioService.post(boost::asio::detail::bind_handler(
                 TaskPoolPrivate::TaskPoolReader<E,H>(eventQueue, TimerPointer(new NoExpiryTimer(ioService)), eventHandler, errorHandler),
                 AsioExpress::Error()));
         }
-        
-        started = true;
     }
 
     ///
@@ -97,30 +107,51 @@ public:
     void Stop()
     {
         CHECK(started);
-        
+
         eventQueue->Cancel();
-        
+
         started = false;
     }
 
     ///
     /// This method adds an event to the task pool.
     ///
-    /// @param event              The event data that will be received by the 
+    /// @param event              The event data that will be received by the
     ///                           caller.
-    /// @param completionHandler  The completion hander is called when the event 
+    /// @param completionHandler  The completion hander is called when the event
     ///                           is queued or the queue has been canceled.
     ///
     void AsyncAdd(
             Event const & event,
-            CompletionHandler completionHandler);
+            CompletionHandler completionHandler)
+    {
+        if (g_isUnitTestMode)
+        {
+            mock.AsyncAdd(event, completionHandler);
+            return;
+        }
+
+        eventQueue->AsyncAdd(event, completionHandler);
+    }
+
+    ///
+    /// Unit testing method allows events to be manually read and handled by
+    /// the task pool.
+    ///
+    void TestRead()
+    {
+        mock.TestRead();
+    }
 
     ///
     /// This method cancels all pending operations on the task pool. If
     /// AsyncWait or AsyncAdd is called on a canceled queue an operation
     /// aborted error is returned immediately.
     ///
-    void ShutDown();
+    void ShutDown()
+    {
+        eventQueue->ShutDown();
+    }
 
 private:
     typedef EventQueue<E> Queue;
@@ -132,20 +163,7 @@ private:
     H                                   eventHandler;
     AsioExpress::CompletionHandler      errorHandler;
     bool                                started;
+    TaskPoolPrivate::TaskPoolMock<E,H>  mock;
 };
-
-template<typename E, typename H>
-void TaskPool<E,H>::AsyncAdd(
-    Event const & event,
-    CompletionHandler completionHandler)
-{
-    eventQueue->AsyncAdd(event, completionHandler);
-}
-
-template<typename E, typename H>
-void TaskPool<E,H>::ShutDown()
-{
-    eventQueue->ShutDown();
-}
 
 } // namespace AsioExpress
