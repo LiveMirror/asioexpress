@@ -88,17 +88,20 @@ public:
     {
         CHECK(!started);
 
-        started = true;
-
         if (g_isUnitTestMode)
+        {
+            started = true;
             return;
-
+        }
+        
         for (size_t i=0; i<poolSize; ++i)
         {
             ioService.post(boost::asio::detail::bind_handler(
                 TaskPoolPrivate::TaskPoolReader<E,H>(eventQueue, TimerPointer(new NoExpiryTimer(ioService)), eventHandler, errorHandler),
                 AsioExpress::Error()));
         }
+
+        started = true;
     }
 
     ///
