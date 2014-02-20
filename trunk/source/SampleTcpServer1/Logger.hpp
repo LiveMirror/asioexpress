@@ -11,10 +11,10 @@
 #include "AsioExpress/Logging/Macros.hpp"
 #include "AsioExpress/ClientServer/ServerEventHandler.hpp"
 
-/// 
+///
 /// The logger needs to implement the following policy methods.
 ///
-class Logger 
+class Logger
 {
 public:
   Logger(std::string name, int level=3) :
@@ -23,12 +23,14 @@ public:
   {
   }
 
-  bool isLevelTrace() { return m_level >=6; }
-  bool isLevelDebug() { return m_level >= 5; }
-  bool isLevelInfo() { return m_level >= 4; }
-  bool isLevelWarn() { return m_level >= 3; }
-  bool isLevelError() { return m_level >= 2; }
-  bool isLevelFatal() { return m_level >= 1; }
+  bool IsLevelTrace() { return m_level >=6; }
+  bool IsLevelDebug() { return m_level >= 5; }
+  bool IsLevelInfo() { return m_level >= 4; }
+  bool IsLevelWarn() { return m_level >= 3; }
+  bool IsLevelError() { return m_level >= 2; }
+  bool IsLevelFatal() { return m_level >= 1; }
+
+  bool AllowAsync() { return true; }
 
   void WriteTrace(std::string message, char const *file, int line)
   {

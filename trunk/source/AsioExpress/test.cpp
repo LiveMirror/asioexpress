@@ -47,7 +47,7 @@ using namespace AsioExpress::MessagePort::Tcp;
 using namespace AsioExpress;
 using namespace AsioExpress::Testing;
 
-class MyClientProcessor : 
+class MyClientProcessor :
   private SimpleStateMachine
 {
 public:
@@ -71,7 +71,7 @@ public:
   }
 };
 
-class MyServerProcessor : 
+class MyServerProcessor :
   private SimpleStateMachine
 {
 public:
@@ -156,13 +156,13 @@ class MyResourceCache : public ResourceCache<std::string, int>
 protected:
   virtual void AsyncRemoveItem(
       Key /*key*/,
-      ResourceItemPointer /*item*/, 
+      ResourceItemPointer /*item*/,
       CompletionHandler /*completionHandler*/)
   {
   }
 
   virtual void AsyncUpdateAllItems(
-      CacheUpdatePointer /*update*/, 
+      CacheUpdatePointer /*update*/,
       CompletionHandler /*completionHandler*/)
   {
   }
@@ -173,7 +173,7 @@ protected:
   }
 };
 
-class MyLogger 
+class MyLogger
 {
 public:
   MyLogger(std::string name, int level=0) :
@@ -182,12 +182,14 @@ public:
   {
   }
 
-  bool isLevelTrace() { return m_level < 1; }
-  bool isLevelDebug() { return m_level < 2; }
-  bool isLevelInfo() { return m_level < 3; }
-  bool isLevelWarn() { return m_level < 4; }
-  bool isLevelError() { return m_level < 5; }
-  bool isLevelFatal() { return m_level < 6; }
+  bool IsLevelTrace() { return m_level < 1; }
+  bool IsLevelDebug() { return m_level < 2; }
+  bool IsLevelInfo() { return m_level < 3; }
+  bool IsLevelWarn() { return m_level < 4; }
+  bool IsLevelError() { return m_level < 5; }
+  bool IsLevelFatal() { return m_level < 6; }
+
+  bool AllowAsync() { return true; }
 
   void WriteTrace(std::string message, char const *file, int line)
   {
