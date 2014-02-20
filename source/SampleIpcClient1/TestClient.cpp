@@ -30,7 +30,7 @@ boost::function0<void> shutdown_function;
 //  case CTRL_BREAK_EVENT:
 //  case CTRL_CLOSE_EVENT:
 //  case CTRL_SHUTDOWN_EVENT:
-//    ioService.post(shutdown_function); 
+//    ioService.post(shutdown_function);
 //    return TRUE;
 //  default:
 //    return FALSE;
@@ -40,7 +40,7 @@ boost::function0<void> shutdown_function;
 // SIGINT handler
 void int_handler(int)
 {
-  ioService.post(shutdown_function); 
+  ioService.post(shutdown_function);
 }
 
 typedef AsioExpress::MessagePort::MessagePortClient<AsioExpress::MessagePort::Ipc::MessagePort> ClientType;
@@ -49,27 +49,27 @@ class MyEventHandler : public AsioExpress::MessagePort::ClientEventHandler
 {
 public:
   MyEventHandler(boost::asio::io_service & ioService) :
-    m_timer(ioService, 120000),
+    m_timer(ioService, 2000),
     m_sendCount(0)
   {
   }
 
   virtual void ClientConnected(
-      AsioExpress::MessagePort::ClientConnection connection) 
+      AsioExpress::MessagePort::ClientConnection connection)
   {
     printf("Client connected; ID=%d\n", connection.GetMessagePortId());
- 
+
     m_connection.reset(new AsioExpress::MessagePort::ClientConnection(
-      connection.GetIoService(), 
-      connection.GetMessagePortId(), 
+      connection.GetIoService(),
+      connection.GetMessagePortId(),
       connection.GetClient()));
 
     m_timer.AsyncWait(boost::bind(&MyEventHandler::DoSend, this, _1));
   }
 
   virtual void ClientDisconnected(
-      AsioExpress::MessagePort::ClientConnection connection, 
-      AsioExpress::Error) 
+      AsioExpress::MessagePort::ClientConnection connection,
+      AsioExpress::Error)
   {
     printf("Client disconnected; ID=%d\n", connection.GetMessagePortId());
     m_timer.Stop();
@@ -83,7 +83,7 @@ public:
     printf("RECV: %s\n", msg.c_str());
     clientMessage.CallCompletionHandler(AsioExpress::Error());
   }
-  
+
   virtual AsioExpress::Error ConnectionError(
       AsioExpress::MessagePort::ClientConnection,
       AsioExpress::Error error)
@@ -93,7 +93,7 @@ public:
   }
 
   virtual AsioExpress::Error MessageError(
-      AsioExpress::MessagePort::ClientMessage, 
+      AsioExpress::MessagePort::ClientMessage,
       AsioExpress::Error error)
   {
     printf("Message error; %s\n", error.Message());
@@ -122,8 +122,8 @@ private:
     }
 
     std::ostringstream message;
-    message 
-      << "Message " 
+    message
+      << "Message "
       << ++m_sendCount;
 
     AsioExpress::MessagePort::DataBufferPointer dataBuffer(
@@ -133,7 +133,7 @@ private:
     printf("Start send; %s\n", message.str().c_str());
 
     m_connection->GetClient()->AsyncSend(
-      dataBuffer, 
+      dataBuffer,
       boost::bind(&MyEventHandler::SendCompleted, this, _1));
   }
 
@@ -143,7 +143,7 @@ private:
     printf("Send Completed; %s\n", error.Message());
   }
 
-  typedef boost::shared_ptr<AsioExpress::MessagePort::ClientConnection> ClientConnectionPointer; 
+  typedef boost::shared_ptr<AsioExpress::MessagePort::ClientConnection> ClientConnectionPointer;
 
   AsioExpress::StandardRepeatingTimer    m_timer;
   int                                     m_sendCount;
@@ -154,7 +154,7 @@ private:
 int main(int argc, char* argv[])
 {
   ClientType client(
-    ioService, 
+    ioService,
     AsioExpress::MessagePort::Ipc::EndPoint("nowhere"),
     new MyEventHandler(ioService));
   client.Connect();

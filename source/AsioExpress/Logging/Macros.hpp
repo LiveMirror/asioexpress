@@ -24,35 +24,45 @@
 
 #define LOG_MACRO_BODY(ioService, logger, msg, logLevel)                \
     do {                                                                \
-        if((logger).isLevel##logLevel()) {                              \
+        if(!(logger).IsLevel##logLevel()) break;                        \
+        if((logger).AllowAsync()) {                                        \
             std::ostringstream logStream;                               \
             logStream << msg;                                           \
             AsioExpress::Logger log(ioService);                         \
             log.Write##logLevel(logger, logStream.str(), __FILE__, __LINE__); \
         }                                                               \
+        else {                                                          \
+            std::ostringstream logStream;                               \
+            logStream << msg;                                           \
+            logger.Write##logLevel(logStream.str(), __FILE__, __LINE__);\
+        }                                                               \
     } while (0)
 
 #define LOG_MACRO_STR_BODY(ioService, logger, msg, logLevel)            \
     do {                                                                \
-        if((logger).isLevel##logLevel()) {                              \
+        if(!(logger).IsLevel##logLevel()) break;                        \
+        if((logger).AllowAsync()) {                                        \
             AsioExpress::Logger log(ioService);                         \
-            log.Write##logLevel(logger, msg, __FILE__, __LINE__);                 \
+            log.Write##logLevel(logger, msg, __FILE__, __LINE__);       \
+        }                                                               \
+        else {                                                          \
+            logger.Write##logLevel(msg, __FILE__, __LINE__);            \
         }                                                               \
     } while(0)
 
-#define LOG_MACRO_DIRECT_BODY(logger, msg, logLevel)                \
+#define LOG_MACRO_DIRECT_BODY(logger, msg, logLevel)                    \
     do {                                                                \
-        if((logger).isLevel##logLevel()) {                              \
+        if((logger).IsLevel##logLevel()) {                              \
             std::ostringstream logStream;                               \
             logStream << msg;                                           \
-            logger.Write##logLevel(logStream.str(), __FILE__, __LINE__); \
+            logger.Write##logLevel(logStream.str(), __FILE__, __LINE__);\
         }                                                               \
     } while (0)
 
-#define LOG_MACRO_STR_DIRECT_BODY(logger, msg, logLevel)            \
+#define LOG_MACRO_STR_DIRECT_BODY(logger, msg, logLevel)                \
     do {                                                                \
-        if((logger).isLevel##logLevel()) {                              \
-            logger.Write##logLevel(msg, __FILE__, __LINE__);                 \
+        if((logger).IsLevel##logLevel()) {                              \
+            logger.Write##logLevel(msg, __FILE__, __LINE__);            \
         }                                                               \
     } while(0)
 
@@ -60,7 +70,7 @@
     #define LOG_MACRO_DISABLE_WARNINGS \
       __pragma(warning(push))                             \
       __pragma(warning(disable: 4127 4068))                    \
-      __pragma(CoverageScanner(cov-off))                    
+      __pragma(CoverageScanner(cov-off))
 
     #define LOG_MACRO_ENABLE_WARNINGS \
       __pragma(CoverageScanner(pop))                   \
