@@ -1,4 +1,9 @@
 
+INSTALL_PATH ?= /usr/local
+LIBRARY_NAME := asioexpress
+INCLUDE_DIR   = $(INSTALL_PATH)/include/$(LIBRARY_NAME) 
+LIB_DIR       = $(INSTALL_PATH)/lib/$(LIBRARY_NAME) 
+
 .PHONY: default
 default: 
 	$(MAKE) -C AsioExpressConfig $(BUILD_TARGET)
@@ -27,3 +32,12 @@ release:
 .PHONY: clean
 clean: 
 	$(MAKE) BUILD_TARGET=clean
+
+.PHONY: install
+install:
+	rm -rf $(INCLUDE_DIR)
+	rm -rf $(LIB_DIR)
+	mkdir -p $(INCLUDE_DIR)
+	mkdir -p $(LIB_DIR)
+	cp -r ../../include/* $(INCLUDE_DIR)
+	cp -r ../../lib/* $(LIB_DIR)
