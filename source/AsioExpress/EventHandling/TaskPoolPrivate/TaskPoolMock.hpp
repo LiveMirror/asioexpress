@@ -11,6 +11,7 @@
 #include <boost/shared_ptr.hpp>
 
 #include "AsioExpressError/Check.hpp"
+#include "AsioExpressError/CatchMacros.hpp"
 
 #include "AsioExpress/CompletionHandler.hpp"
 #include "AsioExpress/ErrorCodes.hpp"

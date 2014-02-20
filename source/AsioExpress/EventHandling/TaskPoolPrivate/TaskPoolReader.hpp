@@ -10,6 +10,7 @@
 #include <boost/shared_ptr.hpp>
 
 #include "AsioExpressError/Check.hpp"
+#include "AsioExpressError/CatchMacros.hpp"
 
 #include "AsioExpress/CompletionHandler.hpp"
 #include "AsioExpress/ErrorCodes.hpp"
@@ -26,7 +27,7 @@ namespace TaskPoolPrivate {
 ///
 /// The task pool reader endlessly waits upon events from the event queue and
 /// executes the event hander when new events arrive.
-/// 
+///
 template<typename E, typename H>
 class TaskPoolReader : private AsioExpress::Coroutine
 {
@@ -78,7 +79,7 @@ public:
                     }
                     ASIOEXPRESS_CATCH_ERROR_AND_DO(errorHandler(error))
                 }
-                
+
                 if (error)
                     errorHandler(error);
             }

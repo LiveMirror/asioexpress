@@ -11,6 +11,7 @@
 
 #include "AsioExpressError/Check.hpp"
 #include "AsioExpressError/CallStack.hpp"
+#include "AsioExpressError/CatchMacros.hpp"
 
 #include "AsioExpress/CompletionHandler.hpp"
 #include "AsioExpress/NullCompletionHandler.hpp"
@@ -93,7 +94,7 @@ public:
             started = true;
             return;
         }
-        
+
         for (size_t i=0; i<poolSize; ++i)
         {
             ioService.post(boost::asio::detail::bind_handler(
