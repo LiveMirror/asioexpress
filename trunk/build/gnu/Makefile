@@ -1,11 +1,10 @@
 
 INSTALL_PATH ?= /usr/local
-LIBRARY_NAME := asioexpress
-INCLUDE_DIR   = $(INSTALL_PATH)/include/$(LIBRARY_NAME) 
-LIB_DIR       = $(INSTALL_PATH)/lib/$(LIBRARY_NAME) 
+INCLUDE_DIR   = $(INSTALL_PATH)/include
+LIB_DIR       = $(INSTALL_PATH)/lib
 
 .PHONY: default
-default: 
+default:
 	$(MAKE) -C AsioExpressConfig $(BUILD_TARGET)
 	$(MAKE) -C AsioExpressError $(BUILD_TARGET)
 	$(MAKE) -C AsioExpress $(BUILD_TARGET)
@@ -18,26 +17,40 @@ default:
 	$(MAKE) -C SampleIpcClient2 $(BUILD_TARGET)
 
 .PHONY: all
-all: 
+all:
 	$(MAKE) BUILD_TARGET=all
 
 .PHONY: debug
-debug: 
+debug:
 	$(MAKE) BUILD_TARGET=debug
 
 .PHONY: release
-release: 
+release:
 	$(MAKE) BUILD_TARGET=release
 
 .PHONY: clean
-clean: 
+clean:
 	$(MAKE) BUILD_TARGET=clean
 
 .PHONY: install
 install:
-	rm -rf $(INCLUDE_DIR)
-	rm -rf $(LIB_DIR)
 	mkdir -p $(INCLUDE_DIR)
 	mkdir -p $(LIB_DIR)
+	rm -rf $(INCLUDE_DIR)/AsioExpress
+	rm -rf $(INCLUDE_DIR)/AsioExpressError
+	rm -rf $(INCLUDE_DIR)/AsioExpressConfig
 	cp -r ../../include/* $(INCLUDE_DIR)
-	cp -r ../../lib/* $(LIB_DIR)
+	cp ../../lib/* $(LIB_DIR)
+
+PKG_NAME := libasioexpress
+SVN_REVISION := $(shell svn info . | grep Revision | sed -e's/.*: //')
+FULL_VERSION := 1.0-$(SVN_REVISION)
+
+.PHONY: package
+package: release
+	sudo checkinstall -y --install=no --pkgname $(PKG_NAME)\
+		--pkgversion $(FULL_VERSION) --fstrans=yes\
+		--pkglicense "Boost Software License \(BSL1.0\)"\
+		--maintainer "Wurldtech Security Technologies <info@wurldtech.com>"\
+		--exclude "/home/*"\
+		$(MAKE) install
