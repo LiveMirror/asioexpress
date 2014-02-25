@@ -44,7 +44,7 @@ CFLAGS           := $(BASE_CFLAGS)  $(addprefix -I, $(INCLUDE_DIRS))
 
 .PHONY: debug
 debug:
-	$(MAKE) EXTRA_CFLAGS="$(DBG_CFLAGS)" LIB_EXT="-debug" CONFIGURATION=debug build
+	$(MAKE) EXTRA_CFLAGS="$(DBG_CFLAGS)" LIB_EXT="-dbg" CONFIGURATION=debug build
 
 .PHONY: release
 release:
@@ -89,7 +89,7 @@ clean: clean-debug clean-release
 
 .PHONY: clean-debug
 clean-debug:
-	$(MAKE) CONFIGURATION=debug LIB_EXT="-debug" clean-target
+	$(MAKE) CONFIGURATION=debug LIB_EXT="-dbg" clean-target
 
 .PHONY: clean-release
 clean-release:

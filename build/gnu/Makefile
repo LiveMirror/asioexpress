@@ -1,7 +1,10 @@
 
-INSTALL_PATH ?= /usr/local
-INCLUDE_DIR   = $(INSTALL_PATH)/include
-LIB_DIR       = $(INSTALL_PATH)/lib
+INSTALL_PATH        := /usr/local
+INSTALL_INCLUDE_DIR := $(INSTALL_PATH)/include
+INSTALL_LIB_DIR     := $(INSTALL_PATH)/lib
+
+INCLUDE_DIR         := ../../include
+LIB_DIR             := ../../lib
 
 .PHONY: default
 default:
@@ -31,26 +34,40 @@ release:
 .PHONY: clean
 clean:
 	$(MAKE) BUILD_TARGET=clean
+	rm -f *.tgz *.deb description-pak
 
 .PHONY: install
 install:
-	mkdir -p $(INCLUDE_DIR)
-	mkdir -p $(LIB_DIR)
-	rm -rf $(INCLUDE_DIR)/AsioExpress
-	rm -rf $(INCLUDE_DIR)/AsioExpressError
-	rm -rf $(INCLUDE_DIR)/AsioExpressConfig
-	cp -r ../../include/* $(INCLUDE_DIR)
-	cp ../../lib/* $(LIB_DIR)
+	mkdir -p $(INSTALL_INCLUDE_DIR)
+	mkdir -p $(INSTALL_LIB_DIR)
+ifneq ($(DEBUG_NAME_SUFFIX), -dbg)
+	# copy header files only for non-debug package, debug package will depend
+	# on non-debug package to avoid having to deal with packages conflicting
+	cp -r $(INCLUDE_DIR)/* $(INSTALL_INCLUDE_DIR)
+endif
+	cp $(LIB_DIR)/libasioexpress$(DEBUG_NAME_SUFFIX).*  $(INSTALL_LIB_DIR)
+	cp $(LIB_DIR)/libasioexpresserror$(DEBUG_NAME_SUFFIX).*  $(INSTALL_LIB_DIR)
 
 PKG_NAME := libasioexpress
 SVN_REVISION := $(shell svn info . | grep Revision | sed -e's/.*: //')
 FULL_VERSION := 1.0-$(SVN_REVISION)
 
-.PHONY: package
-package: release
-	sudo checkinstall -y --install=no --pkgname $(PKG_NAME)\
+.PHONY: do-package
+do-package:
+	sudo checkinstall -y --install=no --pkgname $(PKG_NAME)$(DEBUG_NAME_SUFFIX)\
 		--pkgversion $(FULL_VERSION) --fstrans=yes\
 		--pkglicense "Boost Software License \(BSL1.0\)"\
-		--maintainer "Wurldtech Security Technologies <info@wurldtech.com>"\
-		--exclude "/home/*"\
-		$(MAKE) install
+		--maintainer "Ross MacGregor \[http://sourceforge.net/projects/asioexpress/\]"\
+		--exclude "/home/*" $(DEB_REQUIRE)\
+		$(MAKE) install DEBUG_NAME_SUFFIX=$(DEBUG_NAME_SUFFIX)
+
+.PHONY: release-package
+release-package: release
+	$(MAKE) do-package
+
+.PHONY: debug-package
+debug-package: debug
+	$(MAKE) do-package DEBUG_NAME_SUFFIX=-dbg DEB_REQUIRE='--requires $(PKG_NAME)'
+
+.PHONY: package
+package: release-package debug-package
