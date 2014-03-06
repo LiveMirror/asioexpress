@@ -5,6 +5,7 @@
 
 #pragma once
 
+#include <string>
 #include <boost/scoped_ptr.hpp>
 
 namespace AsioExpress {

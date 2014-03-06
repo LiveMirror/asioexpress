@@ -1,0 +1,4 @@
+# Run ldconfig for updating the cache with asioexpress libs
+
+ldconfig
+

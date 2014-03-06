@@ -34,7 +34,7 @@ release:
 .PHONY: clean
 clean:
 	$(MAKE) BUILD_TARGET=clean
-	rm -f *.tgz *.deb description-pak
+	rm -f *.tgz *.deb *-pak
 
 .PHONY: install
 install:
@@ -54,6 +54,7 @@ FULL_VERSION := 1.0-$(SVN_REVISION)
 
 .PHONY: do-package
 do-package:
+	cp debian/*-pak .
 	sudo checkinstall -y --install=no --pkgname $(PKG_NAME)$(DEBUG_NAME_SUFFIX)\
 		--pkgversion $(FULL_VERSION) --fstrans=yes\
 		--pkglicense "Boost Software License \(BSL1.0\)"\
