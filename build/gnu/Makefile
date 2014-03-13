@@ -47,6 +47,8 @@ ifneq ($(DEBUG_NAME_SUFFIX), -dbg)
 endif
 	cp $(LIB_DIR)/libasioexpress$(DEBUG_NAME_SUFFIX).*  $(INSTALL_LIB_DIR)
 	cp $(LIB_DIR)/libasioexpresserror$(DEBUG_NAME_SUFFIX).*  $(INSTALL_LIB_DIR)
+	cp $(LIB_DIR)/libasioexpress-shared$(DEBUG_NAME_SUFFIX).*  $(INSTALL_LIB_DIR)
+	cp $(LIB_DIR)/libasioexpresserror-shared$(DEBUG_NAME_SUFFIX).*  $(INSTALL_LIB_DIR)
 
 PKG_NAME := libasioexpress
 SVN_REVISION := $(shell svn info . | grep Revision | sed -e's/.*: //')
