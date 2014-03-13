@@ -13,7 +13,7 @@ OUT_DIR         := ../../../bin/$(CONFIGURATION)
 LIB_DIR         := ../../../lib
 OBJ_DIR         := ./$(CONFIGURATION)_objs
 OBJ_DIR_EXISTS  := $(OBJ_DIR)/exists
-BASE_CFLAGS     := -D_GNU_SOURCE -Wall -Werror -std=c++03 -I$(SPATH) -I$(BOOST_INCLUDE) -c
+BASE_CFLAGS     := -D_GNU_SOURCE -Wall -Werror -Wno-unused-variable -Wno-unused-local-typedefs -std=c++03 -I$(SPATH) -I$(BOOST_INCLUDE) -c
 DBG_CFLAGS      := -g -O0 -D _DEBUG
 REL_CFLAGS      := -O3 -D NDEBUG
 

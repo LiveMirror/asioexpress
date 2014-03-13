@@ -11,7 +11,7 @@ PROJECT         := AsioExpress
 SPATH           := ../../../source
 IPATH           := ../../../include
 OUT_DIR         := ../../../lib
-BASE_CFLAGS     := -D_GNU_SOURCE -Wall -Werror -std=c++03 -pthread -I$(SPATH) -I$(BOOST_INCLUDE) -c
+BASE_CFLAGS     := -D_GNU_SOURCE -Wall -Werror -Wno-unused-variable -Wno-unused-local-typedefs -std=c++03 -pthread -I$(SPATH) -I$(BOOST_INCLUDE) -c
 DBG_CFLAGS      := -g -O0 -D _DEBUG
 REL_CFLAGS      := -O3 -D NDEBUG -Wno-unused-variable
 SHARED_CFLAGS   := -fPIC
@@ -20,7 +20,7 @@ PROJECT_LC         := $(shell echo $(PROJECT) | tr A-Z a-z)
 SL_TARGET          := $(OUT_DIR)/lib$(PROJECT_LC)$(LIB_EXT).a
 SL_OBJ_DIR         := ./$(CONFIGURATION)_static_objs
 SL_OBJ_DIR_EXISTS  := $(SL_OBJ_DIR)/exists
-DL_TARGET          := $(OUT_DIR)/lib$(PROJECT_LC)$(LIB_EXT).so
+DL_TARGET          := $(OUT_DIR)/lib$(PROJECT_LC)-shared$(LIB_EXT).a
 DL_OBJ_DIR         := ./$(CONFIGURATION)_shared_objs
 DL_OBJ_DIR_EXISTS  := $(DL_OBJ_DIR)/exists
 
@@ -75,7 +75,8 @@ $(SL_TARGET): $(SL_OBJECTS)
 
 $(DL_TARGET): $(DL_OBJECTS)
 	mkdir -p $(OUT_DIR)
-	$(LINK) -shared -o $@ $^
+	$(AR) $@ $^
+#	$(LINK) -shared -o $@ $^
 
 $(SL_OBJ_DIR)/%.o: %.cpp $(INCLUDES) $(SL_OBJ_DIR_EXISTS)
 	$(CC) -I$(OBJ_DIR) $(CFLAGS) $(EXTRA_CFLAGS) $< -o $@
