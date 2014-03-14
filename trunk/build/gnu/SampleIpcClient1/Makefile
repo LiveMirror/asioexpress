@@ -1,5 +1,5 @@
 CC := g++
-LINK := g++ -pthread
+LINK := g++
 LD := ld
 AR := ar rc
 
@@ -52,7 +52,7 @@ build: $(TARGET)
 
 $(TARGET): $(OBJECTS) $(LIBS)
 	mkdir -p $(OUT_DIR)
-	$(LINK) -o $@ $^ $(LIBS)
+	$(LINK) -o $@ $^ -pthread
 
 $(OBJ_DIR)/%.o: %.cpp $(INCLUDES) $(OBJ_DIR_EXISTS)
 	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $< -o $@
