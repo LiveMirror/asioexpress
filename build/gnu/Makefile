@@ -6,18 +6,20 @@ INSTALL_LIB_DIR     := $(INSTALL_PATH)/lib
 INCLUDE_DIR         := ../../include
 LIB_DIR             := ../../lib
 
+BUILD_PARAMS        = CC=$(CC) LINK=$(LINK) BOOST_INCLUDE=$(BOOST_INCLUDE) BOOST_LIB=$(BOOST_LIB)
+
 .PHONY: default
 default:
-	$(MAKE) -C AsioExpressConfig $(BUILD_TARGET)
-	$(MAKE) -C AsioExpressError $(BUILD_TARGET)
-	$(MAKE) -C AsioExpress $(BUILD_TARGET)
-	$(MAKE) -C AsioExpressErrorTest $(BUILD_TARGET)
-	$(MAKE) -C AsioExpressTest $(BUILD_TARGET)
-	$(MAKE) -C SampleTcpServer1 $(BUILD_TARGET)
-	$(MAKE) -C SampleTcpClient1 $(BUILD_TARGET)
-	$(MAKE) -C SampleIpcServer1 $(BUILD_TARGET)
-	$(MAKE) -C SampleIpcClient1 $(BUILD_TARGET)
-	$(MAKE) -C SampleIpcClient2 $(BUILD_TARGET)
+	$(MAKE) -C AsioExpressConfig $(BUILD_PARAMS) $(BUILD_TARGET)
+	$(MAKE) -C AsioExpressError $(BUILD_PARAMS) $(BUILD_TARGET)
+	$(MAKE) -C AsioExpress $(BUILD_PARAMS) $(BUILD_TARGET)
+	$(MAKE) -C AsioExpressErrorTest $(BUILD_PARAMS) $(BUILD_TARGET)
+	$(MAKE) -C AsioExpressTest $(BUILD_PARAMS) $(BUILD_TARGET)
+	$(MAKE) -C SampleTcpServer1 $(BUILD_PARAMS) $(BUILD_TARGET)
+	$(MAKE) -C SampleTcpClient1 $(BUILD_PARAMS) $(BUILD_TARGET)
+	$(MAKE) -C SampleIpcServer1 $(BUILD_PARAMS) $(BUILD_TARGET)
+	$(MAKE) -C SampleIpcClient1 $(BUILD_PARAMS) $(BUILD_TARGET)
+	$(MAKE) -C SampleIpcClient2 $(BUILD_PARAMS) $(BUILD_TARGET)
 
 .PHONY: all
 all:
@@ -37,7 +39,18 @@ clean:
 	rm -f *.tgz *.deb *-pak
 
 .PHONY: install
-install:
+install: install-debug install-release
+
+.PHONY: install-debug
+install-debug:
+	$(MAKE) common-install DEBUG_NAME_SUFFIX=-dbg
+
+.PHONY: install-release
+install-release:
+	$(MAKE) common-install
+
+.PHONY: common-install
+common-install:
 	mkdir -p $(INSTALL_INCLUDE_DIR)
 	mkdir -p $(INSTALL_LIB_DIR)
 ifneq ($(DEBUG_NAME_SUFFIX), -dbg)
@@ -62,7 +75,7 @@ do-package:
 		--pkglicense "Boost Software License \(BSL1.0\)"\
 		--maintainer "Ross MacGregor \[http://sourceforge.net/projects/asioexpress/\]"\
 		--exclude "/home/*" $(DEB_REQUIRE)\
-		$(MAKE) install DEBUG_NAME_SUFFIX=$(DEBUG_NAME_SUFFIX)
+		$(MAKE) common-install DEBUG_NAME_SUFFIX=$(DEBUG_NAME_SUFFIX)
 
 .PHONY: release-package
 release-package: release
