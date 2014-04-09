@@ -1,3 +1,7 @@
+CC             := g++
+LINK           := g++
+BOOST_INCLUDE  ?= /usr/include
+BOOST_LIB      ?= /usr/lib
 
 INSTALL_PATH        := /usr/local
 INSTALL_INCLUDE_DIR := $(INSTALL_PATH)/include
