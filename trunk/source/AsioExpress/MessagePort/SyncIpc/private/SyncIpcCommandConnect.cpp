@@ -30,27 +30,27 @@ namespace SyncIpc {
 
 //TODO: This code is copied from IPC source and should be refactored.
 
-inline std::string IntToString(int n)   
-{ 
-    std::ostringstream ss; 
-    ss << n; 
-    return ss.str(); 
+inline std::string IntToString(int n)
+{
+    std::ostringstream ss;
+    ss << n;
+    return ss.str();
 }
 
 void SyncIpcCommandConnect(
-        EndPoint const & endPoint, 
+        EndPoint const & endPoint,
         MessagePort & messagePort)
 {
     static int const LowConnectionId = 1;
     static int const HighConnectionId = 99;
-    
+
     using namespace AsioExpress::MessagePort::Ipc;
-    
+
     AsioExpress::MessagePort::DataBufferPointer dataBuffer(
         new AsioExpress::MessagePort::DataBuffer);
 
 #ifdef DEBUG_IPC
-    DebugMessage("MessagePortCommandConnect: Finding new message queue ID.\n");
+    DebugMessage("SyncIpcCommandConnect: Finding new message queue ID.\n");
 #endif
 
     messagePort.Disconnect();
@@ -102,7 +102,7 @@ void SyncIpcCommandConnect(
     // Step 2 - Create the message queues for client & server
     //
 #ifdef DEBUG_IPC
-    DebugMessage("MessagePortCommandConnect: Create new message queues.\n");
+    DebugMessage("SyncIpcCommandConnect: Create new message queues.\n");
 #endif
 
     try
@@ -115,7 +115,7 @@ void SyncIpcCommandConnect(
     catch (boost::interprocess::interprocess_exception& ex)
     {
 #ifdef DEBUG_IPC
-        DebugMessage("MessagePortCommandConnect: Unable to create client/server message queues!\n");
+        DebugMessage("SyncIpcCommandConnect: Unable to create client/server message queues!\n");
 #endif
         messagePort.Disconnect();
         throw CommonException(Error(
@@ -140,27 +140,27 @@ void SyncIpcCommandConnect(
         int len = msg.Encode(buf);
 
 #ifdef DEBUG_IPC
-        DebugMessage("MessagePortCommandConnect: Sending connect message.\n");
+        DebugMessage("SyncIpcCommandConnect: Sending connect message.\n");
 #endif
         if (!acceptor.try_send(buf, len, IpcSysMessage::SYS_MSG_PRIORITY))
         {
 #ifdef DEBUG_IPC
-            DebugMessage("MessagePortCommandConnect: Error sending connect message!\n");
+            DebugMessage("SyncIpcCommandConnect: Error sending connect message!\n");
 #endif
             messagePort.Disconnect();
-            
+
             throw CommonException(Error(
                     ErrorCode::CommunicationFailure,
-                    "MessagePort::AsyncConnect(): Server's acceptor queue is full."));
+                    "SyncIpcCommandConnect(): Server's acceptor queue is full."));
         }
     }
     catch (boost::interprocess::interprocess_exception &)
     {
         messagePort.Disconnect();
-        
+
         throw CommonException(Error(
                 ErrorCode::Disconnected,
-                "MessagePort::AsyncConnect(): Unable to open server acceptor queue."));
+                "SyncIpcCommandConnect(): Unable to open server acceptor queue."));
     }
 
     //
@@ -169,17 +169,26 @@ void SyncIpcCommandConnect(
     //
 
 #ifdef DEBUG_IPC
-    DebugMessage("MessagePortCommandConnect: Waiting for ACK message.\n");
+    DebugMessage("SyncIpcCommandConnect: Waiting for ACK message.\n");
 #endif
 
-    SyncIpcCommandReceive(
+    bool receivedMessage = SyncIpcCommandReceive(
             messagePort.m_recvMessageQueue,
             MessageQueuePointer(),
             dataBuffer,
-            8000);
+            5000);
+    if (!receivedMessage)
+    {
+#ifdef DEBUG_IPC
+        DebugMessage("SyncIpcCommandConnect: A CONNECT-ACK response was not received from server.!\n");
+#endif
+        throw CommonException(Error(
+                ErrorCode::CommunicationFailure,
+                "SyncIpcCommandConnect(): A CONNECT-ACK response was not received from server."));
+    }
 
     //
-    // Step 5 - Validate the connection acknowledgement
+    // Step 5 - Validate the connection acknowledgment
     //
 
     IpcSysMessage msg2;
@@ -188,17 +197,17 @@ void SyncIpcCommandConnect(
     if (msg2.GetMessageType() != IpcSysMessage::MSG_CONNECT_ACK)
     {
 #ifdef DEBUG_IPC
-        DebugMessage("MessagePortCommandConnect: Invalid CONNECT-ACK response from server!\n");
+        DebugMessage("SyncIpcCommandConnect: Invalid CONNECT-ACK response from server!\n");
 #endif
         messagePort.Disconnect();
         throw CommonException(Error(
                 ErrorCode::CommunicationFailure,
-                "MessagePort::AsyncConnect(): Invalid CONNECT-ACK response from server."));
+                "SyncIpcCommandConnect(): Invalid CONNECT-ACK response from server."));
     }
 
     // Success
 #ifdef DEBUG_IPC
-    DebugMessage("MessagePortCommandConnect: Connected.\n");
+    DebugMessage("SyncIpcCommandConnect: Connected.\n");
 #endif
 }
 
