@@ -1,7 +1,7 @@
 CC             := g++
 LINK           := g++
-BOOST_INCLUDE  ?= /usr/local/include
-BOOST_LIB      ?= /usr/local/lib
+BOOST_INCLUDE  ?= /usr/include
+BOOST_LIB      ?= /usr/lib
 
 INSTALL_PATH        := /usr/local
 INSTALL_INCLUDE_DIR := $(INSTALL_PATH)/include
@@ -24,6 +24,7 @@ default:
 	$(MAKE) -C SampleIpcServer1 $(BUILD_PARAMS) $(BUILD_TARGET)
 	$(MAKE) -C SampleIpcClient1 $(BUILD_PARAMS) $(BUILD_TARGET)
 	$(MAKE) -C SampleIpcClient2 $(BUILD_PARAMS) $(BUILD_TARGET)
+	$(MAKE) -C SampleIpcClient3 $(BUILD_PARAMS) $(BUILD_TARGET)
 
 .PHONY: all
 all:

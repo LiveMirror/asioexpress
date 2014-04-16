@@ -53,7 +53,7 @@ void SyncIpcCommandConnect(
     DebugMessage("SyncIpcCommandConnect: Finding new message queue ID.\n");
 #endif
 
-    messagePort.Disconnect();
+    messagePort.InternalDisconnect();
 
     //
     // Step 1 - Find a valid message queue name that is not in use
@@ -117,7 +117,7 @@ void SyncIpcCommandConnect(
 #ifdef DEBUG_IPC
         DebugMessage("SyncIpcCommandConnect: Unable to create client/server message queues!\n");
 #endif
-        messagePort.Disconnect();
+        messagePort.InternalDisconnect();
         throw CommonException(Error(
             boost::system::error_code(ex.get_native_error(), boost::system::get_system_category()),
             "MessagePort::Connect(): Unable to create client/server message queues."));
@@ -147,7 +147,7 @@ void SyncIpcCommandConnect(
 #ifdef DEBUG_IPC
             DebugMessage("SyncIpcCommandConnect: Error sending connect message!\n");
 #endif
-            messagePort.Disconnect();
+            messagePort.InternalDisconnect();
 
             throw CommonException(Error(
                     ErrorCode::CommunicationFailure,
@@ -156,7 +156,7 @@ void SyncIpcCommandConnect(
     }
     catch (boost::interprocess::interprocess_exception &)
     {
-        messagePort.Disconnect();
+        messagePort.InternalDisconnect();
 
         throw CommonException(Error(
                 ErrorCode::Disconnected,
@@ -199,7 +199,7 @@ void SyncIpcCommandConnect(
 #ifdef DEBUG_IPC
         DebugMessage("SyncIpcCommandConnect: Invalid CONNECT-ACK response from server!\n");
 #endif
-        messagePort.Disconnect();
+        messagePort.InternalDisconnect();
         throw CommonException(Error(
                 ErrorCode::CommunicationFailure,
                 "SyncIpcCommandConnect(): Invalid CONNECT-ACK response from server."));
