@@ -6,6 +6,7 @@
 #pragma once
 
 #include <boost/asio.hpp>
+#include <boost/thread.hpp>
 #include <boost/interprocess/ipc/message_queue.hpp>
 #include "AsioExpressError/EcToErrorAdapter.hpp"
 #include "AsioExpress/MessagePort/DataBuffer.hpp"
@@ -53,9 +54,13 @@ private:
   AsioExpress::Error SetupWithMessageQueues(const std::string& sendQueue, const std::string& recvQueue);
 
 private:
+  void InternalDisconnect();
+  
   std::string                             m_sendMessageQueueName;
   std::string                             m_recvMessageQueueName;
+  boost::mutex                            m_sendMutex;
   MessageQueuePointer                     m_sendMessageQueue;
+  boost::mutex                            m_recvMutex;
   MessageQueuePointer                     m_recvMessageQueue;
 };
 
