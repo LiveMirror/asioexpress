@@ -27,12 +27,26 @@ public:
     m_size(size),
     m_data(new char[size])
   {
-    memset(m_data, 0, m_size);
+  }
+
+  DataBuffer(DataBuffer const & b) :
+    m_size(0),
+    m_data(0)
+  {
+      Assign(b.m_data, b.m_size);
   }
 
   ~DataBuffer()
   {
     delete [] m_data;
+  }
+
+  DataBuffer & operator=(DataBuffer const & b)
+  {
+      if (this != &b)
+        Assign(b.m_data, b.m_size);
+
+      return *this;
   }
 
   char *Get() const
@@ -48,12 +62,12 @@ public:
   void Resize(SizeType newSize)
   {
     if (newSize == m_size)
-        return;    
+        return;
     delete [] m_data;
     m_size = newSize;
     m_data = new char [newSize];
   }
-  
+
   void Assign(char const *newData, SizeType newSize)
   {
       Resize(newSize);
@@ -66,7 +80,6 @@ public:
   }
 
 private:
-  DataBuffer & operator=(DataBuffer const &other);
 
   SizeType   m_size;
   char *     m_data;
