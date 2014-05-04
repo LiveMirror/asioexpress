@@ -174,7 +174,6 @@ void SyncIpcCommandConnect(
 
     bool receivedMessage = SyncIpcCommandReceive(
             messagePort.m_recvMessageQueue,
-            MessageQueuePointer(),
             dataBuffer,
             5000);
     if (!receivedMessage)

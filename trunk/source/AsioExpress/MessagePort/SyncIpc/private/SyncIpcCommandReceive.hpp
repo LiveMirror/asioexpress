@@ -5,6 +5,7 @@
 
 #pragma once
 
+#include <boost/thread.hpp>
 
 #include "AsioExpress/MessagePort/SyncIpc/private/MessageQueuePointer.hpp"
 #include "AsioExpress/MessagePort/DataBuffer.hpp"
@@ -14,8 +15,15 @@ namespace MessagePort {
 namespace SyncIpc {
 
 bool SyncIpcCommandReceive(
-    MessageQueuePointer messageQueue,
-    MessageQueuePointer sendMessageQueue,    
+    MessageQueuePointer recvMessageQueue,
+    DataBufferPointer dataBuffer,
+    int maxMilliseconds);
+
+bool SyncIpcCommandReceive(
+    MessageQueuePointer recvMessageQueue,
+    MessageQueuePointer sendMessageQueue,
+    boost::mutex & recvMutex,
+    boost::mutex & sendMutex,
     DataBufferPointer dataBuffer,
     int maxMilliseconds);
 

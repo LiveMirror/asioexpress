@@ -27,7 +27,7 @@ void MessagePort::Disconnect()
 {
   boost::mutex::scoped_lock sendLock(m_sendMutex);
   boost::mutex::scoped_lock recvLock(m_recvMutex);
-  
+
   InternalDisconnect();
 }
 
@@ -36,7 +36,7 @@ void MessagePort::Connect(
 {
   boost::mutex::scoped_lock sendLock(m_sendMutex);
   boost::mutex::scoped_lock recvLock(m_recvMutex);
-  
+
   SyncIpcCommandConnect(endPoint, *this);
 }
 
@@ -44,13 +44,13 @@ void MessagePort::Send(
     AsioExpress::MessagePort::DataBufferPointer buffer)
 {
   using namespace AsioExpress;
-    
-  boost::mutex::scoped_lock sendLock(m_sendMutex);
-  
+
   // Check that we're connected
 #ifdef DEBUG_IPC
   DebugMessage("IPC::MessagePort::AsyncSend: Sending message.\n");
 #endif
+
+  boost::mutex::scoped_lock sendLock(m_sendMutex);
 
   if ( !m_sendMessageQueue )
   {
@@ -65,7 +65,7 @@ void MessagePort::Send(
 
   // Send the message or fail if queue is full
   bool successful = m_sendMessageQueue->try_send(
-    buffer->Get(), 
+    buffer->Get(),
     buffer->Size(),
     0);
 
@@ -79,9 +79,9 @@ void MessagePort::Send(
       AsioExpress::MessagePort::Ipc::ErrorCode::MessageQueueFull,
       "MessagePort::Send(): Recipient's message queue is full."));
     return;
-  } 
+  }
 }
-    
+
 void MessagePort::Receive(
     AsioExpress::MessagePort::DataBufferPointer buffer)
 {
@@ -92,8 +92,6 @@ bool MessagePort::Receive(
     AsioExpress::MessagePort::DataBufferPointer buffer,
     int maxMilliseconds)
 {
-  boost::mutex::scoped_lock recvLock(m_recvMutex);
-  
   using namespace AsioExpress::MessagePort::Ipc;
 
   // Check that we're connected
@@ -110,6 +108,8 @@ bool MessagePort::Receive(
   return SyncIpcCommandReceive(
                 m_recvMessageQueue,
                 m_sendMessageQueue,
+                m_recvMutex,
+                m_sendMutex,
                 buffer,
                 maxMilliseconds);
 }
@@ -119,24 +119,24 @@ AsioExpress::Error MessagePort::SetupWithMessageQueues(const std::string& sendQu
 {
   boost::mutex::scoped_lock sendLock(m_sendMutex);
   boost::mutex::scoped_lock recvLock(m_recvMutex);
-  
+
   InternalDisconnect();
 
-  try 
+  try
   {
     m_sendMessageQueueName = sendQueue;
-    m_recvMessageQueueName = recvQueue;    
+    m_recvMessageQueueName = recvQueue;
     m_sendMessageQueue.reset(new boost::interprocess::message_queue(boost::interprocess::open_only, m_sendMessageQueueName.c_str()));
     m_recvMessageQueue.reset(new boost::interprocess::message_queue(boost::interprocess::open_only, m_recvMessageQueueName.c_str()));
   }
-  catch(boost::interprocess::interprocess_exception& ex) 
+  catch(boost::interprocess::interprocess_exception& ex)
   {
     InternalDisconnect();
     AsioExpress::Error err(
         boost::system::error_code(
             ex.get_native_error(),
             boost::system::get_system_category()),
-        "MessagePort::SetupWithMessageQueues(): Unable to open client/server message queues.");    
+        "MessagePort::SetupWithMessageQueues(): Unable to open client/server message queues.");
     return err;
   }
 
@@ -150,7 +150,7 @@ void MessagePort::SetMessagePortOptions()
 void MessagePort::InternalDisconnect()
 {
   using namespace AsioExpress::MessagePort::Ipc;
-  
+
   // Send disconnect message.
   //
   if (m_sendMessageQueue)
@@ -161,16 +161,16 @@ void MessagePort::InternalDisconnect()
     try
     {
       (void)m_sendMessageQueue->try_send(
-        dataBuffer.Get(), 
-        dataBuffer.Size(), 
+        dataBuffer.Get(),
+        dataBuffer.Size(),
         IpcSysMessage::SYS_MSG_PRIORITY);
     }
-    catch(boost::interprocess::interprocess_exception &) 
-    {    
+    catch(boost::interprocess::interprocess_exception &)
+    {
       // ignore any error
-    } 
+    }
   }
-  
+
   // Queues can be just deleted and removed
   //
   if ( m_recvMessageQueue )
