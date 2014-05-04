@@ -48,9 +48,12 @@ void ConnectThread(MessagePort & messagePort)
     for (;;)
     {
         if (! messagePort.IsConnected())
+        {
+            std::cout << "Connect\n";
             Connect(messagePort);
-        
-        AsioExpress::Sleep(250);
+        }
+
+        AsioExpress::Sleep(2000);
     }
 }
 
@@ -59,9 +62,12 @@ void DisconnectThread(MessagePort & messagePort)
     for (;;)
     {
         if (messagePort.IsConnected())
+        {
+            std::cout << "Disconnect\n";
             Disconnect(messagePort);
-        
-        AsioExpress::Sleep(503);
+        }
+
+        AsioExpress::Sleep(4000);
     }
 }
 
@@ -70,11 +76,11 @@ void SendThread(MessagePort & messagePort)
     using namespace AsioExpress::MessagePort;
 
     static int count;
-    
+
     for (;;)
     {
         ++count;
-        
+
         std::ostringstream message;
         message
           << "Message "
@@ -107,8 +113,9 @@ void ReceiveThread(MessagePort & messagePort)
 
         try
         {
+            std::cout << "Receive\n";
             messagePort.Receive(dataBuffer);
-            
+
             std::string msg;
             msg.assign(dataBuffer->Get(), dataBuffer->Size());
 
@@ -118,7 +125,7 @@ void ReceiveThread(MessagePort & messagePort)
         {
             std::cout << e.what() << std::endl;
         }
-        
+
         AsioExpress::Sleep(2);
     }
 }
