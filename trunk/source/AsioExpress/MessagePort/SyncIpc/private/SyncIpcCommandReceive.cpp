@@ -128,7 +128,7 @@ static bool Receive(
       {
         boost::mutex::scoped_lock recvLock(recvMutex);
 
-        bool successful = recvMessageQueue->timed_receive(
+        successful = recvMessageQueue->timed_receive(
                 tempBuffer.Get(),
                 tempBuffer.Size(),
                 recvSize,
