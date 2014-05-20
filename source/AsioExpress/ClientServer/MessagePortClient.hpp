@@ -32,7 +32,9 @@ public:
   virtual void AsyncSend(
       DataBufferPointer buffer, 
       AsioExpress::CompletionHandler completionHandler);
- 
+  
+  virtual std::string GetAddress() const;
+
 private:
   typedef InternalMessagePortClient<MessagePort> ImplementationType;
   typedef boost::shared_ptr<ImplementationType> ImplementationPointer;
@@ -82,6 +84,12 @@ void MessagePortClient<MessagePort>::AsyncSend(
     AsioExpress::CompletionHandler completionHandler)
 {
     m_implementation->AsyncSend(buffer, completionHandler);
+}
+
+template<typename MessagePort>
+std::string MessagePortClient<MessagePort>::GetAddress() const
+{
+    return m_implementation->GetAddress();
 }
 
 } // namespace MessagePort

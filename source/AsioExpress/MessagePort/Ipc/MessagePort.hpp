@@ -44,6 +44,8 @@ public:
       AsioExpress::MessagePort::DataBufferPointer buffer, 
       AsioExpress::CompletionHandler completionHandler);
 
+  virtual std::string GetAddress() const        { return GetRemoteID(); }
+
   void Disconnect();
 
   void SetMessagePortOptions();

@@ -38,6 +38,8 @@ public:
       DataBufferPointer buffer, 
       AsioExpress::CompletionHandler completionHandler);
 
+  virtual std::string GetAddress(MessagePortId id) const;
+
 private:
   typedef InternalMessagePortServer<MessagePortAcceptor> ImplementationType;
   typedef boost::shared_ptr<ImplementationType> ImplementationPointer;
@@ -97,6 +99,13 @@ void MessagePortServer<MessagePortAcceptor>::AsyncBroadcast(
     AsioExpress::CompletionHandler completionHandler)
 {
   m_implementation->AsyncBroadcast(buffer, completionHandler);
+}
+
+template<typename MessagePortAcceptor>
+std::string MessagePortServer<MessagePortAcceptor>::GetAddress(
+    MessagePortId id) const
+{
+    return m_implementation->GetAddress(id);
 }
 
 } // namespace MessagePort

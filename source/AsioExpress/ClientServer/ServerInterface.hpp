@@ -30,6 +30,8 @@ public:
   virtual void AsyncBroadcast(
       DataBufferPointer buffer, 
       AsioExpress::CompletionHandler completionHandler) = 0;
+  
+  virtual std::string GetAddress(MessagePortId id) const = 0;
 
   virtual ~ServerInterface() {}
 };

@@ -6,6 +6,8 @@
 
 #pragma once
 
+#include <string>
+
 #include "AsioExpress/CompletionHandler.hpp"
 #include "AsioExpress/MessagePort/DataBuffer.hpp"
 #include "AsioExpress/ClientServer/MessagePortId.hpp"
@@ -33,9 +35,17 @@ public:
   ///
   virtual void ShutDown() = 0;
 
+  ///
+  /// Send a message to the client.
+  ///
   virtual void AsyncSend(
       DataBufferPointer buffer, 
       AsioExpress::CompletionHandler completionHandler) = 0;
+  
+  /// 
+  /// Gets the address of the client system.
+  ///
+  virtual std::string GetAddress() const = 0;
 
   virtual ~ClientInterface() {}
 };

@@ -108,6 +108,8 @@ public:
 
   void Disconnect();
 
+  std::string GetAddress() const;
+  
 private:
    typedef boost::shared_ptr<bool> BoolPointer;
 
@@ -197,6 +199,12 @@ template<typename ProtocolSender, typename ProtocolReceiver>
 void MessagePort<ProtocolSender, ProtocolReceiver>::Disconnect()
 {
   m_socket->close();
+}
+
+template<typename ProtocolSender, typename ProtocolReceiver>
+std::string MessagePort<ProtocolSender, ProtocolReceiver>::GetAddress() const
+{
+    return m_socket->remote_endpoint().address().to_string();
 }
 
 } // namespace Tcp

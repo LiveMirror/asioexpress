@@ -58,6 +58,8 @@ virtual void Connect()
   virtual void AsyncSend(
       DataBufferPointer buffer, 
       AsioExpress::CompletionHandler completionHandler);
+
+  virtual std::string GetAddress() const;
  
 private:
   typedef MessagePortManager<MessagePort> MessagePortManagerType;
@@ -126,6 +128,12 @@ void InternalMessagePortClient<MessagePort>::AsyncSend(
     AsioExpress::CompletionHandler completionHandler)
 {
   m_messagePortManager->AsyncSend(buffer, completionHandler);
+}
+
+template<typename MessagePort>
+std::string InternalMessagePortClient<MessagePort>::GetAddress() const
+{
+    return m_messagePortManager->GetAddress();
 }
 
 } // namespace MessagePort

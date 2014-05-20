@@ -47,6 +47,11 @@ struct ServerConnection
     return messagePortId;
   }
   
+  std::string GetAddress() const
+  {
+      return server->GetAddress(messagePortId);
+  }
+
   ServerInterfacePointer GetServer() const
   {
     return server;
