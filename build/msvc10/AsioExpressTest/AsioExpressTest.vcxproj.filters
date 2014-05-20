@@ -43,5 +43,11 @@
     <ClCompile Include="..\..\..\source\AsioExpressTest\TaskPoolTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\AsioExpressTest\DataBufferTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\AsioExpressTest\TaskPoolReaderTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

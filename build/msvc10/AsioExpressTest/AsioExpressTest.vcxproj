@@ -85,6 +85,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\source\AsioExpressTest\DataBufferTest.cpp" />
+    <ClCompile Include="..\..\..\source\AsioExpressTest\TaskPoolReaderTest.cpp" />
     <ClCompile Include="..\..\..\source\AsioExpressTest\TaskPoolTest.cpp" />
     <ClCompile Include="..\..\..\source\AsioExpressTest\UniqueEventsTest.cpp" />
     <ClInclude Include="..\..\..\source\AsioExpressTest\pch.hpp" />

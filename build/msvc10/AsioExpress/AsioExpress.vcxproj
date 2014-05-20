@@ -91,8 +91,8 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\source\AsioExpress\ClientServer\RoundRobinServer.cpp" />
     <ClCompile Include="..\..\..\source\AsioExpress\ErrorCodes.cpp" />
-    <ClCompile Include="..\..\..\source\AsioExpress\CompletionHandler.cpp" />
     <ClCompile Include="..\..\..\source\AsioExpress\DebugTimer\DebugTimerManager.cpp" />
     <ClCompile Include="..\..\..\source\AsioExpress\DebugTimer\DebugTimers.cpp" />
     <ClCompile Include="..\..\..\source\AsioExpress\DurationTimer.cpp" />
@@ -126,10 +126,12 @@
     <ClCompile Include="..\..\..\source\AsioExpress\ClientServer\private\ClientEvents.cpp" />
     <ClCompile Include="..\..\..\source\AsioExpress\ClientServer\private\ServerEvents.cpp" />
     <ClCompile Include="..\..\..\source\AsioExpress\Logging\LoggingService.cpp" />
+    <ClCompile Include="..\..\..\source\AsioExpress\Testing\SetUnitTestMode.cpp" />
     <ClCompile Include="..\..\..\source\AsioExpress\UniqueId.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\ClientMessageProcessor.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\RoundRobinServer.hpp" />
     <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\ServerMessageProcessor.hpp" />
     <ClInclude Include="..\..\..\source\AsioExpress\CompletionHandler.hpp" />
     <ClInclude Include="..\..\..\source\AsioExpress\Coroutine.hpp" />
@@ -143,6 +145,7 @@
     <ClInclude Include="..\..\..\source\AsioExpress\Error.hpp" />
     <ClInclude Include="..\..\..\source\AsioExpress\ErrorCodes.hpp" />
     <ClInclude Include="..\..\..\source\AsioExpress\EventHandling\TaskPool.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\EventHandling\TaskPoolPrivate\TaskPoolMock.hpp" />
     <ClInclude Include="..\..\..\source\AsioExpress\EventHandling\TaskPoolPrivate\TaskPoolReader.hpp" />
     <ClInclude Include="..\..\..\source\AsioExpress\EventHandling\UniqueEvents.hpp" />
     <ClInclude Include="..\..\..\source\AsioExpress\Handles\PointerHandle.h" />
@@ -156,6 +159,7 @@
     <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\IpcCommandAccept.hpp" />
     <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\IpcCommandConnect.hpp" />
     <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\IpcCommandReceive.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\IpcConstants.hpp" />
     <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\IpcReceiveThread.hpp" />
     <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\IpcSendThread.hpp" />
     <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\IpcSysMessage.hpp" />
@@ -185,6 +189,7 @@
     <ClInclude Include="..\..\..\source\AsioExpress\SimpleStateMachine.hpp" />
     <ClInclude Include="..\..\..\source\AsioExpress\StatisticsTimer.hpp" />
     <ClInclude Include="..\..\..\source\AsioExpress\Testing\hippomocks.h" />
+    <ClInclude Include="..\..\..\source\AsioExpress\Testing\SetUnitTestMode.hpp" />
     <ClInclude Include="..\..\..\source\AsioExpress\Timer\NoExpiryTimer.hpp" />
     <ClInclude Include="..\..\..\source\AsioExpress\UniqueId.hpp" />
     <ClInclude Include="..\..\..\source\AsioExpress\Unyield.hpp" />
