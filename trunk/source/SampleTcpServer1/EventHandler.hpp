@@ -32,7 +32,8 @@ public:
   virtual void ClientConnected(AsioExpress::MessagePort::ServerConnection connection)
   {
     std::ostringstream message;
-    message << "Client connected; MessagePortId=" << connection.GetMessagePortId();
+    message << "Client connected; MessagePortId=" << connection.GetMessagePortId()
+            << " Address=" << connection.GetAddress();
     INFO_MSG(connection.GetIoService(), m_logger, message.str());
   }
 

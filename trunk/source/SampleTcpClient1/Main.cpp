@@ -67,7 +67,7 @@ int main(int argc, char* argv[])
   if (argc != 4)
   {
     std::cout << "Usage: SampleClient1 <clientName> <server ip> <server port>" << std::endl
-              << "Example: SampleClient1 test001 128.10.10.104 18000";
+              << "Example: SampleClient1 test001 128.10.10.104 18000\n";
 
     return 1;
   }

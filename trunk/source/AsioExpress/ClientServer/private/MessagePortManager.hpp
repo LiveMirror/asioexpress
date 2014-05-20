@@ -42,6 +42,10 @@ public:
       DataBufferPointer buffer, 
       AsioExpress::CompletionHandler completionHandler);
 
+  virtual std::string GetAddress(MessagePortId id) const;
+    
+  virtual std::string GetAddress() const;
+
 private:
   typedef std::map<MessagePortId, MessagePortPointer> MessagePortMap;
 
@@ -135,6 +139,37 @@ void MessagePortManager<MessagePort>::AsyncSend(
     // disconnected. The application will receive the disconnect notification.
     m_ioService->post(boost::asio::detail::bind_handler(completionHandler, AsioExpress::Error()));
   }
+}
+
+template<typename MessagePort>
+std::string  MessagePortManager<MessagePort>::GetAddress(
+    MessagePortId id) const
+{
+  std::string address;
+  
+  typename MessagePortMap::const_iterator messagePortIterator = m_messagePortMap.find(id);
+
+  if (messagePortIterator != m_messagePortMap.end())
+  {
+    address = messagePortIterator->second->GetAddress();
+  }
+  
+  return address;
+}
+
+template<typename MessagePort>
+std::string MessagePortManager<MessagePort>::GetAddress() const
+{
+  std::string address;
+  
+  if (m_messagePortMap.size() > 0)
+  {
+    CHECK(m_messagePortMap.size() == 1);  
+    typename MessagePortMap::const_iterator messagePortIterator = m_messagePortMap.begin();
+    address = messagePortIterator->second->GetAddress();
+  }
+    
+  return address;
 }
 
 } // namespace MessagePort

@@ -64,7 +64,7 @@ int main(int argc, char* argv[])
   if (argc != 3)
   {
     std::cout << "Usage: SampleServer1 <ip> <port>" << std::endl
-              << "Example: SampleServer1 127.0.0.1 18000";
+              << "Example: SampleServer1 127.0.0.1 18000\n";
     return 1;
   }
 
