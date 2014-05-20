@@ -80,9 +80,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\source\AsioExpress\CompletionHandler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\AsioExpress\NullCompletionHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -178,6 +175,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\AsioExpress\Platform\SleepWin.cpp">
       <Filter>Source Files\Platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\AsioExpress\Testing\SetUnitTestMode.cpp">
+      <Filter>Source Files\Testing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\AsioExpress\ClientServer\RoundRobinServer.cpp">
+      <Filter>Source Files\ClientServer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -543,6 +546,18 @@
     </ClInclude>
     <ClInclude Include="..\..\..\source\AsioExpress\MaxCounter.hpp">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\EventHandling\TaskPoolPrivate\TaskPoolMock.hpp">
+      <Filter>Source Files\EventHandling\TaskPoolPrivate</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Ipc\private\IpcConstants.hpp">
+      <Filter>Source Files\MessagePort\Ipc\private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\Testing\SetUnitTestMode.hpp">
+      <Filter>Source Files\Testing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\RoundRobinServer.hpp">
+      <Filter>Source Files\ClientServer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

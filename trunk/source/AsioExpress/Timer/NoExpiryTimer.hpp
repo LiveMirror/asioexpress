@@ -19,7 +19,7 @@ class NoExpiryTimer : public AsioExpress::Timer
 public:
   NoExpiryTimer(
       boost::asio::io_service & ioService) :
-    m_ioService(ioService)
+    m_ioService(&ioService)
   {      
   }
     
@@ -57,14 +57,14 @@ public:
           m_completionHandler = 0;
           
           AsioExpress::CallCompletionHandler(
-              m_ioService, 
+              *m_ioService, 
               handler, 
               Error(boost::asio::error::operation_aborted));
       }
   }
 
 private:
-    boost::asio::io_service &   m_ioService;
+    boost::asio::io_service *   m_ioService;
     CompletionHandler           m_completionHandler;
 };
 
