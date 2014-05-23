@@ -9,8 +9,8 @@ namespace AsioExpress {
 namespace MessagePort {
 namespace Ipc {
 
-int const PingRateSeconds = 15;
-int const PingTimeoutSeconds = 35;
+int const PingRateSeconds = 10;
+int const PingTimeoutSeconds = 25;
 
 } // namespace Ipc
 } // namespace MessagePort
