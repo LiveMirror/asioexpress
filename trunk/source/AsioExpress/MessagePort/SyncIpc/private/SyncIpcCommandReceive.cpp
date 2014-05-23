@@ -22,6 +22,11 @@ namespace SyncIpc {
 class PingTimer
 {
 public:
+    PingTimer()
+    {
+        Reset();
+    }
+
     void Reset()
     {
       pingTimeout
