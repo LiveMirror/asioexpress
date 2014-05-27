@@ -156,6 +156,21 @@ static bool Receive(
           SendSystemMessage(sendMessageQueue, sendMutex, IpcSysMessage::MSG_PING);
           continue;
         }
+
+        if ( msg.GetMessageType() == IpcSysMessage::MSG_DISCONNECT )
+        {
+            // This is a disconnect message; return an error.
+#ifdef DEBUG_IPC
+            DebugMessage("SyncIpcCommandReceive: A disconnect message was received.\n");
+#endif
+            throw CommonException(Error(
+                ErrorCode::Disconnected,
+                "MessagePort::SyncIpc::Receive(): Connection was disconnected by peer."));
+        }
+
+        throw CommonException(Error(
+            ErrorCode::Disconnected,
+            "MessagePort::SyncIpc::Receive(): Unknown IPC system message sent by peer."));
       }
 
       if ( successful )
@@ -182,7 +197,7 @@ static bool Receive(
 
         throw CommonException(Error(
           ErrorCode::LostConnection,
-          "IpcReceiveThread: No ping message received."));
+          "MessagePort::SyncIpc::Receive(): No ping message received."));
         break;
       }
 
@@ -194,7 +209,7 @@ static bool Receive(
       // Some kind of error
       throw CommonException(Error(
         boost::system::error_code(ex.get_native_error(), boost::system::get_system_category()),
-        "MossagePort::Receive(): Message queue receive call failed."));
+        "MessagePort::SyncIpc::Receive(): Message queue receive call failed."));
     }
   }
 
@@ -270,7 +285,7 @@ bool SyncIpcCommandReceive(
       // Some kind of error
       throw CommonException(Error(
         boost::system::error_code(ex.get_native_error(), boost::system::get_system_category()),
-        "SyncIpcCommandReceive(): Message queue receive call failed."));
+        "MessagePort::SyncIpc::Receive(): Message queue receive call failed."));
     }
   }
 
@@ -320,7 +335,7 @@ bool SyncIpcCommandReceive(
 
             throw CommonException(Error(
                     ErrorCode::Disconnected,
-                    "MessagePort::AsyncReceive(): Connection was disconnected by peer."));
+                    "MessagePort::SyncIpc::Receive(): Connection was disconnected by peer."));
         }
     }
 
