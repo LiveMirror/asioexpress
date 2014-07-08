@@ -22,7 +22,7 @@ public:
 
   ///
   /// Create a new date timer.
-  /// @returns Returns a Timer pointer.
+  /// @returns Returns a DateTimer pointer.
   ///
   virtual DateTimerPointer NewDateTimer() = 0;
 };

@@ -11,11 +11,19 @@
 
 namespace AsioExpress {
 
+///
+/// This is a factory for creating new timers based on the Timer interface.
+/// See TimerAllocator for an implementation.
+///
 class TimerFactory
 {
 public:
   virtual ~TimerFactory() {};
 
+  ///
+  /// Create a new date timer.
+  /// @returns Returns a Timer pointer.
+  ///
   virtual TimerPointer NewTimer() = 0;
 };
 
