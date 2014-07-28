@@ -559,6 +559,9 @@
     <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\RoundRobinServer.hpp">
       <Filter>Source Files\ClientServer</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\ParentCompletionHandler.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="PostBuild.cmd" />
