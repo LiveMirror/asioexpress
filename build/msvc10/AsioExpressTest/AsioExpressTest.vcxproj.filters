@@ -49,5 +49,8 @@
     <ClCompile Include="..\..\..\source\AsioExpressTest\TaskPoolReaderTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\AsioExpressTest\ParentCompletionHandlerTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

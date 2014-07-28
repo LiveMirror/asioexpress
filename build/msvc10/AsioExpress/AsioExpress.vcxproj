@@ -181,6 +181,7 @@
     <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Tcp\private\TcpProtocolConstants.hpp" />
     <ClInclude Include="..\..\..\source\AsioExpress\MessagePort\Tcp\private\TcpSetSocketOptions.hpp" />
     <ClInclude Include="..\..\..\source\AsioExpress\NullCompletionHandler.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\ParentCompletionHandler.hpp" />
     <ClInclude Include="..\..\..\source\AsioExpress\pch.hpp" />
     <ClInclude Include="..\..\..\source\AsioExpress\Platform\DebugMessage.hpp" />
     <ClInclude Include="..\..\..\source\AsioExpress\Platform\GetClockCount.hpp" />
