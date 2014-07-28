@@ -1,6 +1,5 @@
-CC := g++
+CXX := g++
 LINK := g++
-LD := ld
 AR := ar rc
 
 # may be overridden
@@ -11,10 +10,10 @@ PROJECT         := AsioExpressError
 SPATH           := ../../../source
 IPATH           := ../../../include
 OUT_DIR         := ../../../lib
-BASE_CFLAGS     := -D_GNU_SOURCE -Wall -Werror -Wno-unused-variable -Wno-unused-local-typedefs -std=c++03 -pthread -I$(SPATH) -I$(BOOST_INCLUDE) -c
-DBG_CFLAGS      := -g -O0 -D _DEBUG
-REL_CFLAGS      := -O3 -D NDEBUG
-SHARED_CFLAGS   := -fPIC
+BASE_FLAGS      := -D_GNU_SOURCE -Wall -Werror -Wno-unused-variable -Wno-unused-local-typedefs -std=c++03 -pthread -I$(SPATH) -I$(BOOST_INCLUDE) -c
+DBG_FLAGS       := -g -O0 -D _DEBUG
+REL_FLAGS       := -O3 -D NDEBUG
+SHARED_FLAGS    := -fPIC
 
 PROJECT_LC         := $(shell echo $(PROJECT) | tr A-Z a-z)
 SL_TARGET          := $(OUT_DIR)/lib$(PROJECT_LC)$(LIB_EXT).a
@@ -38,17 +37,17 @@ INCLUDES         := $(LOCAL_INCLUDES) $(EXTERN_INCLUDES)
 
 SL_OBJECTS       := $(addprefix $(SL_OBJ_DIR)/, $(notdir $(SOURCES:.cpp=.o)))
 DL_OBJECTS       := $(addprefix $(DL_OBJ_DIR)/, $(notdir $(SOURCES:.cpp=.o)))
-CFLAGS           := $(BASE_CFLAGS)  $(addprefix -I, $(INCLUDE_DIRS))
+CXXFLAGS         := $(BASE_FLAGS)  $(addprefix -I, $(INCLUDE_DIRS))
 
 .SECONDARY: # do not delete intermediate files
 
 .PHONY: debug
 debug:
-	$(MAKE) EXTRA_CFLAGS="$(DBG_CFLAGS)" LIB_EXT="-dbg" CONFIGURATION=debug build
+	$(MAKE) EXTRA_FLAGS="$(DBG_FLAGS)" LIB_EXT="-dbg" CONFIGURATION=debug build
 
 .PHONY: release
 release:
-	$(MAKE) EXTRA_CFLAGS="$(REL_CFLAGS)" CONFIGURATION=release build
+	$(MAKE) EXTRA_FLAGS="$(REL_FLAGS)" CONFIGURATION=release build
 
 .PHONY: all
 all: debug release
@@ -72,10 +71,10 @@ $(DL_TARGET): $(DL_OBJECTS)
 	#$(LINK) -shared -o $@ $^
 
 $(SL_OBJ_DIR)/%.o: %.cpp $(INCLUDES) $(SL_OBJ_DIR_EXISTS)
-	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $< -o $@
+	$(CXX) $(CXXFLAGS) $(EXTRA_FLAGS) $< -o $@
 
 $(DL_OBJ_DIR)/%.o: %.cpp $(INCLUDES) $(DL_OBJ_DIR_EXISTS)
-	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $(SHARED_CFLAGS) $< -o $@
+	$(CXX) $(CXXFLAGS) $(EXTRA_FLAGS) $(SHARED_FLAGS) $< -o $@
 
 $(SL_OBJ_DIR_EXISTS):
 	if [ ! -d $(SL_OBJ_DIR) ]; then mkdir $(SL_OBJ_DIR); fi
