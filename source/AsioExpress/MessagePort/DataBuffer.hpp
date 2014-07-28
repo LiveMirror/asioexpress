@@ -6,6 +6,7 @@
 #pragma once
 
 #include <cstring>
+#include <string>
 
 #include <boost/shared_ptr.hpp>
 
@@ -15,7 +16,7 @@ namespace MessagePort {
 class DataBuffer
 {
 public:
-  typedef int SizeType;
+  typedef size_t SizeType;
 
   DataBuffer() :
     m_size(0),
@@ -27,6 +28,13 @@ public:
     m_size(size),
     m_data(new char[size])
   {
+  }
+
+  DataBuffer(std::string const & str) :
+    m_size(0),
+    m_data(0)
+  {
+    Assign(str.c_str(), str.size());
   }
 
   DataBuffer(DataBuffer const & b) :

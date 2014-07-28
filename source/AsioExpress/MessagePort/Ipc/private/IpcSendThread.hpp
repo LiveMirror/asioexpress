@@ -36,15 +36,28 @@ public:
 
   void Close();
 
+  /* NOTE: use only for testing */
+  void TestSend(DataBufferPointer dataBuffer,
+      AsioExpress::CompletionHandler completionHandler);
+
 private:
   IpcSendThread(IpcSendThread const & );
   IpcSendThread & operator=(IpcSendThread const &);
-  
+
   struct SendParameters
   {
-    DataBufferPointer                 dataBuffer;
-    unsigned int                      priority;
-    AsioExpress::CompletionHandler   completionHandler;
+    SendParameters(DataBufferPointer bufferPointer, unsigned int priority,
+        AsioExpress::CompletionHandler completionHandler):
+      dataBuffer(bufferPointer),
+      priority(priority),
+      completionHandler(completionHandler)
+    {
+    }
+
+    DataBufferPointer dataBuffer;
+    unsigned int priority;
+    AsioExpress::CompletionHandler completionHandler;
+
   };
 
   typedef std::vector<SendParameters> SendQueue;
@@ -78,7 +91,11 @@ private:
   boost::asio::io_service &                 m_ioService;
   MessageQueuePointer                       m_messageQueue;
 
-  bool                                      m_isClosing;   // only read by thread function
+  // only read by thread function
+  bool                                      m_isClosing;
+
+  // used to flag serious send errors that should result in queue getting
+  // disconnected
   bool                                      m_sendFailed;
 
   SendQueue                                 m_sendQueue;
