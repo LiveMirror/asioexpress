@@ -96,22 +96,26 @@ void MessagePort::AsyncSend(
     AsioExpress::Error err(
       ErrorCode::Disconnected,
       "MessagePort::AsyncSend(): No connection has been established.");
-    m_ioService.post(boost::asio::detail::bind_handler(completionHandler, err));
+    AsioExpress::CallCompletionHandler(m_ioService, completionHandler, err);
     return;
   }
 
-  // Send the message or fail if queue is full
   try
   {
+    // Send the message or fail if queue is full
     m_sendThread->AsyncSend(
-      buffer, 
-      0, 
+      buffer,
+      0,
       completionHandler);
   }
   catch(AsioExpress::CommonException const & e)
   {
+    // Disconnect on serious send errors (other errors would result in errors
+    // getting propagated back by completion handlers, but the connection still
+    // being active)
     Disconnect();
-    m_ioService.post(boost::asio::detail::bind_handler(completionHandler, e.GetError()));
+    // Call completion handler as it will not get called if exception is thrown
+    AsioExpress::CallCompletionHandler(m_ioService, completionHandler, e.GetError());
   }
 }
 
@@ -126,7 +130,7 @@ void MessagePort::AsyncReceive(
     AsioExpress::Error err(
       ErrorCode::Disconnected,
       "MessagePort::AsyncReceive(): No connection has been established.");
-    m_ioService.post(boost::asio::detail::bind_handler(completionHandler, err));
+    AsioExpress::CallCompletionHandler(m_ioService, completionHandler, err);
     return;
   }
 

@@ -58,14 +58,11 @@ void IpcSendThread::AsyncSend(
     AsioExpress::Error err(
       boost::asio::error::operation_aborted,
       "IpcSendThread(): Send was canceled.");
-    m_ioService.post(boost::asio::detail::bind_handler(completionHandler, err));
+    AsioExpress::CallCompletionHandler(m_ioService, completionHandler, err);
     return;
   }
 
-  SendParameters parameters;
-  parameters.dataBuffer = dataBuffer;
-  parameters.priority = priority;
-  parameters.completionHandler = completionHandler;
+  SendParameters parameters(dataBuffer, priority, completionHandler);
 
   // insert into queue
   {
@@ -160,22 +157,41 @@ void IpcSendThread::Send()
       Send(*p);
     }
   }
-  catch(boost::interprocess::interprocess_exception &) 
-  {    
+  catch(boost::interprocess::interprocess_exception & e)
+  {
     m_sendFailed =  true;
-
-    // Some kind of error      
+    // Some kind of error
+    std::stringstream ss;
+    ss << "IpcSendThread(): Message queue send call failed: " << e.what();
     CallCompletionHandlers(
       p, end,
       AsioExpress::Error(
         ErrorCode::MessageQueueSendFailed,
-        "IpcSendThread(): Message queue send call failed."));
+        ss.str()
+        ));
   }
-  ASIOEXPRESS_CATCH_ERROR_AND_DO(CallCompletionHandlers(p, end, error))
+  ASIOEXPRESS_CATCH_ERROR_AND_DO( m_sendFailed = true; CallCompletionHandlers(p, end, error) )
 }
 
 void IpcSendThread::Send(SendParameters const & parameters)
 {
+  // Handle too large messages ourselves as boost's
+  // "boost::interprocess_exception::library_error" error is not helpful
+  size_t messageSize = parameters.dataBuffer->Size();
+  size_t maxMessageSize = m_messageQueue->get_max_msg_size();
+  if (messageSize > maxMessageSize)
+  {
+#ifdef DEBUG_IPC
+    DebugMessage("IpcSendThread::Send: message size too large!\n");
+#endif
+    std::stringstream ss;
+    ss << "MessagePort::AsyncSend(): Message size " << messageSize
+        << " greater than maximum allowed message size " << maxMessageSize;
+    CallCompletionHandler(parameters.completionHandler,
+        ErrorCode::MessageQueueSendFailed, ss.str());
+    return;
+  }
+
   bool successful = m_messageQueue->try_send(
     parameters.dataBuffer->Get(), 
     parameters.dataBuffer->Size(), 
@@ -196,6 +212,13 @@ void IpcSendThread::Send(SendParameters const & parameters)
   CallCompletionHandler(
     parameters.completionHandler,
     AsioExpress::Error());
+}
+
+void IpcSendThread::TestSend(DataBufferPointer dataBuffer,
+    AsioExpress::CompletionHandler completionHandler)
+{
+  SendParameters params(dataBuffer, 0, completionHandler);
+  Send(params);
 }
 
 void IpcSendThread::CallCompletionHandlers(
@@ -221,7 +244,7 @@ void IpcSendThread::CallCompletionHandler(
     AsioExpress::CompletionHandler completionHandler,
     AsioExpress::Error error)
 {
-  m_ioService.post(boost::asio::detail::bind_handler(completionHandler, error));
+  AsioExpress::CallCompletionHandler(m_ioService, completionHandler, error);
 }
 
 void IpcSendThread::SendSystemMessage(char const * systemMessage)

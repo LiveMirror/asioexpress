@@ -31,6 +31,16 @@ BOOST_AUTO_TEST_CASE(Test_Construction)
     memset(buffer.Get(), 255, 25);
 }
 
+BOOST_AUTO_TEST_CASE(Test_Str_Construction)
+{
+  char const *const text = "foobar";
+  std::string str(text);
+  DataBuffer buffer(str);
+  BOOST_CHECK_EQUAL( buffer.Size(), 6);
+  BOOST_CHECK( buffer.Get() != 0 );
+  BOOST_CHECK( memcmp(buffer.Get(), text, 6) == 0 );
+}
+
 BOOST_AUTO_TEST_CASE(Test_Assign)
 {
     char const * const text = "123456789a";

@@ -47,7 +47,7 @@ void MessagePort::Send(
 
   // Check that we're connected
 #ifdef DEBUG_IPC
-  DebugMessage("IPC::MessagePort::AsyncSend: Sending message.\n");
+  DebugMessage("SyncIpc::MessagePort::Send: Sending message.\n");
 #endif
 
   boost::mutex::scoped_lock sendLock(m_sendMutex);
@@ -55,31 +55,68 @@ void MessagePort::Send(
   if ( !m_sendMessageQueue )
   {
 #ifdef DEBUG_IPC
-    DebugMessage("IPC::MessagePort::AsyncSend: No connection has been established!\n");
+    DebugMessage("SyncIpc::MessagePort::Send: No connection has been established!\n");
 #endif
 
     throw CommonException(Error(
           AsioExpress::MessagePort::Ipc::ErrorCode::Disconnected,
-          "MessagePort::Send(): No connection has been established."));
+          "SyncIpc::MessagePort::Send(): No connection has been established."));
   }
 
-  // Send the message or fail if queue is full
-  bool successful = m_sendMessageQueue->try_send(
-    buffer->Get(),
-    buffer->Size(),
-    0);
+  // Handle too large messages ourselves as boost's
+  // "boost::interprocess_exception::library_error" error is not helpful
+  size_t messageSize = buffer->Size();
+  size_t maxMessageSize = m_sendMessageQueue->get_max_msg_size();
+  if (messageSize > maxMessageSize)
+  {
+#ifdef DEBUG_IPC
+    DebugMessage("SyncIpc::MessagePort::Send: message size too large!\n");
+#endif
+    std::stringstream ss;
+    ss << "SyncIpc::MessagePort::Send(): Message size " << messageSize
+        << " greater than maximum allowed message size " << maxMessageSize;
+    throw CommonException(
+        Error(AsioExpress::MessagePort::Ipc::ErrorCode::MessageQueueSendFailed,
+            ss.str()));
+  }
+
+  bool successful = false;
+  try
+  {
+    // Send the message or fail if queue is full
+    successful = m_sendMessageQueue->try_send(
+      buffer->Get(),
+      buffer->Size(),
+      0);
+  }
+  catch (boost::interprocess::interprocess_exception & e)
+    {
+      std::stringstream ss;
+      ss << "SyncIpc::MessagePort::Send(): Interprocess exception: " << e.what();
+      throw CommonException(
+        Error(
+              AsioExpress::MessagePort::Ipc::ErrorCode::MessageQueueSendFailed,
+              ss.str()));
+  }
 
   if (!successful)
   {
   #ifdef DEBUG_IPC
-    DebugMessage("IPC::MessagePort::AsyncSend: Send error!\n");
+    DebugMessage("SyncIpc::MessagePort::Send: Send error!\n");
   #endif
 
     throw CommonException(Error(
       AsioExpress::MessagePort::Ipc::ErrorCode::MessageQueueFull,
-      "MessagePort::Send(): Recipient's message queue is full."));
-    return;
+      "SyncIpc::MessagePort::Send(): Recipient's message queue is full."));
   }
+}
+
+void MessagePort::TestSend(AsioExpress::MessagePort::DataBufferPointer buffer,
+    MessageQueuePointer sendQueuePointer)
+{
+  // set the send queue pointer, so we can test Send()
+  m_sendMessageQueue = sendQueuePointer;
+  Send(buffer);
 }
 
 void MessagePort::Receive(
@@ -198,6 +235,6 @@ void MessagePort::InternalDisconnect()
   }
 }
 
-} // namespace Ipc
+} // namespace SyncIpc
 } // namespace MessagePort
 } // namespace AsioExpress

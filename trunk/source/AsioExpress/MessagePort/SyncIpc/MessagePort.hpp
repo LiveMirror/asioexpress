@@ -34,6 +34,10 @@ public:
   void Send(
       AsioExpress::MessagePort::DataBufferPointer buffer);
 
+  /* NOTE: use only for testing */
+  void TestSend(AsioExpress::MessagePort::DataBufferPointer buffer,
+      MessageQueuePointer sendQueuePointer);
+
   void Receive(
       AsioExpress::MessagePort::DataBufferPointer buffer);
   
