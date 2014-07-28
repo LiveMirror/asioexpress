@@ -1,4 +1,4 @@
-CC             := g++
+CXX            := g++
 LINK           := g++
 BOOST_INCLUDE  ?= /usr/include
 BOOST_LIB      ?= /usr/lib
@@ -10,7 +10,7 @@ INSTALL_LIB_DIR     := $(INSTALL_PATH)/lib
 INCLUDE_DIR         := ../../include
 LIB_DIR             := ../../lib
 
-BUILD_PARAMS        = CC=$(CC) LINK=$(LINK) BOOST_INCLUDE=$(BOOST_INCLUDE) BOOST_LIB=$(BOOST_LIB)
+BUILD_PARAMS        = CXX=$(CXX) LINK=$(LINK) BOOST_INCLUDE=$(BOOST_INCLUDE) BOOST_LIB=$(BOOST_LIB)
 
 .PHONY: default
 default:

@@ -1,6 +1,5 @@
-CC := g++
+CXX := g++
 LINK := g++
-LD := ld
 AR := ar rc
 
 # may be overridden
@@ -13,9 +12,9 @@ OUT_DIR         := ../../../bin/$(CONFIGURATION)
 LIB_DIR         := ../../../lib
 OBJ_DIR         := ./$(CONFIGURATION)_objs
 OBJ_DIR_EXISTS  := $(OBJ_DIR)/exists
-BASE_CFLAGS     := -D_GNU_SOURCE -Wall -Werror -Wno-unused-variable -Wno-unused-local-typedefs -std=c++03 -I$(SPATH) -I$(BOOST_INCLUDE) -c
-DBG_CFLAGS      := -g -O0 -D _DEBUG
-REL_CFLAGS      := -O3 -D NDEBUG
+BASE_FLAGS      := -D_GNU_SOURCE -Wall -Werror -Wno-unused-variable -Wno-unused-local-typedefs -std=c++03 -I$(SPATH) -I$(BOOST_INCLUDE) -c
+DBG_FLAGS       := -g -O0 -D _DEBUG
+REL_FLAGS       := -O3 -D NDEBUG
 
 TARGET  	:= $(OUT_DIR)/$(PROJECT)
 SOURCE_DIR  	:= $(SPATH)/$(PROJECT)
@@ -32,17 +31,17 @@ EXTERN_INCLUDES  := $(shell find $(INCLUDE_DIRS) -type f -name '*.h*' -print)
 INCLUDES         := $(shell find $(SOURCE_DIR) -type f -name '*.h*' -print) $(EXTERN_INCLUDES)
 
 OBJECTS := $(addprefix $(OBJ_DIR)/, $(notdir $(SOURCES:.cpp=.o)))
-CFLAGS  := $(BASE_CFLAGS)  $(addprefix -I, $(INCLUDE_DIRS))
+CXXFLAGS := $(BASE_FLAGS)  $(addprefix -I, $(INCLUDE_DIRS))
 
 .SECONDARY: # do not delete intermediate files
 
 .PHONY: debug
 debug:
-	$(MAKE) EXTRA_CFLAGS="$(DBG_CFLAGS)" LIB_EXT="-dbg" CONFIGURATION=debug build
+	$(MAKE) EXTRA_FLAGS="$(DBG_FLAGS)" LIB_EXT="-dbg" CONFIGURATION=debug build
 
 .PHONY: release
 release:
-	$(MAKE) EXTRA_CFLAGS="$(REL_CFLAGS)" CONFIGURATION=release build
+	$(MAKE) EXTRA_FLAGS="$(REL_FLAGS)" CONFIGURATION=release build
 
 .PHONY: all
 all: debug release
@@ -55,7 +54,7 @@ $(TARGET): $(OBJECTS) $(LIBS)
 	$(LINK) -o $@ $^ -pthread
 
 $(OBJ_DIR)/%.o: %.cpp $(INCLUDES) $(OBJ_DIR_EXISTS)
-	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $< -o $@
+	$(CXX) $(CXXFLAGS) $(EXTRA_FLAGS) $< -o $@
 
 $(OBJ_DIR_EXISTS):
 	if [ ! -d $(OBJ_DIR) ]; then mkdir $(OBJ_DIR); fi
