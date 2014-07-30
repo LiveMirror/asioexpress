@@ -17,11 +17,18 @@ class EndPoint
 {
 public:
   EndPoint(
-      std::string address, 
+      std::string address,
       std::string port) :
     m_address(address),
     m_port(port)
   {
+  }
+
+  bool operator==(EndPoint const & that) const
+  {
+    return
+        this->m_address == that.m_address &&
+        this->m_port == that.m_port;
   }
 
   boost::asio::ip::tcp::endpoint const GetEndPoint(
@@ -36,10 +43,8 @@ public:
   }
 
 private:
-  EndPoint & operator=(EndPoint const &);
-
-  std::string const m_address;
-  std::string const m_port;
+  std::string m_address;
+  std::string m_port;
 };
 
 } // namespace Tcp

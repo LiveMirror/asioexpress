@@ -28,6 +28,14 @@ public:
   {
   }
 
+  bool operator==(EndPoint const & that) const
+  {
+      return
+          this->m_messagePortName == that.m_messagePortName &&
+          this->m_maxNumMsg == that.m_maxNumMsg &&
+          this->m_maxMsgSize == that.m_maxMsgSize;
+  }
+
   inline const std::string& GetEndPoint() const       { return m_messagePortName; }
   inline std::size_t GetMaxNumMsg() const             { return m_maxNumMsg; }
   inline const std::size_t GetMaxMsgSize() const      { return m_maxMsgSize; }
