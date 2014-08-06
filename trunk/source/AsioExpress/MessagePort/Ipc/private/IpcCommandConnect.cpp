@@ -29,6 +29,7 @@ void IpcCommandConnect::operator() (AsioExpress::Error e)
 {
   if (e)
   {
+    m_messagePort.Disconnect();
     m_messagePort.m_ioService.post(boost::asio::detail::bind_handler(m_completionHandler, e));
     return;
   }
@@ -37,7 +38,7 @@ void IpcCommandConnect::operator() (AsioExpress::Error e)
   {
     // Need to start a block here to avoid errors like:
     // C2360: initialization of 'serverQueueName' is skipped by 'case' label
-    {    
+    {
 #ifdef DEBUG_IPC
       DebugMessage("IpcCommandConnect: Finding new message queue ID.\n");
 #endif
@@ -98,7 +99,7 @@ void IpcCommandConnect::operator() (AsioExpress::Error e)
         m_messagePort.m_receiveThread.reset(new IpcReceiveThread(m_messagePort.m_ioService, m_messagePort.m_recvMessageQueue, IpcReceiveThread::EnablePing));
         m_messagePort.m_sendThread.reset(new IpcSendThread(m_messagePort.m_ioService, m_messagePort.m_sendMessageQueue, IpcSendThread::EnablePing));
       }
-      catch(boost::interprocess::interprocess_exception& ex) 
+      catch(boost::interprocess::interprocess_exception& ex)
       {
 #ifdef DEBUG_IPC
       DebugMessage("IpcCommandConnect: Unable to create client/server message queues!\n");
@@ -142,7 +143,7 @@ void IpcCommandConnect::operator() (AsioExpress::Error e)
           return;
         }
       }
-      catch(boost::interprocess::interprocess_exception &ex) {    
+      catch(boost::interprocess::interprocess_exception &ex) {
         m_messagePort.Disconnect();
         AsioExpress::Error err(
           boost::system::error_code(ex.get_native_error(), boost::system::get_system_category()),
@@ -161,7 +162,7 @@ void IpcCommandConnect::operator() (AsioExpress::Error e)
       DebugMessage("IpcCommandConnect: Waiting for ACK message.\n");
 #endif
 
-    YIELD 
+    YIELD
       IpcCommandReceive(m_messagePort.m_ioService,
                         m_messagePort.m_receiveThread,
                         m_messagePort.m_recvMessageQueue,
@@ -175,7 +176,7 @@ void IpcCommandConnect::operator() (AsioExpress::Error e)
 
     IpcSysMessage msg2;
     msg2.Decode(m_dataBuffer->Get());
-    
+
     if ( msg2.GetMessageType() != IpcSysMessage::MSG_CONNECT_ACK )
     {
 #ifdef DEBUG_IPC
