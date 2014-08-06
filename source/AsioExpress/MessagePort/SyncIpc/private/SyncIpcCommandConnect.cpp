@@ -181,6 +181,7 @@ void SyncIpcCommandConnect(
 #ifdef DEBUG_IPC
         DebugMessage("SyncIpcCommandConnect: A CONNECT-ACK response was not received from server.!\n");
 #endif
+        messagePort.InternalDisconnect();
         throw CommonException(Error(
                 ErrorCode::CommunicationFailure,
                 "SyncIpcCommandConnect(): A CONNECT-ACK response was not received from server."));
