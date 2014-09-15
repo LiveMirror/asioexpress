@@ -122,7 +122,7 @@ BOOST_AUTO_TEST_CASE(TestAddListenerCopy)
 
   TestEvents::Listener* listener2(new TestEvents::Listener(*listener1));  
   delete listener1;
-  
+
   listener2->AsyncWait(
     timerMock,
     waitHandler);
@@ -134,6 +134,8 @@ BOOST_AUTO_TEST_CASE(TestAddListenerCopy)
 
   BOOST_CHECK_EQUAL(waitHandler.Calls(), 1);
   BOOST_CHECK_EQUAL(listener2->GetEventValue(), "hello");
+
+  delete listener2;
 }
 
 BOOST_AUTO_TEST_CASE(TestTimeout)
@@ -181,6 +183,7 @@ BOOST_AUTO_TEST_CASE(TestCancel)
   
   timerMock->AssertAsyncWaitCalled(__FILE__, __LINE__);
   timerMock->AssertStopCalled(__FILE__, __LINE__);
+  timerMock->Cancel(__FILE__,__LINE__);
 
   BOOST_CHECK_EQUAL(waitHandler.Calls(), 1);
   BOOST_CHECK(waitHandler.LastError().GetErrorCode() == 
