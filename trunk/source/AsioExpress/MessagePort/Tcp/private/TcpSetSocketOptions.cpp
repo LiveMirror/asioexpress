@@ -79,7 +79,6 @@ static void set_socket_option(
 
 void AsioExpress::MessagePort::Tcp::SetSocketOptions(SocketPointer const & socket)
 {
-    //TODO: add keep alive code
     boost::asio::ip::tcp::socket::native_handle_type s = socket->native();
     
     // Active keep alive
@@ -93,6 +92,11 @@ void AsioExpress::MessagePort::Tcp::SetSocketOptions(SocketPointer const & socke
     
     // 10 seconds between each probe
     set_socket_option(s, SOL_TCP, TCP_KEEPINTVL, 10);
+
+    // 2 minutes wait before disconnecting connection after no ack received
+    // See TCP_USER_TIMEOUT (http://tools.ietf.org/html/rfc5482)
+    // 18 is actually defined as TCP_USER_TIMEOUT in later versions of libc6
+    set_socket_option(s, SOL_TCP, 18, 2 * 60 * 1000);
 }
 
 #endif // _MSC_VER

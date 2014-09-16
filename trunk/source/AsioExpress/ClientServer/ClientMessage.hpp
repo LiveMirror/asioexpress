@@ -19,7 +19,7 @@ class ClientMessage
 public:
   ClientMessage(
       AsioExpress::MessagePort::ClientConnection connection,
-      AsioExpress::MessagePort::DataBufferPointer dataBuffer, 
+      AsioExpress::MessagePort::DataBufferPointer dataBuffer,
       AsioExpress::CompletionHandler completionHandler) :
     connection(connection),
     dataBuffer(dataBuffer),
@@ -41,7 +41,7 @@ public:
 
   template<typename H>
   void AsyncSend(
-      DataBufferPointer buffer, 
+      DataBufferPointer buffer,
       H completionHandler);
 
   void CallCompletionHandler(AsioExpress::Error const & error);
@@ -56,13 +56,13 @@ private:
 
 typedef boost::shared_ptr<ClientMessage> ClientMessagePointer;
 
-inline boost::asio::io_service & 
+inline boost::asio::io_service &
 ClientMessage::GetIoService() const
 {
   return connection.GetIoService();
 }
 
-inline AsioExpress::MessagePort::DataBufferPointer 
+inline AsioExpress::MessagePort::DataBufferPointer
 ClientMessage::GetDataBuffer() const
 {
   return dataBuffer;
@@ -72,7 +72,7 @@ inline MessagePortId ClientMessage::GetMessagePortId() const
 {
   return connection.GetMessagePortId();
 }
-  
+
 inline ClientInterfacePointer ClientMessage::GetClient() const
 {
   return connection.GetClient();
@@ -90,7 +90,7 @@ inline AsioExpress::CompletionHandler ClientMessage::GetCompletionHandler() cons
 
 template<typename H>
 void ClientMessage::AsyncSend(
-    DataBufferPointer buffer, 
+    DataBufferPointer buffer,
     H completionHandler)
 {
   connection.GetClient()->AsyncSend(buffer, completionHandler);
@@ -100,9 +100,10 @@ inline void ClientMessage::CallCompletionHandler(
     AsioExpress::Error const & error)
 {
   AsioExpress::CallCompletionHandler(
-    connection.GetIoService(), 
-    completionHandler, 
+    connection.GetIoService(),
+    completionHandler,
     error);
+  completionHandler = 0;
 }
 
 } // namespace MessagePort

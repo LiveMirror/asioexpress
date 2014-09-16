@@ -35,7 +35,7 @@ public:
     ++m_completionHandlerCalls;
     CHECK_MSG(m_completionHandlerCalls == 1, "The completion handler was called multiple times.");
     m_completionHandler(error);
-    m_completionHandler = AsioExpress::CompletionHandler();
+    m_completionHandler = 0;
   }
 
 private:

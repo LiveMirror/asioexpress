@@ -38,7 +38,7 @@ class AddResourceItemsProcessor : private AsioExpress::Coroutine
         RequestsPointer requests,
         ItemCountPointer itemCount,
         AsyncRemoveFunction removeFunction,
-        CompletionHandler errorHandler) : 
+        CompletionHandler errorHandler) :
       m_processorId("AddResourceItemsProcessor"),
       m_key(key),
       m_request(new Request),
@@ -57,14 +57,14 @@ class AddResourceItemsProcessor : private AsioExpress::Coroutine
       STATEMENT_DEBUG_TIMER(m_processorId, __FILE__, this->GetCurrentLine());
 
       REENTER(this)
-      { 
+      {
         while ((*m_itemCount)[m_key] > 0)
         {
           // remove request from queue if available
           {
             typename Requests::iterator r = std::find(
-              m_requests->begin(), 
-              m_requests->end(), 
+              m_requests->begin(),
+              m_requests->end(),
               m_key);
             if (r == m_requests->end())
             {
@@ -84,6 +84,7 @@ class AddResourceItemsProcessor : private AsioExpress::Coroutine
 
           // call completion handler
           m_request->completionHandler(error);
+          m_request->completionHandler = 0;
         }
 
         OnExit(error);

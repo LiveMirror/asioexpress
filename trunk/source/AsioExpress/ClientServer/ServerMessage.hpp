@@ -19,7 +19,7 @@ class ServerMessage
 public:
   ServerMessage(
       AsioExpress::MessagePort::ServerConnection connection,
-      DataBufferPointer dataBuffer, 
+      DataBufferPointer dataBuffer,
       AsioExpress::CompletionHandler completionHandler) :
     connection(connection),
     dataBuffer(dataBuffer),
@@ -39,13 +39,13 @@ public:
 
   template<typename H>
   void AsyncSend(
-      MessagePortId id, 
-      DataBufferPointer buffer, 
+      MessagePortId id,
+      DataBufferPointer buffer,
       H completionHandler);
 
   template<typename H>
   void AsyncBroadcast(
-      DataBufferPointer buffer, 
+      DataBufferPointer buffer,
       H completionHandler);
 
   void CallCompletionHandler(AsioExpress::Error const & error);
@@ -60,13 +60,13 @@ private:
 
 typedef boost::shared_ptr<ServerMessage> ServerMessagePointer;
 
-inline boost::asio::io_service & 
+inline boost::asio::io_service &
 ServerMessage::GetIoService() const
 {
   return connection.GetIoService();
 }
 
-inline AsioExpress::MessagePort::DataBufferPointer 
+inline AsioExpress::MessagePort::DataBufferPointer
 ServerMessage::GetDataBuffer() const
 {
   return dataBuffer;
@@ -89,8 +89,8 @@ inline AsioExpress::CompletionHandler ServerMessage::GetCompletionHandler() cons
 
 template<typename H>
 void ServerMessage::AsyncSend(
-    MessagePortId id, 
-    DataBufferPointer buffer, 
+    MessagePortId id,
+    DataBufferPointer buffer,
     H completionHandler)
 {
   connection.GetServer()->AsyncSend(id, buffer, completionHandler);
@@ -98,7 +98,7 @@ void ServerMessage::AsyncSend(
 
 template<typename H>
 void ServerMessage::AsyncBroadcast(
-    DataBufferPointer buffer, 
+    DataBufferPointer buffer,
     H completionHandler)
 {
   connection.GetServer()->AsyncBroadcast(buffer, completionHandler);
@@ -106,11 +106,12 @@ void ServerMessage::AsyncBroadcast(
 
 inline void ServerMessage::CallCompletionHandler(
     AsioExpress::Error const & error)
-{ 
+{
   AsioExpress::CallCompletionHandler(
-    connection.GetIoService(), 
-    completionHandler, 
+    connection.GetIoService(),
+    completionHandler,
     error);
+  completionHandler = 0;
 }
 
 } // namespace MessagePort
