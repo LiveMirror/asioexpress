@@ -6,7 +6,7 @@
 #pragma once
 
 #include <boost/shared_ptr.hpp>
-#include <boost/asio.hpp> 
+#include <boost/asio.hpp>
 #include <boost/test/unit_test.hpp>
 
 #include "AsioExpress/Timer/Timer.hpp"
@@ -45,7 +45,7 @@ public:
   }
 
   virtual void AsyncWait(
-      unsigned int milliseconds, 
+      unsigned int milliseconds,
       CompletionHandler completionHandler)
   {
     BOOST_CHECK_MESSAGE(!m_isWaiting, "TimerMock: Too many AsyncWait calls.");
@@ -92,20 +92,21 @@ public:
     BOOST_CHECK_EQUAL_LOC(file, line, m_isWaiting, true);
     m_isWaiting = false;
     m_completionHandler(AsioExpress::Error());
-    m_completionHandler.clear();
+    m_completionHandler = 0;
   }
 
   void Cancel(char const * const file, int line)
   {
     BOOST_CHECK_EQUAL_LOC(file, line, m_completionHandler.empty(), false);
     m_completionHandler(AsioExpress::Error(boost::asio::error::operation_aborted));
-    m_completionHandler.clear();
+    m_completionHandler = 0;
   }
 
   void Error(char const * const file, int line, AsioExpress::Error error)
   {
     BOOST_CHECK_EQUAL_LOC(file, line, m_completionHandler.empty(), false);
     m_completionHandler(error);
+    m_completionHandler = 0;
   }
 
 private:

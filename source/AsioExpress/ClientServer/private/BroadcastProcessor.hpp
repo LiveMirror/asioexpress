@@ -25,7 +25,7 @@ public:
       boost::asio::io_service& ioService,
       IAsyncSendPointer sender,
       MessagePortIdList const & messagePortIdList,
-      DataBufferPointer buffer, 
+      DataBufferPointer buffer,
       AsioExpress::CompletionHandler completionHandler) :
     m_ioService(&ioService),
     m_sender(sender),
@@ -49,7 +49,8 @@ public:
           m_sender->AsyncSend(m_messagePortIdList->at(m_index), m_buffer, *this);
       }
 
-      m_ioService->post(boost::asio::detail::bind_handler(m_completionHandler, AsioExpress::Error()));
+      CallCompletionHandler(*m_ioService, m_completionHandler, AsioExpress::Error());
+      m_completionHandler = 0;
    }
   }
 

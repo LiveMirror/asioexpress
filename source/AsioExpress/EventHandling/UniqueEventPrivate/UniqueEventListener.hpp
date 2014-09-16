@@ -39,7 +39,7 @@ public:
   }
 
   void AsyncWait(
-      TimerPointer const & waitTimer, 
+      TimerPointer const & waitTimer,
       CompletionHandler completionHandler);
 
   void AddEvent(
@@ -50,7 +50,7 @@ public:
   bool IsActive() const;
 
   static void Timeout(
-      AsioExpress::Error error, 
+      AsioExpress::Error error,
       typename UniqueEventListener::Pointer listener);
 
 private:
@@ -63,7 +63,7 @@ private:
 
 template<typename E>
 inline void UniqueEventListener<E>::AsyncWait(
-    TimerPointer const & waitTimer, 
+    TimerPointer const & waitTimer,
     CompletionHandler completionHandler)
 {
   CHECK(waitTimer);
@@ -72,7 +72,7 @@ inline void UniqueEventListener<E>::AsyncWait(
   CHECK_MSG(!m_isComplete, "UniqueEvent::AsyncWait called on a listener that has already completed.");
   CHECK_MSG(!m_completionHandler, "UniqueEvent::AsyncWait called twice for the same listener.");
 
-  // If event data has already been assigned then call completion handler 
+  // If event data has already been assigned then call completion handler
   // immediately with success status.
   if (m_assignedEventData)
   {
@@ -81,7 +81,7 @@ inline void UniqueEventListener<E>::AsyncWait(
     return;
   }
 
-  // Wait for event to occur. 
+  // Wait for event to occur.
   //
   m_completionHandler = completionHandler;
   m_timer = waitTimer;
@@ -105,6 +105,7 @@ inline void UniqueEventListener<E>::AddEvent(
     m_isComplete = true;
     m_completionHandler(Error());
     m_timer->Stop();
+    m_completionHandler = 0;
   }
 }
 
@@ -120,9 +121,10 @@ inline void UniqueEventListener<E>::Cancel()
   {
     m_completionHandler(AsioExpress::Error(boost::asio::error::operation_aborted));
     m_timer->Stop();
+    m_completionHandler = 0;
   }
 }
-  
+
 template<typename E>
 inline bool UniqueEventListener<E>::IsActive() const
 {
@@ -131,21 +133,22 @@ inline bool UniqueEventListener<E>::IsActive() const
 
 template<typename E>
 void UniqueEventListener<E>::Timeout(
-    AsioExpress::Error error, 
+    AsioExpress::Error error,
     typename UniqueEventListener::Pointer listener)
 {
-  // If a timer is set there must be a completion handler.
+  if (listener->m_isComplete)
+      return;
+
+  // If not complete there must be a completion handler.
   CHECK(!listener->m_completionHandler.empty());
 
   // Convert to timeout error if timer has expired.
   if (!error)
     error = Error(ErrorCode::UniqueEventTimeout);
 
-  if (!listener->m_isComplete)
-  {
-    listener->m_isComplete = true;
-    listener->m_completionHandler(error);
-  }
+  listener->m_isComplete = true;
+  listener->m_completionHandler(error);
+  listener->m_completionHandler = 0;
 }
 
 } // namespace UniqueEventPrivate

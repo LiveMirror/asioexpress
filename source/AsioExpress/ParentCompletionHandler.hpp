@@ -69,6 +69,7 @@ private:
         if (*isComplete && *outstandingCalls == 0)
         {
             completionHandler(*lastError);
+            completionHandler = 0;
         }
     }
 

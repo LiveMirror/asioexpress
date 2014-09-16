@@ -14,7 +14,7 @@ template<typename H>
 class EcToErrorAdapter
 {
 public:
-  EcToErrorAdapter(H completionHandler) : 
+  EcToErrorAdapter(H completionHandler) :
     m_completionHandler(completionHandler)
   {
   }

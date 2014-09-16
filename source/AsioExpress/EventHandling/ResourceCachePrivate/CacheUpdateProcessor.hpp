@@ -28,9 +28,9 @@ class CacheUpdateProcessor : private AsioExpress::Coroutine
     CacheUpdateProcessor(
         ItemCountPointer itemCount,
         AsyncUpdateFunction updateFunction,
-        AsioExpress::CompletionHandler completionHandler) : 
+        AsioExpress::CompletionHandler completionHandler) :
       m_processorId("CacheUpdateProcessor"),
-      m_update(new CacheUpdate), 
+      m_update(new CacheUpdate),
       m_itemCount(itemCount),
       m_updateFunction(updateFunction),
       m_completionHandler(completionHandler)
@@ -51,7 +51,7 @@ class CacheUpdateProcessor : private AsioExpress::Coroutine
       STATEMENT_DEBUG_TIMER(m_processorId, __FILE__, this->GetCurrentLine());
 
       REENTER(this)
-      { 
+      {
         YIELD
         {
           m_updateFunction(m_update, *this);
@@ -64,7 +64,7 @@ class CacheUpdateProcessor : private AsioExpress::Coroutine
         typename CacheUpdate::Iterator  it = m_update->Begin();
         typename CacheUpdate::Iterator end = m_update->End();
         for(; it != end; ++it)
-          m_itemCount->insert(typename ItemCount::value_type(it->GetKey(),it->GetSize()));      
+          m_itemCount->insert(typename ItemCount::value_type(it->GetKey(),it->GetSize()));
 
         OnExit(error);
       }//REENTER
@@ -77,6 +77,7 @@ class CacheUpdateProcessor : private AsioExpress::Coroutine
     {
       STOP_STATEMENT_DEBUG_TIMER(m_processorId, __FILE__, __LINE__);
       m_completionHandler(error);
+      m_completionHandler = 0;
     }
 
     AsioExpress::UniqueId               m_processorId;
