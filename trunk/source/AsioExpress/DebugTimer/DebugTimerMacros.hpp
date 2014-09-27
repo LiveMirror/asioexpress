@@ -13,9 +13,9 @@
 
 ///
 /// Sets the threshold for which timer durations will be displayed to the debug
-/// output stream. Durations that are less than the threshold will not be 
+/// output stream. Durations that are less than the threshold will not be
 /// printed.
-/// @param threshold Threshold time in milliseconds. 
+/// @param threshold Threshold time in milliseconds.
 ///
 #define SET_DEBUG_TIMER_PRINT_THRESHOLD(threshold) AsioExpress::SetDebugTimerPrintThreshold(threshold)
 
@@ -33,7 +33,7 @@
 #define STOP_DEBUG_TIMER(name) AsioExpress::StopDebugTimer(name)
 
 ///
-/// Starts a timer if it is not already running, otherwise, it prints out the 
+/// Starts a timer if it is not already running, otherwise, it prints out the
 /// statistics for the timer to the debug output stream.
 /// @param name The name of the timer.
 /// @param file The name of the source file.
@@ -48,10 +48,10 @@
 /// @param file The name of the source file.
 /// @param line The line number of the source file.
 ///
-#define STOP_STATEMENT_DEBUG_TIMER(name, file, line) AsioExpress::StopStatementDebugTimer(name, file, line)
+#define REMOVE_STATEMENT_DEBUG_TIMER(name, file, line) AsioExpress::RemoveStatementDebugTimer(name, file, line)
 
 ///
-/// Use this macro to deallocate all of the debug timers. 
+/// Use this macro to deallocate all of the debug timers.
 ///
 #define CLEAN_UP_DEBUG_TIMERS AsioExpress::CleanUpDebugTimers()
 
@@ -64,12 +64,12 @@
 
 #else
 
-#define SET_DEBUG_TIMER_PRINT_THRESHOLD(threshold)    ((void)0)
-#define START_DEBUG_TIMER(name)                       ((void)0)
-#define STOP_DEBUG_TIMER(name)                        ((void)0)
-#define STATEMENT_DEBUG_TIMER(name, file, line)       ((void)0)
-#define STOP_STATEMENT_DEBUG_TIMER(name, file, line)  ((void)0)
-#define CLEAN_UP_DEBUG_TIMERS                         ((void)0)
-#define DISPLAY_DEBUG_TIMERS                          ((void)0)
+#define SET_DEBUG_TIMER_PRINT_THRESHOLD(threshold)      ((void)0)
+#define START_DEBUG_TIMER(name)                         ((void)0)
+#define STOP_DEBUG_TIMER(name)                          ((void)0)
+#define STATEMENT_DEBUG_TIMER(name, file, line)         ((void)0)
+#define REMOVE_STATEMENT_DEBUG_TIMER(name, file, line)  ((void)0)
+#define CLEAN_UP_DEBUG_TIMERS                           ((void)0)
+#define DISPLAY_DEBUG_TIMERS                            ((void)0)
 
 #endif // _DEBUG

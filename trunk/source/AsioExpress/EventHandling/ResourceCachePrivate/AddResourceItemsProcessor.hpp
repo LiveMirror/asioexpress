@@ -96,7 +96,7 @@ class AddResourceItemsProcessor : private AsioExpress::Coroutine
   private:
     void OnExit(AsioExpress::Error const & error)
     {
-      STOP_STATEMENT_DEBUG_TIMER(m_processorId, __FILE__, __LINE__);
+      REMOVE_STATEMENT_DEBUG_TIMER(m_processorId, __FILE__, __LINE__);
       if (error)
         m_errorHandler(error);
     }

@@ -91,22 +91,25 @@ public:
     BOOST_CHECK_EQUAL_LOC(file, line, m_completionHandler.empty(), false);
     BOOST_CHECK_EQUAL_LOC(file, line, m_isWaiting, true);
     m_isWaiting = false;
-    m_completionHandler(AsioExpress::Error());
+    CompletionHandler completionHandler(m_completionHandler);
     m_completionHandler = 0;
+    completionHandler(AsioExpress::Error());
   }
 
   void Cancel(char const * const file, int line)
   {
     BOOST_CHECK_EQUAL_LOC(file, line, m_completionHandler.empty(), false);
-    m_completionHandler(AsioExpress::Error(boost::asio::error::operation_aborted));
+    CompletionHandler completionHandler(m_completionHandler);
     m_completionHandler = 0;
+    completionHandler(AsioExpress::Error(boost::asio::error::operation_aborted));
   }
 
   void Error(char const * const file, int line, AsioExpress::Error error)
   {
     BOOST_CHECK_EQUAL_LOC(file, line, m_completionHandler.empty(), false);
-    m_completionHandler(error);
+    CompletionHandler completionHandler(m_completionHandler);
     m_completionHandler = 0;
+    completionHandler(error);
   }
 
 private:

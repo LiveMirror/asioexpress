@@ -18,6 +18,11 @@ void DebugTimerManager::AddTimer(std::string timerName)
   m_timers[timerName] = StatisticsTimer();
 }
 
+bool DebugTimerManager::HasTimer(std::string timerName)
+{
+  return m_timers.count(timerName) == 1;
+}
+
 StatisticsTimer & DebugTimerManager::GetTimer(std::string timerName)
 {
   return m_timers[timerName];

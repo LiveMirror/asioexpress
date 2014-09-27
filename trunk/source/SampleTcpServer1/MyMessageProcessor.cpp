@@ -31,7 +31,7 @@ void MyMessageProcessor::operator()(AsioExpress::Error error)
   if (error)
   {
     CallCompletionHandler(error);
-    STOP_STATEMENT_DEBUG_TIMER(m_processorId, __FILE__, __LINE__);
+    REMOVE_STATEMENT_DEBUG_TIMER(m_processorId, __FILE__, __LINE__);
     return;
   }
 
@@ -46,7 +46,7 @@ void MyMessageProcessor::operator()(AsioExpress::Error error)
       {
         INFO_MSG(GetIoService(), logger, "Processor Complete.");
         CallCompletionHandler(error);
-        STOP_STATEMENT_DEBUG_TIMER(m_processorId, __FILE__, __LINE__);
+        REMOVE_STATEMENT_DEBUG_TIMER(m_processorId, __FILE__, __LINE__);
       }
   }
 }

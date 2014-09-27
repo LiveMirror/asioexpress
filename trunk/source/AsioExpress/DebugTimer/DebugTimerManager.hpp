@@ -20,6 +20,8 @@ public:
 
   void AddTimer(std::string timerName);
 
+  bool HasTimer(std::string timerName);
+
   StatisticsTimer & GetTimer(std::string timerName);
 
   void RemoveTimer(std::string timerName);

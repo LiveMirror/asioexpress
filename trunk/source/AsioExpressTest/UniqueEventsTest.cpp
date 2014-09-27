@@ -192,7 +192,6 @@ BOOST_AUTO_TEST_CASE(TestCancel)
     TestEvents::Listener listener(testEvents);
 
     listener.New(1);
-  timerMock->Cancel(__FILE__,__LINE__);
 
     listener.AsyncWait(
       timerMock,
@@ -202,6 +201,7 @@ BOOST_AUTO_TEST_CASE(TestCancel)
 
     timerMock->AssertAsyncWaitCalled(__FILE__, __LINE__);
     timerMock->AssertStopCalled(__FILE__, __LINE__);
+    timerMock->Cancel(__FILE__,__LINE__);
 
     BOOST_CHECK_EQUAL(waitHandler.Calls(), 1);
     BOOST_CHECK(waitHandler.LastError().GetErrorCode() ==
