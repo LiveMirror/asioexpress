@@ -15,11 +15,12 @@ extern void SetDebugTimerPrintThreshold(int threshold);
 
 extern void StartDebugTimer(char const * name);
 extern void StopDebugTimer(char const * name);
+extern void RemoveDebugTimer(char const * name);
 
 extern void StatementDebugTimer(std::string name, char const * file, int line);
 extern void StatementDebugTimer(char const * name, char const * file, int line);
-extern void StopStatementDebugTimer(std::string name, char const * file, int line);
-extern void StopStatementDebugTimer(char const * name, char const * file, int line);
+extern void RemoveStatementDebugTimer(std::string name, char const * file, int line);
+extern void RemoveStatementDebugTimer(char const * name, char const * file, int line);
 extern void FunctionExitDebugTimer(std::string const & name, char const * const file, int line);
 
 extern void CleanUpDebugTimers();

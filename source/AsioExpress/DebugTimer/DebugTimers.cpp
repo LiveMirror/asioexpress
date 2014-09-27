@@ -34,10 +34,10 @@ static std::string GetCategory(std::string const & name)
 }
 
 static void ProcessTimerStats(
-    TimerStats stats, 
-    std::string const & name, 
+    TimerStats stats,
+    std::string const & name,
     char const * timerType,
-    char const * file, 
+    char const * file,
     int line)
 {
   if (stats.duration >= DebugTimerPrintThreshold)
@@ -45,7 +45,7 @@ static void ProcessTimerStats(
     std::ostringstream message;
     message
       << timerType
-      << ":        " 
+      << ":        "
       << name;
     if (file!=NULL)
       message << "; " << file << ":" << line;
@@ -76,9 +76,9 @@ static void ProcessTimerStats(
     if (stats.duration >= DebugTimerPrintThreshold)
     {
       std::ostringstream message;
-      message 
+      message
         << timerType
-        << "Summary: " 
+        << "Summary: "
         << category
         << "; low=" << runningStats.lowValue
         << "; high=" << runningStats.highValue
@@ -87,8 +87,6 @@ static void ProcessTimerStats(
         << "\n";
       DebugMessage(message.str().c_str());
     }
-
-    DebugTimerManager::Instance()->RemoveTimer(name);
   }
 }
 
@@ -107,32 +105,27 @@ void StartDebugTimer(char const * name)
 
 void StopDebugTimer(char const * name)
 {
-  std::string category = GetCategory(name);
-
   StatisticsTimer & timer = DebugTimerManager::Instance()->GetTimer(name);
 
   if (!timer.enabled())
-  {
-    DebugTimerManager::Instance()->RemoveTimer(name);
     return;
-  }
 
   TimerStats stats = timer.duration();
   timer.stop();
 
-  ProcessTimerStats(stats, name, "StatementTimer", NULL, 0);  
+  ProcessTimerStats(stats, name, "StatementTimer", NULL, 0);
 }
 
-void StatementDebugTimer(char const * name, char const * file, int line)
+void RemoveDebugTimer(char const * name)
 {
-  StatementDebugTimer(std::string(name), file, line);
+  DebugTimerManager::Instance()->RemoveTimer(name);
 }
 
 void StatementDebugTimer(std::string name, char const * file, int line)
 {
   std::ostringstream description;
   description << name << "; " << file << ":" << line;
-  
+
   StatisticsTimer & timer = DebugTimerManager::Instance()->GetTimer(name);
 
   if (! timer.enabled())
@@ -142,7 +135,7 @@ void StatementDebugTimer(std::string name, char const * file, int line)
     if (DebugTimerPrintThreshold <= 0)
     {
       std::ostringstream message;
-      message 
+      message
         << "StatementTimerStarted: "
         << description.str()
         << "\n";
@@ -159,7 +152,7 @@ void StatementDebugTimer(std::string name, char const * file, int line)
   if (stats.duration >= DebugTimerPrintThreshold)
   {
     std::ostringstream message;
-    message 
+    message
       << "StatementTimer:        "
       << name
       << "; " << file << ":" << line
@@ -173,15 +166,13 @@ void StatementDebugTimer(std::string name, char const * file, int line)
   }
 }
 
-void StopStatementDebugTimer(char const * name, char const * file, int line)
+void RemoveStatementDebugTimer(char const * name, char const * file, int line)
 {
-  StopStatementDebugTimer(std::string(name), file, line);
-} 
+  RemoveStatementDebugTimer(std::string(name), file, line);
+}
 
-void StopStatementDebugTimer(std::string name, char const * file, int line)
+void RemoveStatementDebugTimer(std::string name, char const * file, int line)
 {
-  std::string category = GetCategory(name);
-
   StatisticsTimer & timer = DebugTimerManager::Instance()->GetTimer(name);
 
   if (!timer.enabled())
@@ -193,22 +184,29 @@ void StopStatementDebugTimer(std::string name, char const * file, int line)
   TimerStats stats = timer.duration();
   timer.stop();
 
-  ProcessTimerStats(stats, name, "StatementTimer", file, line);  
+  ProcessTimerStats(stats, name, "StatementTimer", file, line);
 
   if (DebugTimerPrintThreshold <= 0)
   {
     std::ostringstream message;
-    message 
+    message
       << "StatementTimerStopped: "
       << name
       << "\n";
     DebugMessage(message.str().c_str());
   }
+
+  DebugTimerManager::Instance()->RemoveTimer(name);
 }
 
 void FunctionExitDebugTimer(std::string const & name, char const * const file, int line)
 {
-  StatisticsTimer & timer = DebugTimerManager::Instance()->GetTimer(name);
+  DebugTimerManager* debugTimers = DebugTimerManager::Instance();
+
+  if (!debugTimers->HasTimer(name))
+    return;
+
+  StatisticsTimer & timer = debugTimers->GetTimer(name);
 
   unsigned int duration = timer.elapsed();
 

@@ -41,7 +41,9 @@ public:
 
   void ProcComplete()
   {
-    STOP_STATEMENT_DEBUG_TIMER(m_processorId, __FILE__, __LINE__);
+#ifdef _DEBUG
+    AsioExpress::RemoveStatementDebugTimer(m_processorId, __FILE__, __LINE__);
+#endif
   }
 
 private:
