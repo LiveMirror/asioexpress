@@ -11,7 +11,7 @@
 #include "AsioExpress/Coroutine.hpp"
 #include "AsioExpress/ClientServer/ClientEventHandler.hpp"
 #include "AsioExpress/ClientServer/ClientMessage.hpp"
-#include "AsioExpress/ClientServer/private/IClientEvents.hpp"
+#include "AsioExpress/ClientServer/private/ClientEvents.hpp"
 #include "AsioExpress/ClientServer/private/MessagePortManager.hpp"
 #include "AsioExpress/Yield.hpp" // Enable the pseudo-keywords REENTER, YIELD and FORK.
 
@@ -29,7 +29,7 @@ public:
   Client(
       boost::asio::io_service & ioService,
       ClientInterfacePointer messagePortClient,
-      IClientEventsPointer clientEvents,
+      ClientEventsPointer clientEvents,
       EndPointType endPoint,
       MessagePortManagerPointer messagePortManager);
 
@@ -46,7 +46,7 @@ private:
 
   boost::asio::io_service &           m_ioService;
   ClientInterfacePointer              m_messagePortClient;
-  IClientEventsPointer                m_clientEvents;
+  ClientEventsPointer                 m_clientEvents;
   EndPointType                        m_endPoint;
   MessagePortManagerPointer           m_messagePortManager;
   MessagePortPointer                  m_messagePort;
@@ -59,7 +59,7 @@ template<typename MessagePort>
 Client<MessagePort>::Client(
     boost::asio::io_service & ioService,
     ClientInterfacePointer messagePortClient,
-    IClientEventsPointer clientEvents,
+    ClientEventsPointer clientEvents,
     EndPointType endPoint,
     MessagePortManagerPointer messagePortManager) :
   m_ioService(ioService),

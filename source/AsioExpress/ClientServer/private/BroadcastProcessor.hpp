@@ -8,7 +8,7 @@
 #include "AsioExpress/CompletionHandler.hpp"
 #include "AsioExpress/MessagePort/DataBuffer.hpp"
 #include "AsioExpress/ClientServer/MessagePortId.hpp"
-#include "AsioExpress/ClientServer/private/IAsyncSend.hpp"
+#include "AsioExpress/ClientServer/private/AsyncSendable.hpp"
 #include "AsioExpress/Coroutine.hpp"
 #include "AsioExpress/Yield.hpp" // Enable the pseudo-keywords REENTER, YIELD and FORK.
 
@@ -23,7 +23,7 @@ public:
 
   BroadcastProcessor(
       boost::asio::io_service& ioService,
-      IAsyncSendPointer sender,
+      AsyncSendablePointer sender,
       MessagePortIdList const & messagePortIdList,
       DataBufferPointer buffer,
       AsioExpress::CompletionHandler completionHandler) :
@@ -56,7 +56,7 @@ public:
 
 private:
     boost::asio::io_service*          m_ioService;
-    IAsyncSendPointer                 m_sender;
+    AsyncSendablePointer              m_sender;
     MessagePortIdListPointer          m_messagePortIdList;
     MessagePortIdList::size_type      m_index;
     DataBufferPointer                 m_buffer;

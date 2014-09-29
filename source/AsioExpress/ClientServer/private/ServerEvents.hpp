@@ -6,38 +6,33 @@
 
 #pragma once
 
-#include "AsioExpress/ClientServer/private/IServerEvents.hpp"
-#include "AsioExpress/ClientServer/private/MessagePortManager.hpp"
-#include "AsioExpress/ClientServer/ServerEventHandler.hpp"
+#include "AsioExpress/ClientServer/ServerConnection.hpp"
+#include "AsioExpress/ClientServer/ServerMessage.hpp"
 
 namespace AsioExpress {
 namespace MessagePort {
 
-class ServerEvents : public IServerEvents
+class ServerEvents
 {
 public:
-  ServerEvents(
-      ServerEventHandler * eventHandler);
-
   virtual ~ServerEvents() {}
 
   virtual AsioExpress::Error HandleConnected(
-    ServerConnection connection);
+    ServerConnection connection) = 0;
 
   virtual void HandleDisconnected(
     ServerConnection connection,
-    AsioExpress::Error error);
+    AsioExpress::Error error) = 0;
 
   virtual void HandleMessage(
-    ServerMessage message);
+    ServerMessage message) = 0;
 
   virtual AsioExpress::Error HandleMessageError(
     ServerMessage message,
-    AsioExpress::Error error);
-
-private:
-  ServerEventHandlerPointer   m_eventHandler;
+    AsioExpress::Error error) = 0;
 };
+
+typedef boost::shared_ptr<ServerEvents> ServerEventsPointer;
 
 } // namespace MessagePort
 } // namespace AsioExpress

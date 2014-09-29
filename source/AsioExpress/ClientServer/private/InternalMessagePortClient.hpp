@@ -14,10 +14,10 @@
 
 #include "AsioExpress/ClientServer/ClientEventHandler.hpp"
 #include "AsioExpress/ClientServer/ClientInterface.hpp"
-#include "AsioExpress/ClientServer/private/IClientEvents.hpp"
+#include "AsioExpress/ClientServer/private/ClientEvents.hpp"
 #include "AsioExpress/ClientServer/private/MessagePortManager.hpp"
 #include "AsioExpress/ClientServer/private/Client.hpp"
-#include "AsioExpress/ClientServer/private/ClientEvents.hpp"
+#include "AsioExpress/ClientServer/private/ClientEventsImpl.hpp"
 
 namespace AsioExpress {
 namespace MessagePort {
@@ -73,7 +73,7 @@ private:
   boost::asio::io_service &           m_ioService;
   EndPointType                        m_endPoint;
   MessagePortManagerPointer           m_messagePortManager;
-  IClientEventsPointer                m_clientEvents;
+  ClientEventsPointer                 m_clientEvents;
   bool                                m_isShutDown;
 };
 
@@ -86,7 +86,7 @@ InternalMessagePortClient<MessagePort>::InternalMessagePortClient(
   m_ioService(ioService),
   m_endPoint(endPoint),
   m_messagePortManager(new MessagePortManagerType(ioService)),
-  m_clientEvents(new ClientEvents(eventHandler)),
+  m_clientEvents(new ClientEventsImpl(eventHandler)),
   m_isShutDown(false)
 {
 }

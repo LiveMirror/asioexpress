@@ -14,10 +14,10 @@
 
 #include "AsioExpress/ClientServer/ServerEventHandler.hpp"
 #include "AsioExpress/ClientServer/ClientInterface.hpp"
-#include "AsioExpress/ClientServer/private/IServerEvents.hpp"
+#include "AsioExpress/ClientServer/private/ServerEvents.hpp"
 #include "AsioExpress/ClientServer/private/MessagePortManager.hpp"
 #include "AsioExpress/ClientServer/private/Server.hpp"
-#include "AsioExpress/ClientServer/private/ServerEvents.hpp"
+#include "AsioExpress/ClientServer/private/ServerEventsImpl.hpp"
 #include "AsioExpress/ClientServer/private/BroadcastProcessor.hpp"
 
 namespace AsioExpress {
@@ -66,7 +66,7 @@ private:
   EndPointType                        m_endPoint;
   MessagePortManagerPointer           m_messagePortManager;
   MessagePortAcceptorPointer          m_acceptor;
-  IServerEventsPointer  m_serverEvents;
+  ServerEventsPointer                 m_serverEvents;
 };
 
 WIN_DISABLE_WARNINGS_BEGIN(4355)
@@ -78,7 +78,7 @@ InternalMessagePortServer<MessagePortAcceptor>::InternalMessagePortServer(
   m_ioService(ioService),
   m_endPoint(endPoint),
   m_messagePortManager(new MessagePortManagerType(ioService)),
-  m_serverEvents(new ServerEvents(eventHandler))
+  m_serverEvents(new ServerEventsImpl(eventHandler))
 {
 }
 WIN_DISABLE_WARNINGS_END

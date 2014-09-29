@@ -6,36 +6,33 @@
 
 #pragma once
 
-#include "AsioExpress/ClientServer/private/IClientEvents.hpp"
-#include "AsioExpress/ClientServer/ClientEventHandler.hpp"
+#include "AsioExpress/ClientServer/ClientConnection.hpp"
+#include "AsioExpress/ClientServer/ClientMessage.hpp"
 
 namespace AsioExpress {
 namespace MessagePort {
 
-class ClientEvents : public IClientEvents
+class ClientEvents
 {
 public:
-  ClientEvents(ClientEventHandler * eventHandler);
-
   virtual ~ClientEvents() {}
 
   virtual AsioExpress::Error HandleConnected(
-    ClientConnection connection);
+    ClientConnection connection) = 0;
 
   virtual void HandleDisconnected(
     ClientConnection connection, 
-    AsioExpress::Error error);
+    AsioExpress::Error error) = 0;
 
   virtual void HandleMessage(
-    ClientMessage message);
+    ClientMessage message) = 0;
 
   virtual AsioExpress::Error HandleMessageError(
     ClientMessage message,
-    AsioExpress::Error error);
-
-private:
-  ClientEventHandlerPointer         m_eventHandler;
+    AsioExpress::Error error) = 0;
 };
+
+typedef boost::shared_ptr<ClientEvents> ClientEventsPointer;
 
 } // namespace MessagePort
 } // namespace AsioExpress
