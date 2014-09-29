@@ -10,13 +10,13 @@
 
 #include "AsioExpressError/Check.hpp"
 #include "AsioExpress/ClientServer/MessagePortId.hpp"
-#include "AsioExpress/ClientServer/private/IAsyncSend.hpp"
+#include "AsioExpress/ClientServer/private/AsyncSendable.hpp"
 
 namespace AsioExpress {
 namespace MessagePort {
 
 template<typename MessagePort>
-class MessagePortManager : public IAsyncSend
+class MessagePortManager : public AsyncSendable
 {
 public:
   typedef boost::shared_ptr<MessagePort> MessagePortPointer;

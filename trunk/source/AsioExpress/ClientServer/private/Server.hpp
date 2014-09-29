@@ -31,7 +31,7 @@ public:
   Server(
       boost::asio::io_service & ioService,
       ServerInterfacePointer messagePortServer,
-      IServerEventsPointer serverEvents,
+      ServerEventsPointer serverEvents,
       MessagePortAcceptorPointer acceptor,
       MessagePortManagerPointer messagePortManager);
   
@@ -47,7 +47,7 @@ private:
 
   boost::asio::io_service &           m_ioService;
   ServerInterfacePointer              m_messagePortServer;
-  IServerEventsPointer                m_serverEvents;
+  ServerEventsPointer                 m_serverEvents;
   MessagePortManagerPointer           m_messagePortManager;
   MessagePortAcceptorPointer          m_acceptor;
   MessagePortPointer                  m_messagePort;
@@ -59,7 +59,7 @@ template<typename MessagePortAcceptor>
 Server<MessagePortAcceptor>::Server(
     boost::asio::io_service & ioService,
     ServerInterfacePointer messagePortServer,
-    IServerEventsPointer serverEvents,
+    ServerEventsPointer serverEvents,
     MessagePortAcceptorPointer acceptor,
     MessagePortManagerPointer messagePortManager) :
   m_ioService(ioService),

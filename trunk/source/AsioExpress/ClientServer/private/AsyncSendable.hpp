@@ -12,7 +12,7 @@
 namespace AsioExpress {
 namespace MessagePort {
 
-class IAsyncSend
+class AsyncSendable
 {
 public:
   virtual void AsyncSend(
@@ -21,7 +21,7 @@ public:
       AsioExpress::CompletionHandler completionHandler) = 0;
 };
 
-typedef boost::shared_ptr<IAsyncSend> IAsyncSendPointer;  
+typedef boost::shared_ptr<AsyncSendable> AsyncSendablePointer;  
 
 } // namespace MessagePort
 } // namespace AsioExpress

@@ -92,12 +92,6 @@
     <ClCompile Include="..\..\..\source\AsioExpress\ClientServer\MessagePortId.cpp">
       <Filter>Source Files\ClientServer</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\AsioExpress\ClientServer\private\ClientEvents.cpp">
-      <Filter>Source Files\ClientServer\private</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\AsioExpress\ClientServer\private\ServerEvents.cpp">
-      <Filter>Source Files\ClientServer\private</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\AsioExpress\Logging\LoggingService.cpp">
       <Filter>Source Files\Logging</Filter>
     </ClCompile>
@@ -182,6 +176,12 @@
     <ClCompile Include="..\..\..\source\AsioExpress\ClientServer\RoundRobinServer.cpp">
       <Filter>Source Files\ClientServer</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\AsioExpress\ClientServer\private\ClientEventsImpl.cpp">
+      <Filter>Source Files\ClientServer\private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\AsioExpress\ClientServer\private\ServerEventsImpl.cpp">
+      <Filter>Source Files\ClientServer\private</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\source\AsioExpress\CompletionHandler.hpp">
@@ -253,19 +253,10 @@
     <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\ServerMessage.hpp">
       <Filter>Source Files\ClientServer</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\private\IAsyncSend.hpp">
-      <Filter>Source Files\ClientServer\private</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\private\IClientEvents.hpp">
-      <Filter>Source Files\ClientServer\private</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\private\InternalMessagePortClient.hpp">
       <Filter>Source Files\ClientServer\private</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\private\InternalMessagePortServer.hpp">
-      <Filter>Source Files\ClientServer\private</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\private\IServerEvents.hpp">
       <Filter>Source Files\ClientServer\private</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\private\MessagePortManager.hpp">
@@ -366,9 +357,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\MessagePortId.hpp">
       <Filter>Source Files\ClientServer</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\private\ClientEvents.hpp">
-      <Filter>Source Files\ClientServer\private</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\private\ServerEvents.hpp">
       <Filter>Source Files\ClientServer\private</Filter>
@@ -561,6 +549,18 @@
     </ClInclude>
     <ClInclude Include="..\..\..\source\AsioExpress\ParentCompletionHandler.hpp">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\private\ClientEvents.hpp">
+      <Filter>Source Files\ClientServer\private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\private\ClientEventsImpl.hpp">
+      <Filter>Source Files\ClientServer\private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\private\AsyncSendable.hpp">
+      <Filter>Source Files\ClientServer\private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\private\ServerEventsImpl.hpp">
+      <Filter>Source Files\ClientServer\private</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

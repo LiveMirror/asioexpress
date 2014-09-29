@@ -91,6 +91,8 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\source\AsioExpress\ClientServer\private\ClientEventsImpl.cpp" />
+    <ClCompile Include="..\..\..\source\AsioExpress\ClientServer\private\ServerEventsImpl.cpp" />
     <ClCompile Include="..\..\..\source\AsioExpress\ClientServer\RoundRobinServer.cpp" />
     <ClCompile Include="..\..\..\source\AsioExpress\ErrorCodes.cpp" />
     <ClCompile Include="..\..\..\source\AsioExpress\DebugTimer\DebugTimerManager.cpp" />
@@ -123,14 +125,16 @@
     <ClCompile Include="..\..\..\source\AsioExpress\StatisticsTimer.cpp" />
     <ClCompile Include="..\..\..\source\AsioExpress\test.cpp" />
     <ClCompile Include="..\..\..\source\AsioExpress\ClientServer\MessagePortId.cpp" />
-    <ClCompile Include="..\..\..\source\AsioExpress\ClientServer\private\ClientEvents.cpp" />
-    <ClCompile Include="..\..\..\source\AsioExpress\ClientServer\private\ServerEvents.cpp" />
     <ClCompile Include="..\..\..\source\AsioExpress\Logging\LoggingService.cpp" />
     <ClCompile Include="..\..\..\source\AsioExpress\Testing\SetUnitTestMode.cpp" />
     <ClCompile Include="..\..\..\source\AsioExpress\UniqueId.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\ClientMessageProcessor.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\private\AsyncSendable.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\private\ClientEvents.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\private\ClientEventsImpl.hpp" />
+    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\private\ServerEventsImpl.hpp" />
     <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\RoundRobinServer.hpp" />
     <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\ServerMessageProcessor.hpp" />
     <ClInclude Include="..\..\..\source\AsioExpress\CompletionHandler.hpp" />
@@ -212,12 +216,8 @@
     <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\ServerMessage.hpp" />
     <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\private\BroadcastProcessor.hpp" />
     <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\private\Client.hpp" />
-    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\private\ClientEvents.hpp" />
-    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\private\IAsyncSend.hpp" />
-    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\private\IClientEvents.hpp" />
     <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\private\InternalMessagePortClient.hpp" />
     <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\private\InternalMessagePortServer.hpp" />
-    <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\private\IServerEvents.hpp" />
     <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\private\MessagePortManager.hpp" />
     <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\private\Server.hpp" />
     <ClInclude Include="..\..\..\source\AsioExpress\ClientServer\private\ServerEvents.hpp" />
