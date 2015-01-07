@@ -1,0 +1,56 @@
+#!/bin/bash
+
+Usage() {
+  printf "Usage: $0 <test_location> [xmlreport]\
+  \nRuns unit test executables built, generating an xmlreport if xmlreport is not null\
+  \ntest_location is the directory containing test executables\
+  \nNOTE: Unit tests have to have 'Test' suffix in their names\n"
+  exit 1
+}
+
+if [ "$1" == "-h" ] || [ "$#" -lt 1 -o "$#" -gt 2 ]
+then
+  Usage
+fi
+
+test_location=$1
+xmlreport=$2
+failed_tests="failed"
+
+rm -f $failed_tests
+
+# We want to boost-unit-test to ignore it when child processes fail (SIGCHILD signal)
+# This is how I do it locally when I launch from netbeans (i.e. add the --catch_system_errors=no)
+#"${OUTPUT_PATH}" --log_level=message --catch_system_errors=no
+unit_test_opts="--log_level=test_suite --report_level=detailed --catch_system_errors=no"
+
+if [ "$xmlreport" != "" ]
+then
+  unit_test_opts="$unit_test_opts --log_format=XML --log_sink=unit_test_log"
+fi
+
+count=1
+error=0
+for unit_test in $(find "$test_location" -path '*Test')
+do
+  echo "Running $unit_test"
+  if [ "$xmlreport" != "" ]
+  then
+    ./$unit_test $unit_test_opts"_$count.xml"
+    ((error+=$?))
+    ((count++))
+  else
+    ./$unit_test $unit_test_opts
+    if [ $? -ne 0 ]
+    then
+        echo -e "FAILED: $unit_test: \n\t$unit_test $unit_test_opts"
+        echo -e "FAILED: $unit_test: \n\t$unit_test $unit_test_opts" >> $failed_tests
+        ((error+=$?))
+    fi
+  fi
+done
+
+cat $failed_tests 2> /dev/null
+
+# exit code is sum of all test exit codes, which should be ideally 0
+exit $error
