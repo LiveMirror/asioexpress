@@ -41,7 +41,7 @@ release:
 .PHONY: clean
 clean:
 	$(MAKE) BUILD_TARGET=clean
-	rm -f *.tgz *.deb *-pak
+	rm -f *.tgz *.deb *-pak build/gnu/unit_test_log*.xml
 
 .PHONY: install
 install: install-debug install-release
@@ -92,3 +92,12 @@ debug-package: debug
 
 .PHONY: package
 package: release-package debug-package
+
+.PHONY: unit-tests
+unit-tests: debug release
+	./run-unit-tests ../../bin/
+
+.PHONY: unit-tests-xml
+unit-tests-xml: debug release
+	# $(BUILD_TARGET)
+	./run-unit-tests ../../bin/ xml

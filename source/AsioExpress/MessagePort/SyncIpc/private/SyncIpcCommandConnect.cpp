@@ -183,7 +183,7 @@ void SyncIpcCommandConnect(
 #endif
         messagePort.InternalDisconnect();
         throw CommonException(Error(
-                ErrorCode::CommunicationFailure,
+                ErrorCode::Disconnected,
                 "SyncIpcCommandConnect(): A CONNECT-ACK response was not received from server."));
     }
 
