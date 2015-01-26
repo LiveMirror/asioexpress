@@ -1,5 +1,3 @@
-#include <boost/test/unit_test.hpp>
-
 #include "AsioExpressTest/pch.hpp"
 #include "AsioExpress/Testing/AutoCompletionHandler.hpp"
 #include "AsioExpress/Testing/TestCompletionHandler.hpp"
@@ -10,6 +8,10 @@
 #include "AsioExpress/MessagePort/Ipc/ErrorCodes.hpp"
 #include "AsioExpress/MessagePort/Ipc/private/IpcSendThread.hpp"
 #include "AsioExpress/MessagePort/SyncIpc/MessagePort.hpp"
+
+#include <boost/test/unit_test.hpp>
+#include <boost/interprocess/ipc/message_queue.hpp>
+#include <boost/filesystem.hpp>
 
 using namespace std;
 using namespace AsioExpress;
@@ -24,10 +26,6 @@ struct Setup
   Setup()
   {
     SetUnitTestMode(true);
-    // set max message size to 10 for queue
-    sendMessageQueuePointer.reset(
-        new boost::interprocess::message_queue(boost::interprocess::create_only,
-            "MessagePortsTestQueue", 100, 10));
   }
 
   ~Setup()
@@ -44,6 +42,10 @@ BOOST_FIXTURE_TEST_SUITE(MessagePortTest, Setup)
 
 BOOST_AUTO_TEST_CASE(Test_Ipc_Send_Thread_Message_Normal_Size)
 {
+  // set max message size to 10 for queue
+  sendMessageQueuePointer.reset(
+    new boost::interprocess::message_queue(boost::interprocess::create_only,
+        "MessagePortsTestQueue", 100, 10));
 
   IpcSendThreadPointer ipcSendThreadPointer(
       new IpcSendThread(ioService, sendMessageQueuePointer,
@@ -62,6 +64,10 @@ BOOST_AUTO_TEST_CASE(Test_Ipc_Send_Thread_Message_Normal_Size)
 
 BOOST_AUTO_TEST_CASE(Test_Ipc_Send_Thread_Message_Too_Large)
 {
+  // set max message size to 10 for queue
+  sendMessageQueuePointer.reset(
+    new boost::interprocess::message_queue(boost::interprocess::create_only,
+        "MessagePortsTestQueue", 100, 10));
 
   IpcSendThreadPointer ipcSendThreadPointer(
       new IpcSendThread(ioService, sendMessageQueuePointer,
@@ -88,6 +94,11 @@ BOOST_AUTO_TEST_CASE(Test_Ipc_Send_Thread_Message_Too_Large)
 
 BOOST_AUTO_TEST_CASE(Test_SyncIpc_Send_Message_Normal)
 {
+  // set max message size to 10 for queue
+  sendMessageQueuePointer.reset(
+    new boost::interprocess::message_queue(boost::interprocess::create_only,
+        "MessagePortsTestQueue", 100, 10));
+
   SyncIpc::MessagePort messagePort;
 
   // test send message with size 9
@@ -108,6 +119,11 @@ bool IsMessageTooLargeErrorMessage(AsioExpress::CommonException const &ex)
 
 BOOST_AUTO_TEST_CASE(Test_SyncIpc_Send_Message_Too_Large)
 {
+  // set max message size to 10 for queue
+  sendMessageQueuePointer.reset(
+    new boost::interprocess::message_queue(boost::interprocess::create_only,
+        "MessagePortsTestQueue", 100, 10));
+
   SyncIpc::MessagePort messagePort;
 
   // test send message with size 11
@@ -117,6 +133,46 @@ BOOST_AUTO_TEST_CASE(Test_SyncIpc_Send_Message_Too_Large)
       messagePort.TestSend(dataBufferPointer, sendMessageQueuePointer),
       AsioExpress::CommonException, IsMessageTooLargeErrorMessage);
   BOOST_CHECK_EQUAL(sendMessageQueuePointer->get_num_msg(), 0);
+}
+
+BOOST_AUTO_TEST_CASE(Test_SyncIpc_Permissions_1)
+{
+  using namespace boost;
+
+  unsigned int testPerms = S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP;
+
+  // set max message size to 10 for queue
+  sendMessageQueuePointer.reset(
+    new interprocess::message_queue(
+      interprocess::create_only,
+      "MessagePortsTestQueue",
+      100, 10,
+      interprocess::permissions(testPerms)));
+
+  filesystem::path testFile("/run/shm/MessagePortsTestQueue");
+  filesystem::file_status status = filesystem::status(testFile);
+
+  BOOST_CHECK_EQUAL(status.permissions(), testPerms);
+}
+
+BOOST_AUTO_TEST_CASE(Test_SyncIpc_Permissions_2)
+{
+  using namespace boost;
+
+  unsigned int testPerms = S_IRGRP | S_IWGRP;
+
+  // set max message size to 10 for queue
+  sendMessageQueuePointer.reset(
+    new interprocess::message_queue(
+      interprocess::create_only,
+      "MessagePortsTestQueue",
+      100, 10,
+      interprocess::permissions(testPerms)));
+
+  filesystem::path testFile("/run/shm/MessagePortsTestQueue");
+  filesystem::file_status status = filesystem::status(testFile);
+
+  BOOST_CHECK_EQUAL(status.permissions(), testPerms);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

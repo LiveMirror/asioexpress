@@ -100,6 +100,8 @@ int IpcSysMessage::RequiredEncodeBufferSize()
     size += GetParam(i).size();
   }
 
+  CHECK(static_cast<size_t>(size) <= MaxMessageSize);
+
   return size;
 }
 

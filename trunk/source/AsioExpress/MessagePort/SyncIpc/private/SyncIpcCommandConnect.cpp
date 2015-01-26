@@ -109,8 +109,18 @@ void SyncIpcCommandConnect(
     {
         messagePort.m_recvMessageQueueName = clientQueueName;
         messagePort.m_sendMessageQueueName = serverQueueName;
-        messagePort.m_recvMessageQueue.reset(new boost::interprocess::message_queue(boost::interprocess::create_only, messagePort.m_recvMessageQueueName.c_str(), endPoint.GetMaxNumMsg(), endPoint.GetMaxMsgSize()));
-        messagePort.m_sendMessageQueue.reset(new boost::interprocess::message_queue(boost::interprocess::create_only, messagePort.m_sendMessageQueueName.c_str(), endPoint.GetMaxNumMsg(), endPoint.GetMaxMsgSize()));
+        messagePort.m_recvMessageQueue.reset(new boost::interprocess::message_queue(
+            boost::interprocess::create_only,
+            messagePort.m_recvMessageQueueName.c_str(),
+            endPoint.GetMaxNumMsg(),
+            endPoint.GetMaxMsgSize(),
+            endPoint.GetPermissions()));
+        messagePort.m_sendMessageQueue.reset(new boost::interprocess::message_queue(
+            boost::interprocess::create_only,
+            messagePort.m_sendMessageQueueName.c_str(),
+            endPoint.GetMaxNumMsg(),
+            endPoint.GetMaxMsgSize(),
+            endPoint.GetPermissions()));
     }
     catch (boost::interprocess::interprocess_exception& ex)
     {

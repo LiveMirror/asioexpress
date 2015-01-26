@@ -94,8 +94,18 @@ void IpcCommandConnect::operator() (AsioExpress::Error e)
       try {
         m_messagePort.m_recvMessageQueueName = clientQueueName;
         m_messagePort.m_sendMessageQueueName = serverQueueName;
-        m_messagePort.m_recvMessageQueue.reset(new boost::interprocess::message_queue(boost::interprocess::create_only, m_messagePort.m_recvMessageQueueName.c_str(), m_endPoint.GetMaxNumMsg(), m_endPoint.GetMaxMsgSize()));
-        m_messagePort.m_sendMessageQueue.reset(new boost::interprocess::message_queue(boost::interprocess::create_only, m_messagePort.m_sendMessageQueueName.c_str(), m_endPoint.GetMaxNumMsg(), m_endPoint.GetMaxMsgSize()));
+        m_messagePort.m_recvMessageQueue.reset(new boost::interprocess::message_queue(
+            boost::interprocess::create_only,
+            m_messagePort.m_recvMessageQueueName.c_str(),
+            m_endPoint.GetMaxNumMsg(),
+            m_endPoint.GetMaxMsgSize(),
+            m_endPoint.GetPermissions()));
+        m_messagePort.m_sendMessageQueue.reset(new boost::interprocess::message_queue(
+            boost::interprocess::create_only,
+            m_messagePort.m_sendMessageQueueName.c_str(),
+            m_endPoint.GetMaxNumMsg(),
+            m_endPoint.GetMaxMsgSize(),
+            m_endPoint.GetPermissions()));
         m_messagePort.m_receiveThread.reset(new IpcReceiveThread(m_messagePort.m_ioService, m_messagePort.m_recvMessageQueue, IpcReceiveThread::EnablePing));
         m_messagePort.m_sendThread.reset(new IpcSendThread(m_messagePort.m_ioService, m_messagePort.m_sendMessageQueue, IpcSendThread::EnablePing));
       }
