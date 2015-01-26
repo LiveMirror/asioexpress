@@ -23,7 +23,8 @@ INCLUDE_DIRS    := $(SPATH)/AsioExpressConfig $(SPATH)/AsioExpressError $(SPATH)
 
 LIBS            := $(LIB_DIR)/libasioexpress$(LIB_EXT).a $(LIB_DIR)/libasioexpresserror$(LIB_EXT).a \
                    $(BOOST_LIB)/libboost_unit_test_framework.a $(BOOST_LIB)/libboost_system.a \
-                   $(BOOST_LIB)/libboost_chrono.a $(BOOST_LIB)/libboost_thread.a -lrt
+                   $(BOOST_LIB)/libboost_chrono.a $(BOOST_LIB)/libboost_thread.a \
+                   $(BOOST_LIB)/libboost_filesystem.a -lrt
 
 AUTO_SOURCES     := $(shell find $(SOURCE_DIR) -type f -name '*.cpp' -print)
 PLAT_SOURCES     :=

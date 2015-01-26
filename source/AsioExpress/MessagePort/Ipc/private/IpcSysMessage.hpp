@@ -14,6 +14,8 @@ namespace Ipc {
 class IpcSysMessage
 {
 public:
+  static size_t const MaxMessageSize = 100;
+  static size_t const MaxNumberOfMessages = 100;
   static char const * const MSG_CONNECT;
   static char const * const MSG_CONNECT_ACK;
   static char const * const MSG_DISCONNECT;

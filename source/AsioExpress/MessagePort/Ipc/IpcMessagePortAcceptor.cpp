@@ -9,6 +9,7 @@
 #include "AsioExpress/MessagePort/Ipc/MessagePortAcceptor.hpp"
 #include "AsioExpress/MessagePort/Ipc/private/IpcCommandAccept.hpp"
 #include "AsioExpress/MessagePort/Ipc/private/IpcCommandConnect.hpp"
+#include "private/IpcSysMessage.hpp"
 
 namespace AsioExpress {
 namespace MessagePort {
@@ -28,8 +29,8 @@ MessagePortAcceptor::MessagePortAcceptor(
   // Clear all client/server message queues for this endpoint to avoid stale queues
   // due to client crashes
   std::string name;
-  for ( int i = IpcCommandConnect::LowConnectionId; 
-        i <= IpcCommandConnect::HighConnectionId; 
+  for ( int i = IpcCommandConnect::LowConnectionId;
+        i <= IpcCommandConnect::HighConnectionId;
         i++ )
   {
     name = m_endPoint.GetEndPoint() + "#Server#" + IntToString(i);
@@ -40,7 +41,12 @@ MessagePortAcceptor::MessagePortAcceptor(
 
 
   // Create our acceptor message queue
-  m_messageQueue.reset(new boost::interprocess::message_queue(boost::interprocess::create_only, endPoint.GetEndPoint().c_str(), endPoint.GetMaxNumMsg(), endPoint.GetMaxMsgSize()));
+  m_messageQueue.reset(new boost::interprocess::message_queue(
+    boost::interprocess::create_only,
+    endPoint.GetEndPoint().c_str(),
+    IpcSysMessage::MaxNumberOfMessages,
+    IpcSysMessage::MaxMessageSize,
+    endPoint.GetPermissions()));
 
   m_receiveThread.reset(new IpcReceiveThread(ioService, m_messageQueue, IpcReceiveThread::DisablePing));
 }
@@ -64,7 +70,7 @@ void MessagePortAcceptor::Close()
 
 
 void MessagePortAcceptor::AsyncAccept(
-    MessagePort & messagePort, 
+    MessagePort & messagePort,
     AsioExpress::CompletionHandler completionHandler)
 {
   IpcCommandAccept(*this, messagePort, completionHandler)();
