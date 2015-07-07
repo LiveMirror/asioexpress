@@ -31,7 +31,6 @@ public:
             int numberOfThreads=1) : 
         boost::asio::io_service::service(ioService), 
         asyncExecuteWork(new boost::asio::io_service::work(asyncExecuteIoService)),
-        numberOfThreads(numberOfThreads),
         asyncExecuteThread(numberOfThreads)
     { 
         for(int i = 0; i < numberOfThreads; ++i)
@@ -118,7 +117,6 @@ private:
 
     boost::asio::io_service                           asyncExecuteIoService; 
     boost::scoped_ptr<boost::asio::io_service::work>  asyncExecuteWork;
-    int const                                         numberOfThreads;
     ThreadList                                        asyncExecuteThread;
 }; 
 

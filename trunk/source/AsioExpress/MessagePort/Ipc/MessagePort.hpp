@@ -33,18 +33,18 @@ public:
   ~MessagePort();
 
   void AsyncConnect(
-      EndPoint endPoint, 
+      EndPoint endPoint,
       AsioExpress::CompletionHandler completionHandler);
 
   void AsyncSend(
-      AsioExpress::MessagePort::DataBufferPointer buffer, 
+      AsioExpress::MessagePort::DataBufferPointer buffer,
       AsioExpress::CompletionHandler completionHandler);
 
   void AsyncReceive(
-      AsioExpress::MessagePort::DataBufferPointer buffer, 
+      AsioExpress::MessagePort::DataBufferPointer buffer,
       AsioExpress::CompletionHandler completionHandler);
 
-  virtual std::string GetAddress() const        { return GetRemoteID(); }
+  std::string GetAddress() const                { return GetRemoteID(); }
 
   void Disconnect();
 

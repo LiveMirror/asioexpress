@@ -19,7 +19,6 @@ public:
     ReferenceProcessor(
             boost::asio::io_service &ioService, 
             ServiceCommand & command) : 
-        ioService(ioService), 
         work(ioService),
         command(command)
     { 
@@ -32,7 +31,6 @@ public:
     } 
 
 private: 
-    boost::asio::io_service &         ioService; 
     boost::asio::io_service::work     work; 
     ServiceCommand &                  command;
 }; 
