@@ -9,7 +9,7 @@
 #include <boost/function.hpp>
 #include <boost/thread.hpp> 
 #include <boost/bind.hpp> 
-#include <boost/shared_ptr.hpp> 
+#include <boost/scoped_ptr.hpp> 
 #include <boost/system/error_code.hpp> 
 #include <boost/system/system_error.hpp> 
 #include <boost/ptr_container/ptr_vector.hpp>
