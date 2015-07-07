@@ -18,13 +18,13 @@
 WIN_DISABLE_WARNINGS_BEGIN(4996)
 #include <map>
 #include <ostream>
-#include <stdexcept> 
+#include <stdexcept>
 #include <string>
 WIN_DISABLE_WARNINGS_END
 
 WIN_DISABLE_WARNINGS_BEGIN(4503 4127 4245)
-#include <boost/asio.hpp> 
-#include <boost/bind.hpp> 
+#include <boost/asio.hpp>
+#include <boost/bind.hpp>
 #include <boost/crc.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/enable_shared_from_this.hpp>
@@ -32,11 +32,10 @@ WIN_DISABLE_WARNINGS_BEGIN(4503 4127 4245)
 #include <boost/noncopyable.hpp>
 #include <boost/ptr_container/ptr_vector.hpp>
 #include <boost/shared_ptr.hpp>
-#include <boost/shared_ptr.hpp> 
+#include <boost/scoped_ptr.hpp>
 #include <boost/system/error_code.hpp>
-#include <boost/system/error_code.hpp> 
-#include <boost/system/system_error.hpp> 
-#include <boost/thread.hpp> 
+#include <boost/system/system_error.hpp>
+#include <boost/thread.hpp>
 #include <boost/thread/condition.hpp>
 #include <boost/thread/recursive_mutex.hpp>
 #include <boost/weak_ptr.hpp>

@@ -12,11 +12,11 @@ namespace AsioExpress {
 class ErrorCategoryImpl : public boost::system::error_category
 {
 public:
-  virtual char const * name() const;
+  virtual char const * name() const ASIOEXPRESS_NOEXCEPT;
   virtual std::string message(int ev) const;
 };
 
-char const * ErrorCategoryImpl::name() const
+char const * ErrorCategoryImpl::name() const ASIOEXPRESS_NOEXCEPT
 {
   return "AsioExpressError";
 }
@@ -26,9 +26,9 @@ std::string ErrorCategoryImpl::message(int ev) const
   switch (ev)
   {
     case ErrorCode::EventQueueTimeout:
-      return "Timed out waiting to receive a queued event.";   
+      return "Timed out waiting to receive a queued event.";
     case ErrorCode::UniqueEventTimeout:
-      return "Timed out waiting to receive a unique event.";   
+      return "Timed out waiting to receive a unique event.";
     case ErrorCode::ResourceCacheTimeout:
       return "Timed out waiting to receive an event from the resource cache.";
     case ErrorCode::MessagePortAcceptorError:

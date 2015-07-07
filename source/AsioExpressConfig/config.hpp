@@ -22,13 +22,19 @@
 
 #else // _MSC_VER
 
-#define WIN_DISABLE_WARNINGS_BEGIN(args)  
+#define WIN_DISABLE_WARNINGS_BEGIN(args)
 #define WIN_DISABLE_WARNINGS_END
 
 #endif // _MSC_VER
 
 #define BOOST_INTERPROCESS_ENABLE_TIMEOUT_WHEN_LOCKING
 #define BOOST_INTERPROCESS_TIMEOUT_WHEN_LOCKING_DURATION_MS 5000
+
+#ifdef IS_CPP_11
+#define ASIOEXPRESS_NOEXCEPT noexcept
+#else
+#define ASIOEXPRESS_NOEXCEPT
+#endif
 
 // Turn on debugging of IPC message port.
 //#define DEBUG_IPC

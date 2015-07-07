@@ -283,7 +283,7 @@ public:
 
 class DontCare {};
 static DontCare DONTCARE_NAME;
-static void _notused() {
+static inline void _notused() {
 	if (&DONTCARE_NAME > 0) return;
 	_notused();
 }

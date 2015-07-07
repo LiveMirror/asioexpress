@@ -20,7 +20,6 @@ public:
       boost::asio::io_service & ioService,
       std::string const & serverIpAddress,
       std::string const & serverPort) :
-    ioService(ioService),
     errorHandler(new AppErrorHandlerImpl),
     echoManager(new EchoManager),
     server(
@@ -42,7 +41,6 @@ public:
   }
 
 private:
-  boost::asio::io_service &   ioService;
   AppErrorHandlerPointer      errorHandler;
   EchoManagerPointer          echoManager;
   BasicServer                 server;

@@ -27,7 +27,7 @@ public:
     {
       std::ostringstream message;
       message << m_file << "(" << m_line << "): Completion handler error: " << error.Message(); 
-      BOOST_FAIL(message);
+      BOOST_FAIL(message.str());
     }
 
     ++(*m_callCount);
